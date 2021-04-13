@@ -13,6 +13,8 @@ import LibraryScreen from './book/LibraryScreen';
 import ProfileScreen from './user/ProfileScreen';
 import CartScreen from './app/CartScreen';
 import LoginScreen from './user/LoginScreen';
+import RegisterScreen from './user/RegisterScreen';
+import ForgotPasswordScreen from './user/ForgotPasswordScreen';
 
 
 // ANCHOR - Declare const
@@ -70,6 +72,20 @@ export default function HomeScreen(){
                     <Stack.Screen 
                         name = "LoginScreen"
                         component = {LoginScreen}
+                        options = {
+                            {headerShown: false}
+                        }
+                    />
+                    <Stack.Screen 
+                        name = "RegisterScreen"
+                        component = {RegisterScreen}
+                        options = {
+                            {headerShown: false}
+                        }
+                    />
+                    <Stack.Screen 
+                        name = "ForgotPasswordScreen"
+                        component = {ForgotPasswordScreen}
                         options = {
                             {headerShown: false}
                         }
