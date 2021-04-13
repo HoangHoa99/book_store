@@ -66,6 +66,7 @@ export default function ProfileScreen({ navigation }) {
               </TouchableOpacity>
 
               <TouchableOpacity
+                onPress={() => navigation.navigate("RegisterScreen")}
                 style={{
                   backgroundColor: "#FFF",
                   padding: 10,

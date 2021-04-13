@@ -14,9 +14,7 @@ export default function LoginScreen({ navigation }) {
   const checkIsLogin = useContext(AppContext);
 
   function onLogin() {
-    console.log(password);
     if (username === "hoa" && password === "12345") {
-      console.log(true);
       checkIsLogin.setIsLogin(true);
       navigation.navigate("MainScreen");
     } else {
@@ -83,7 +81,11 @@ export default function LoginScreen({ navigation }) {
           </Text>
         </TouchableOpacity>
 
+          <TouchableOpacity
+            onPress = {() => navigation.navigate("ForgotPasswordScreen")}
+          >
         <Text style={{ marginTop: 20 }}>Forgot Password ?</Text>
+        </TouchableOpacity>
 
         {/* <View style={{ flexDirection: "row", marginTop: 60 }}>
           <View
@@ -133,7 +135,9 @@ export default function LoginScreen({ navigation }) {
 
         <View style={{ flexDirection: "row", marginTop: 40 }}>
           <Text style={{ color: "gray" }}>Don't have an account?</Text>
-          <Text style={{ fontWeight: "bold" }}> Sign Up</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")}>
+            <Text style={{ fontWeight: "bold" }}> Sign Up</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
