@@ -62,7 +62,7 @@ export default function BookScreen({ navigation }) {
                   flexDirection: "row",
                 }}
               >
-                <View
+                {/* <View
                   style={{
                     marginRight: 10,
                   }}
@@ -72,7 +72,7 @@ export default function BookScreen({ navigation }) {
                   >
                     <MaterialCommunityIcons name="shopping" size={25} color="white" />
                   </TouchableOpacity>
-                </View>
+                </View> */}
               </View>
             </View>
             <View

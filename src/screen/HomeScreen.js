@@ -116,22 +116,22 @@ function MainScreen() {
             }}
           />
           <Tab.Screen
-            name="LibraryScreen"
-            component={LibraryScreen}
-            options={{
-              tabBarLabel: "Library",
-              tabBarIcon: ({ color, size }) => (
-                <Feather name="book" color={color} size={size} />
-              ),
-            }}
-          />
-          <Tab.Screen
             name="BookSearchScreen"
             component={BookSearchScreen}
             options={{
               tabBarLabel: "Search",
               tabBarIcon: ({ color, size }) => (
                 <Feather name="search" color={color} size={size} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="CartScreen"
+            component={CartScreen}
+            options={{
+              tabBarLabel: "Cart",
+              tabBarIcon: ({ color, size }) => (
+                <Feather name="shopping-cart" color={color} size={size} />
               ),
             }}
           />
