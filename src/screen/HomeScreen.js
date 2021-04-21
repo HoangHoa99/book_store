@@ -9,7 +9,7 @@ import BookScreen from '../screen/book/BookScreen';
 import BookDetailScreen from '../screen/book/BookDetailScreen';
 import BookSearchScreen from '../screen/book/BookSearchScreen';
 import InformationScreen from './app/InformationSreen';
-import LibraryScreen from './book/LibraryScreen';
+import CheckoutScreen from './app/CheckoutScreen';
 import ProfileScreen from './user/ProfileScreen';
 import CartScreen from './app/CartScreen';
 import LoginScreen from './user/LoginScreen';
@@ -86,6 +86,13 @@ export default function HomeScreen(){
                     <Stack.Screen 
                         name = "ForgotPasswordScreen"
                         component = {ForgotPasswordScreen}
+                        options = {
+                            {headerShown: false}
+                        }
+                    />
+                    <Stack.Screen 
+                        name = "CheckoutScreen"
+                        component = {CheckoutScreen}
                         options = {
                             {headerShown: false}
                         }

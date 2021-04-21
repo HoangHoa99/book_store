@@ -1,22 +1,22 @@
 const categories = [
   { 
     id: "1", 
-    name: "pizza", 
+    name: "Kinh tế", 
     // image: require("../assets/catergories/pizza.png") 
   },
   {
     id: "2",
-    name: "Burger",
+    name: "Xã hội",
     // image: require("../assets/catergories/burger.png"),
   },
   { 
     id: "3", 
-    name: "Sushi", 
+    name: "Tài liệu", 
     // image: require("../assets/catergories/sushi.png") 
   },
   { 
     id: "4", 
-    name: "Salad", 
+    name: "Hồi ký", 
     // image: require("../assets/catergories/salad.png") 
   },
 ];

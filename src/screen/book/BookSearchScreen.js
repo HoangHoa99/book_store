@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   Dimensions,
   Image,
@@ -11,18 +11,45 @@ import {
   FlatList,
   ScrollView,
   TextInput,
-  TouchableHighlight,
   TouchableOpacity,
 } from "react-native-gesture-handler";
 import { Feather } from "@expo/vector-icons";
 import COLORS from "../../assets/color/colors";
 import categories from "../../clone/Categories";
-import { foods } from "../../clone/DataClone";
+import { bestSellers } from "../../clone/DataClone";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 const { width } = Dimensions.get("screen");
 const cardWidth = width / 2 - 20;
 
 export default function BookSearchScreen({ navigation }) {
   const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(0);
+
+  // ANCHOR - Declare refresh item
+
+  const addToCart = async (item) => {
+    try {
+      const cartList = await AsyncStorage.getItem("@cartList");
+      let res = cartList != null ? JSON.parse(cartList) : [];
+      const itemCopy = res.find((existedItem) => existedItem.id === item.id);
+      if (itemCopy) {
+        alert("Item have already added");
+      } else {
+        let newItem = {
+          id: item.id,
+          title: item.title,
+          qty: 1,
+          checked: 1,
+          price: item.price,
+          image: item.image,
+        };
+        res.push(newItem);
+      }
+
+      AsyncStorage.setItem("@cartList", JSON.stringify(res));
+    } catch (e) {}
+  }
 
   function ListCategories() {
     return (
@@ -47,10 +74,7 @@ export default function BookSearchScreen({ navigation }) {
               }}
             >
               <View style={style.categoryBtnImgCon}>
-                <Image
-                  source={category.image}
-                  style={{ height: 35, width: 35, resizeMode: "cover" }}
-                />
+                <Feather name="tag" size={25} color={COLORS.price} />
               </View>
               <Text
                 style={{
@@ -72,40 +96,79 @@ export default function BookSearchScreen({ navigation }) {
     );
   }
 
-  function Card({ food }) {
+  function Card({ item }) {
+    function formatTitle(title) {
+      var returnTitle = title;
+      var dotdotdot = "...";
+      if (title.length > 15) {
+        returnTitle = title.substring(0, 16) + dotdotdot;
+      }
+
+      return returnTitle;
+    }
     return (
-      <TouchableHighlight
+      <TouchableOpacity
         underlayColor={COLORS.white}
         activeOpacity={0.9}
-        onPress={() => navigation.navigate("BookDetailScreen", food)}
+        onPress={() => navigation.navigate("BookDetailScreen", { book: item })}
       >
         <View style={style.card}>
-          <View style={{ alignItems: "center", top: -40 }}>
-            <Image source={food.image} style={{ height: 120, width: 120 }} />
-          </View>
-          <View style={{ marginHorizontal: 20 }}>
-            <Text style={{ fontSize: 18, fontWeight: "bold" }}>{food.name}</Text>
-            <Text style={{ fontSize: 14, color: COLORS.grey, marginTop: 2 }}>
-              {food.ingredients}
-            </Text>
-          </View>
-          <View
-            style={{
-              marginTop: 10,
-              marginHorizontal: 20,
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-              ${food.price}
-            </Text>
-            <View style={style.addToCartBtn}>
-              <Feather name="plus" size={20} color={COLORS.white} />
+          <View>
+            <View
+              style={{
+                overflow: "hidden",
+                borderRadius: 10,
+                marginRight: 10,
+              }}
+            >
+              <Image
+                source={{ uri: item.image }}
+                style={{ height: 200, width: 160 }}
+              />
+            </View>
+
+            <View style={{ marginTop: 5 }}>
+              <View>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: "bold",
+                    color: COLORS.black,
+                  }}
+                >
+                  {formatTitle(item.title)}
+                </Text>
+                <Text
+                  style={{ fontSize: 14, color: COLORS.black, marginTop: 2 }}
+                >
+                  {item.author}
+                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginTop: 5,
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text
+                    style={{ fontSize: 18, fontWeight: "bold", marginLeft: 0 }}
+                  >
+                    ${item.price}
+                  </Text>
+                  <TouchableOpacity
+                  onPress={() => addToCart(item)}>
+                  <View style={style.addToCartBtn}>
+                    <Feather name="plus" size={20} color={COLORS.white} />
+                  </View>
+                  </TouchableOpacity>
+                  
+                </View>
+              </View>
             </View>
           </View>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     );
   }
 
@@ -113,20 +176,19 @@ export default function BookSearchScreen({ navigation }) {
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <View
         style={{
-          marginTop: 40,
+          marginTop: 15,
           flexDirection: "row",
           paddingHorizontal: 20,
         }}
       >
         <View style={style.inputContainer}>
-          <Feather name="search" size={28} />
           <TextInput
             style={{ flex: 1, fontSize: 18 }}
-            placeholder="Search for book"
+            placeholder="Search for item"
           />
         </View>
         <View style={style.sortBtn}>
-          <Feather name="filter" size={28} color={COLORS.white} />
+          <Feather name="search" size={28} color={COLORS.white} />
         </View>
       </View>
       <View>
@@ -135,17 +197,12 @@ export default function BookSearchScreen({ navigation }) {
       <FlatList
         showsVerticalScrollIndicator={false}
         numColumns={2}
-        data={foods}
-        renderItem={({ item }) => <Card food={item} />}
+        data={bestSellers}
+        renderItem={({ item }) => <Card item={item} />}
       />
     </SafeAreaView>
-    
   );
 }
-
-
-
-
 
 const style = StyleSheet.create({
   header: {
@@ -195,13 +252,12 @@ const style = StyleSheet.create({
     alignItems: "center",
   },
   card: {
-    height: 220,
+    height: 280,
     width: cardWidth,
-    marginHorizontal: 10,
-    marginBottom: 20,
-    marginTop: 50,
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 15,
     borderRadius: 15,
-    elevation: 13,
     backgroundColor: COLORS.white,
   },
   addToCartBtn: {
@@ -211,5 +267,6 @@ const style = StyleSheet.create({
     backgroundColor: COLORS.primary,
     justifyContent: "center",
     alignItems: "center",
+    marginRight: 20,
   },
 });

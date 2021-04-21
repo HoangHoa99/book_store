@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react";
+import React, {useContext} from "react";
 import {
   Text,
   View,
@@ -13,6 +13,8 @@ import { Feather } from "@expo/vector-icons";
 import BookCart from "../../component/BookCart";
 import { bestSellers } from "../../clone/DataClone";
 import {AppContext} from '../HomeScreen';
+
+
 
 export default function BookScreen({ navigation }) {
 

@@ -11,6 +11,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import colors from "../../assets/color/colors";
 import { ScrollView } from "react-native-gesture-handler";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function BookDetailScreen({ route, navigation }) {
   const [item, setItem] = useState({});
@@ -19,6 +21,29 @@ export default function BookDetailScreen({ route, navigation }) {
     let { book } = route.params;
     setItem(book);
   }, [item]);
+
+  const addToCart = async () => {
+    try {
+      const cartList = await AsyncStorage.getItem("@cartList");
+      let res = cartList != null ? JSON.parse(cartList) : [];
+      const itemCopy = res.find((existedItem) => existedItem.id === item.id);
+      if (itemCopy) {
+        alert("Item have already added");
+      } else {
+        let newItem = {
+          id: item.id,
+          title: item.title,
+          qty: 1,
+          checked: 1,
+          price: item.price,
+          image: item.image,
+        };
+        res.push(newItem);
+      }
+
+      AsyncStorage.setItem("@cartList", JSON.stringify(res));
+    } catch (e) {}
+  }
 
   return (
     <ScrollView>
@@ -69,15 +94,10 @@ export default function BookDetailScreen({ route, navigation }) {
               <Text style={styles.infoItemText}>{item.publisher}</Text>
             </View>
             <View style={styles.infoItemWrapper}>
-              <Text style={styles.infoItemTitle}>Đánh giá</Text>
+              <Text style={styles.infoItemTitle}>Thể loại</Text>
               <Text style={styles.infoItemText}>
-                {item.rating}
-                <MaterialCommunityIcons
-                  name="star"
-                  size={20}
-                  color={colors.primary}
-                  style={{ marginLeft: 12 }}
-                />
+                {item.category}
+                
               </Text>
             </View>
           </View>
@@ -87,12 +107,29 @@ export default function BookDetailScreen({ route, navigation }) {
         </View>
 
         {/* Place an order */}
-        <TouchableOpacity onPress={() => alert("Your order has been placed!")}>
+        <TouchableOpacity onPress={() => addToCart()}>
           <View style={styles.orderWrapper}>
             <Text style={styles.orderText}>Add to cart</Text>
             <Feather name="chevron-right" size={18} color={colors.black} />
           </View>
         </TouchableOpacity>
+
+        <View
+          style={styles.section}
+          onHide={() => navTitleView.current.fadeInUp(200)}
+          onDisplay={() => navTitleView.current.fadeOut(100)}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Text style={styles.titleOverview}>Overview</Text>
+            <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+              <Feather name="star" size={16} color= {colors.primary} />
+              <Text style={{marginHorizontal: 2}}>{item.rating}</Text>
+              <Text>({item.reviews})</Text>
+            </View>
+          </View>
+        </View>
+        <View style={[styles.section, styles.sectionLarge]}>
+          <Text style={styles.sectionContent}>{item.description}</Text>
+        </View>
       </View>
     </ScrollView>
   );
@@ -156,7 +193,7 @@ const styles = new StyleSheet.create({
   infoItemTitle: {
     fontFamily: "Montserrat-Medium",
     fontSize: 15,
-    color: colors.textLight,
+    color: colors.subBlack,
   },
   infoItemText: {
     fontFamily: "Montserrat-SemiBold",
@@ -175,7 +212,7 @@ const styles = new StyleSheet.create({
     height: "100%",
   },
   orderWrapper: {
-    marginTop: 60,
+    marginTop: 40,
     marginHorizontal: 20,
     backgroundColor: colors.primary,
     borderRadius: 50,
@@ -188,5 +225,25 @@ const styles = new StyleSheet.create({
     fontFamily: "Montserrat-Bold",
     fontSize: 14,
     marginRight: 10,
+  },
+  section: {
+    marginTop: 10,
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#cccccc',
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  sectionContent: {
+    fontSize: 16,
+    textAlign: 'justify',
+  },
+  sectionLarge: {
+    minHeight: 300,
+  },
+  titleOverview: {
+    fontSize: 28,
   },
 });
