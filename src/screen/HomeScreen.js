@@ -29,12 +29,15 @@ export default function HomeScreen(){
 
     // app const
     const [isLogin, setIsLogin] = useState(false);
+    const [cartItems, setCartItems] = useState([]);
 
 
     // app context setting
     const appSetting = {
         isLogin: isLogin,
-        setIsLogin
+        setIsLogin,
+        cartItems,
+        setCartItems
     };
 
     return(

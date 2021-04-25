@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -11,10 +11,12 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import colors from "../../assets/color/colors";
 import { ScrollView } from "react-native-gesture-handler";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {AppContext} from '../HomeScreen';
 
 export default function BookDetailScreen({ route, navigation }) {
+
+  let cartContext = useContext(AppContext);
+
   const [item, setItem] = useState({});
 
   useEffect(() => {
@@ -24,11 +26,10 @@ export default function BookDetailScreen({ route, navigation }) {
 
   const addToCart = async () => {
     try {
-      const cartList = await AsyncStorage.getItem("@cartList");
-      let res = cartList != null ? JSON.parse(cartList) : [];
+      const res = cartContext.cartItems;
       const itemCopy = res.find((existedItem) => existedItem.id === item.id);
       if (itemCopy) {
-        alert("Item have already added");
+        alert("Item have been added");
       } else {
         let newItem = {
           id: item.id,
@@ -41,7 +42,7 @@ export default function BookDetailScreen({ route, navigation }) {
         res.push(newItem);
       }
 
-      AsyncStorage.setItem("@cartList", JSON.stringify(res));
+      cartContext.setCartItems(res);
     } catch (e) {}
   }
 

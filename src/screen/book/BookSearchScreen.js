@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext} from "react";
 import {
   Dimensions,
   Image,
@@ -17,24 +17,25 @@ import { Feather } from "@expo/vector-icons";
 import COLORS from "../../assets/color/colors";
 import categories from "../../clone/Categories";
 import { bestSellers } from "../../clone/DataClone";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {AppContext} from '../HomeScreen';
 
 const { width } = Dimensions.get("screen");
 const cardWidth = width / 2 - 20;
 
 export default function BookSearchScreen({ navigation }) {
+
   const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(0);
+  
+  let cartContext = useContext(AppContext);
 
   // ANCHOR - Declare refresh item
 
   const addToCart = async (item) => {
     try {
-      const cartList = await AsyncStorage.getItem("@cartList");
-      let res = cartList != null ? JSON.parse(cartList) : [];
+      const res = cartContext.cartItems;
       const itemCopy = res.find((existedItem) => existedItem.id === item.id);
       if (itemCopy) {
-        alert("Item have already added");
+        alert("Item have been added");
       } else {
         let newItem = {
           id: item.id,
@@ -47,7 +48,7 @@ export default function BookSearchScreen({ navigation }) {
         res.push(newItem);
       }
 
-      AsyncStorage.setItem("@cartList", JSON.stringify(res));
+      cartContext.setCartItems(res);
     } catch (e) {}
   }
 

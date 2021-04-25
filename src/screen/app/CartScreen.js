@@ -1,58 +1,51 @@
-import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, View, Text, Image } from "react-native";
+import { Feather } from "@expo/vector-icons";
+import React, { useContext, useEffect, useState } from "react";
+import { SafeAreaView, StyleSheet, View, Text, Image, Alert } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import colors from "../../assets/color/colors";
 import { PrimaryButton } from "../../component/Button";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AppContext } from "../HomeScreen";
 
 export default function CartScreen({ navigation }) {
-  // ANCHOR - Decalre cart item
-  const [cartItems, setCartItems] = useState([]);
+  const cartContext = useContext(AppContext);
 
   const [key, setKey] = useState(0);
 
-  function loadPage(){
-    let newKey = key + 1;
-    setKey(newKey);
+  function loadCartData() {
+    setKey((preKey) => preKey + 1);
   }
 
   // reload data
   useEffect(() => {
-    async function getCartData() {
-      const cartValues = await AsyncStorage.getItem("@cartList");
-      const res = cartValues != null ? JSON.parse(cartValues) : [];
-      setCartItems(res);
-    }
-
     const unsubscribe = navigation.addListener("focus", () => {
-      getCartData();
+      loadCartData();
     });
 
     return unsubscribe;
-  }, [navigation, cartItems]);
+  }, [navigation, key]);
 
   async function clearCart() {
-    await AsyncStorage.removeItem("@cartList");
-    setCartItems([]);
-    // refresh();
+    cartContext.setCartItems([]);
   }
 
   /** SECTION - Handle cart item */
 
   /** tinh total bill */
   function totalPrice() {
-    return cartItems.reduce(
-      (sum, calcItem) => sum + (calcItem.checked == 1 ? calcItem.price*calcItem.qty : 0),
+    return cartContext.cartItems.reduce(
+      (sum, calcItem) =>
+        sum + (calcItem.checked == 1 ? calcItem.price * calcItem.qty : 0),
       0
     );
   }
 
   /**tang giam so luong item */
   function quantityHandler(action, index) {
-    
-    const currentItem = cartItems.find(element => element.id === index);
-    let indexOfCurItem = cartItems.indexOf(currentItem);
+    let newCartItems = cartContext.cartItems;
+
+    const currentItem = newCartItems.find((element) => element.id === index);
+    let indexOfCurItem = newCartItems.indexOf(currentItem);
     let currentQty = currentItem.qty;
 
     if (action == "more") {
@@ -60,11 +53,38 @@ export default function CartScreen({ navigation }) {
     } else if (action == "less") {
       currentItem.qty = currentQty > 1 ? currentQty - 1 : 1;
     }
-    cartItems[indexOfCurItem] = currentItem;
-    AsyncStorage.setItem("@cartList", JSON.stringify(cartItems));
-    setCartItems(cartItems);
-    
-    loadPage();
+    newCartItems[indexOfCurItem] = currentItem;
+
+    cartContext.setCartItems(newCartItems);
+
+    loadCartData();
+  }
+
+  /** xoa item trong cart */
+  function deleteHandler(index) {
+    Alert.alert(
+      "Are you sure to delete this item from your cart?",
+      "",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: () => {
+            let updatedCart = cartContext.cartItems; /* Clone it first */
+
+            const delItem = updatedCart.find((element) => element.id === index);
+            let indexOfDelItem = updatedCart.indexOf(delItem);
+            updatedCart.splice(indexOfDelItem, 1);
+            cartContext.setCartItems(updatedCart);
+            loadCartData();
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   }
 
   /** !SECTION */
@@ -108,6 +128,9 @@ export default function CartScreen({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
+        <TouchableOpacity onPress={() => deleteHandler(item.id)}>
+          <Feather name="trash" size="28" color={colors.red} />
+        </TouchableOpacity>
       </View>
     );
   };
@@ -120,7 +143,7 @@ export default function CartScreen({ navigation }) {
       <FlatList
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 80 }}
-        data={cartItems}
+        data={cartContext.cartItems}
         renderItem={({ item }) => <CartCard item={item} />}
         ListFooterComponentStyle={{ paddingHorizontal: 20, marginTop: 20 }}
       />
