@@ -20,11 +20,14 @@ import { PrimaryButton } from "../../component/Button";
 import { AppContext } from "../HomeScreen";
 
 export default function CartScreen({ navigation }) {
+  // ANCHOR - Declare state
   const cartContext = useContext(AppContext);
 
   const [modalVisible, setModalVisible] = useState(false);
-
   const [key, setKey] = useState(0);
+  const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
 
   function loadCartData() {
     setKey((preKey) => preKey + 1);
@@ -40,9 +43,24 @@ export default function CartScreen({ navigation }) {
   }, [navigation, key]);
 
   function clearCart() {
-    // setModalVisible(false);
-    // Alert.alert("Checkout", "Submit your order");
-    // cartContext.setCartItems([]);
+    Alert.alert(
+      "Submit your order?",
+      "",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Submit",
+          onPress: () => {
+            setModalVisible(false);
+            cartContext.setCartItems([]);
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   }
 
   /** SECTION - Handle cart item */
@@ -165,17 +183,29 @@ export default function CartScreen({ navigation }) {
       >
         <View
           style={{
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            marginTop: 10,
+            marginRight: 10,
+          }}
+        >
+          <Feather
+            name="x-circle"
+            size={35}
+            color={colors.red}
+            onPress={() => setModalVisible(!modalVisible)}
+          />
+        </View>
+        <View
+          style={{
             flex: 1,
             backgroundColor: "#FFF",
             padding: 20,
           }}
         >
           <Text style={{ fontSize: 25, marginTop: 20 }}>
-            Thông tin khách hàng{" "}
+            Thông tin khách hàng
           </Text>
-          {/* <Text style={{ fontSize: 16, color: "gray", marginTop: 20 }}>
-        Sign up to continue
-      </Text> */}
 
           <TextInput
             style={{
@@ -185,7 +215,7 @@ export default function CartScreen({ navigation }) {
               paddingBottom: 20,
             }}
             placeholder="Số điện thoại"
-            onChangeText={(text) => setEmailOrPhone(text)}
+            onChangeText={(text) => setPhone(text)}
           />
 
           <TextInput
@@ -196,7 +226,7 @@ export default function CartScreen({ navigation }) {
               paddingBottom: 20,
             }}
             placeholder="Họ & Tên"
-            onChangeText={(text) => setUsername(text)}
+            onChangeText={(text) => setName(text)}
           />
 
           <TextInput
@@ -207,8 +237,7 @@ export default function CartScreen({ navigation }) {
               paddingBottom: 20,
             }}
             placeholder="Địa chỉ"
-            secureTextEntry={true}
-            onChangeText={(text) => setPassword(text)}
+            onChangeText={(text) => setAddress(text)}
           />
 
           <View
@@ -219,7 +248,7 @@ export default function CartScreen({ navigation }) {
             }}
           >
             <TouchableOpacity
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={() => clearCart()}
               style={{
                 width: 200,
                 backgroundColor: "#0d47a1",
@@ -233,7 +262,7 @@ export default function CartScreen({ navigation }) {
               <Text
                 style={{ textAlign: "center", color: "#FFF", fontSize: 16 }}
               >
-                Signup
+                Confirm
               </Text>
             </TouchableOpacity>
           </View>

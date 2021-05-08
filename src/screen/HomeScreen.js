@@ -15,6 +15,8 @@ import CartScreen from './app/CartScreen';
 import LoginScreen from './user/LoginScreen';
 import RegisterScreen from './user/RegisterScreen';
 import ForgotPasswordScreen from './user/ForgotPasswordScreen';
+import OrderScreen from './app/OrderScreen';
+import EditProfileScreen from './user/EditProfileScreen';
 
 
 // ANCHOR - Declare const
@@ -96,6 +98,20 @@ export default function HomeScreen(){
                     <Stack.Screen 
                         name = "CheckoutScreen"
                         component = {CheckoutScreen}
+                        options = {
+                            {headerShown: false}
+                        }
+                    />
+                    <Stack.Screen 
+                        name = "OrderScreen"
+                        component = {OrderScreen}
+                        options = {
+                            {headerShown: false}
+                        }
+                    />
+                    <Stack.Screen 
+                        name = "EditProfileScreen"
+                        component = {EditProfileScreen}
                         options = {
                             {headerShown: false}
                         }
