@@ -56,7 +56,7 @@ export default function BookDetailScreen({ route, navigation }) {
               <View style={styles.headerLeft}>
                 <Feather
                   name="chevron-left"
-                  size={12}
+                  size={15}
                   color={colors.textDark}
                 />
               </View>
