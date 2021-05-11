@@ -1,11 +1,11 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
-export default function OrderScreen({navigation}){
+export default function EditProfileScreen({navigation}){
     return (
         <>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Text>Your order</Text>
+                <Text>Edit profile</Text>
             </View>
         </>
     );

@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react";
+import React, {useContext} from "react";
 import {
   Text,
   View,
@@ -13,6 +13,8 @@ import { Feather } from "@expo/vector-icons";
 import BookCart from "../../component/BookCart";
 import { bestSellers } from "../../clone/DataClone";
 import {AppContext} from '../HomeScreen';
+
+
 
 export default function BookScreen({ navigation }) {
 
@@ -54,7 +56,7 @@ export default function BookScreen({ navigation }) {
                 <TouchableOpacity
                   onPress={() => navigation.navigate("InformationScreen")}
                 >
-                  <MaterialCommunityIcons name="text" size={24} color="white" />
+                  <MaterialCommunityIcons name="text" size={25} color="white" />
                 </TouchableOpacity>
               </View>
               <View
@@ -62,7 +64,7 @@ export default function BookScreen({ navigation }) {
                   flexDirection: "row",
                 }}
               >
-                <View
+                {/* <View
                   style={{
                     marginRight: 10,
                   }}
@@ -70,9 +72,9 @@ export default function BookScreen({ navigation }) {
                   <TouchableOpacity
                     onPress={() => navigation.navigate("CartScreen")}
                   >
-                    <Feather name="shopping-cart" size={22} color="white" />
+                    <MaterialCommunityIcons name="shopping" size={25} color="white" />
                   </TouchableOpacity>
-                </View>
+                </View> */}
               </View>
             </View>
             <View

@@ -14,7 +14,7 @@ export default function LoginScreen({ navigation }) {
   const checkIsLogin = useContext(AppContext);
 
   function onLogin() {
-    if (username === "hoa" && password === "12345") {
+    if (username === "Hoa" && password === "123") {
       checkIsLogin.setIsLogin(true);
       navigation.navigate("MainScreen");
     } else {
