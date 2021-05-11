@@ -38,7 +38,7 @@ export default function BookCart({ item, navigation }) {
                   fontWeight: "bold",
                 }}
               >
-                {item.name}
+                {item.title}
               </Text>
               <Text
                 style={{

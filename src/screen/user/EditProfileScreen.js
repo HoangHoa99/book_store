@@ -1,11 +1,11 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
-export default function ForgotPasswordScreen({navigation}){
+export default function EditProfileScreen({navigation}){
     return (
         <>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Text>Forgot password</Text>
+                <Text>Edit profile</Text>
             </View>
         </>
     );
