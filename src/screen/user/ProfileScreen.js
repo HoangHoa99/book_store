@@ -37,7 +37,7 @@ export default function ProfileScreen({ navigation }) {
         <Text
           style={{
             fontFamily: "AppleSDGothicNeo-Medium",
-            fontSize: 32,
+            fontSize: 30,
           }}
         >
           {words[0]}
@@ -59,7 +59,7 @@ export default function ProfileScreen({ navigation }) {
     return (
       <View style={{ flex: 1, flexDirection: "column" }}>
         {/** SECTION - Header */}
-        <View style={{ flex: 0.4, backgroundColor: "#fff" }}>
+        <View style={{ flex: 0.3, backgroundColor: "#fff" }}>
           
         </View>
         {/** !SECTION */}
@@ -85,7 +85,7 @@ export default function ProfileScreen({ navigation }) {
           <TouchableOpacity
             onPress={() => navigation.navigate("EditProfileScreen")}
             style={{
-              marginLeft: 30,
+              marginLeft: 45,
               marginTop: 90,
               width: 50,
               height: 50,
@@ -95,7 +95,7 @@ export default function ProfileScreen({ navigation }) {
               borderRadius: 12,
             }}
           >
-            <MaterialIcons name="create" size={28} />
+            <MaterialIcons name="create" size={25} />
           </TouchableOpacity>
         </View>
         <View
@@ -114,7 +114,7 @@ export default function ProfileScreen({ navigation }) {
           {/** Phone */}
           <View
             style={{
-              flex: 0.8,
+              flex: 0.64,
               justifyContent: "space-between",
               alignItems: "center",
               flexDirection: "row",
@@ -128,11 +128,11 @@ export default function ProfileScreen({ navigation }) {
                 justifyContent: "center",
                 borderRadius: 60,
                 
-                height: 60,
-                width: 60,
+                height: 50,
+                width: 50,
               }}
             >
-              <FontAwesome name="phone" size={28} color="#0ca400" />
+              <FontAwesome name="phone" size={25} color="#0ca400" />
             </View>
             <View
               style={{
@@ -143,7 +143,7 @@ export default function ProfileScreen({ navigation }) {
               }}
             >
               <Text
-                style={{ fontSize: 25, fontFamily: "AppleSDGothicNeo-Regular" }}
+                style={{ fontSize: 22, fontFamily: "AppleSDGothicNeo-Regular" }}
               >
                 {userInfo.phone}
               </Text>
@@ -155,7 +155,7 @@ export default function ProfileScreen({ navigation }) {
           {/** Email */}
           <View
             style={{
-              flex: 0.8,
+              flex: 0.64,
               justifyContent: "space-between",
               alignItems: "center",
               flexDirection: "row",
@@ -169,11 +169,11 @@ export default function ProfileScreen({ navigation }) {
                 justifyContent: "center",
                 borderRadius: 60,
                 
-                height: 60,
-                width: 60,
+                height: 50,
+                width: 50,
               }}
             >
-              <Feather name="mail" size={28} color="#ea1203" />
+              <Feather name="mail" size={25} color="#ea1203" />
             </View>
             <View
               style={{
@@ -184,7 +184,7 @@ export default function ProfileScreen({ navigation }) {
               }}
             >
               <Text
-                style={{ fontSize: 25, fontFamily: "AppleSDGothicNeo-Regular" }}
+                style={{ fontSize: 22, fontFamily: "AppleSDGothicNeo-Regular" }}
               >
                 {userInfo.email}
               </Text>
@@ -196,7 +196,7 @@ export default function ProfileScreen({ navigation }) {
           {/** Address */}
           <View
             style={{
-              flex: 0.8,
+              flex: 0.64,
               justifyContent: "space-between",
               alignItems: "center",
               flexDirection: "row",
@@ -210,11 +210,11 @@ export default function ProfileScreen({ navigation }) {
                 justifyContent: "center",
                 borderRadius: 60,
                 
-                height: 60,
-                width: 60,
+                height: 50,
+                width: 50,
               }}
             >
-              <Ionicons name="ios-location" size={28} color="#0999c9" />
+              <Ionicons name="ios-location" size={25} color="#0999c9" />
             </View>
             <View
               style={{
@@ -225,7 +225,7 @@ export default function ProfileScreen({ navigation }) {
               }}
             >
               <Text
-                style={{ fontSize: 25, fontFamily: "AppleSDGothicNeo-Regular" }}
+                style={{ fontSize: 22, fontFamily: "AppleSDGothicNeo-Regular" }}
               >
                 {userInfo.address}
               </Text>
@@ -237,7 +237,7 @@ export default function ProfileScreen({ navigation }) {
           {/** Order */}
           <View
             style={{
-              flex: 0.8,
+              flex: 0.64,
               justifyContent: "space-between",
               alignItems: "center",
               flexDirection: "row",
@@ -251,22 +251,22 @@ export default function ProfileScreen({ navigation }) {
                 justifyContent: "center",
                 borderRadius: 60,
                 
-                height: 60,
-                width: 60,
+                height: 50,
+                width: 50,
               }}
             >
-              <Feather name="package" size={28} color="#f4ba05" />
+              <Feather name="package" size={25} color="#f4ba05" />
             </View>
             <View
               style={{
-                flex: 3,
+                flex: 2.8,
                 backgroundColor: "#fff",
                 alignItems: "flex-start",
                 marginLeft: 15,
               }}
             >
               <Text
-                style={{ fontSize: 25, fontFamily: "AppleSDGothicNeo-Regular" }}
+                style={{ fontSize: 22, fontFamily: "AppleSDGothicNeo-Regular" }}
               >
                 Your orders
               </Text>
@@ -277,21 +277,72 @@ export default function ProfileScreen({ navigation }) {
                 backgroundColor: "#f5f5f5",
                 alignItems: "center",
                 justifyContent: "center",
-                borderRadius: 12,
-                
-                height: 50,
-                width: 50,
-                marginRight: 8
+                borderRadius: 12,                
+                height: 45,
+                width: 45,
+                marginRight: 8,
               }}
             >
               <Feather name="chevron-right" size={25} />
             </TouchableOpacity>
           </View>
+          {/** SECTION - About us */}
+          <View
+            style={{
+              flex: 0.64,
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexDirection: "row",
+            }}
+          >
+            <View style={{ flex: 0.5 }}></View>
+            <View
+              style={{
+                backgroundColor: "#f8f8f8",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 60,                
+                height: 50,
+                width: 50,
+              }}
+            >
+              <FontAwesome name="info-circle" size={25} color="#0999c9" />
+            </View>
+            <View
+              style={{
+                flex: 2.8,
+                backgroundColor: "#fff",
+                alignItems: "flex-start",
+                marginLeft: 15,
+              }}
+            >
+              <Text
+                style={{ fontSize: 22, fontFamily: "AppleSDGothicNeo-Regular" }}
+              >
+                About us
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("InformationScreen")}
+              style={{
+                backgroundColor: "#f5f5f5",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 12,                
+                height: 45,
+                width: 45,
+                marginRight: 8,
+              }}
+            >
+              <Feather name="chevron-right" size={25} />
+            </TouchableOpacity>
+
+          </View>
         </View>
         
         {/** !SECTION */}
         {/** SECTION - Footer */}
-        <View style={{ flex: 0.9, backgroundColor: "#fff" }}>
+        <View style={{ flex: 1, backgroundColor: "#fff" }}>
         <TouchableOpacity
               onPress = {() => logout()}
               style={{
@@ -306,7 +357,7 @@ export default function ProfileScreen({ navigation }) {
                 marginLeft: 33
               }}
             >
-              <MaterialIcons name="logout" size={28} color="#ea1203" />
+              <MaterialIcons name="logout" size={25} color="#ea1203" />
               <Text style={{fontSize: 20, marginLeft: 5}}>Sign Out</Text>
             </TouchableOpacity>
         </View>
