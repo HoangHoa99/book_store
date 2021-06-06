@@ -63,6 +63,15 @@ export default function CartScreen({ navigation }) {
     );
   }
 
+  function checkoutBtn(){
+    if(cartContext.cartItems.length === 0){
+      Alert.alert("Giỏ hàng trống", "Thêm ít nhất một sản phẩm")
+    }
+    else{
+      setModalVisible(!modalVisible)
+    }
+  }
+
   /** SECTION - Handle cart item */
 
   /** tinh total bill */
@@ -298,7 +307,7 @@ export default function CartScreen({ navigation }) {
         <View style={{ marginHorizontal: 30 }}>
           <PrimaryButton
             title="CHECKOUT"
-            onPress={() => setModalVisible(!modalVisible)}
+            onPress={() => checkoutBtn()}
           />
         </View>
       </View>

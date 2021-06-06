@@ -8,8 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import BookCart from "../../component/BookCart";
 import { bestSellers } from "../../clone/DataClone";
 import {AppContext} from '../HomeScreen';
