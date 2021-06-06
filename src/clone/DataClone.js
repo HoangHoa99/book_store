@@ -72,3 +72,37 @@ export const bestSellers = [
 ];
 
 
+export const orderList = [
+  {
+    id: 1,
+    cusName: 'Hoang Hoa',
+    status: 1,
+    phone: "0987654321",
+    totalPrice: "123.000 vnd",
+    orderId: 'abcd11',
+    createDate: '2021-06-01',
+    quantity: 15
+  },
+  {
+    id: 2,
+    cusName: 'Hoang Hoa',
+    status: 1,
+    phone: "0987654321",
+    totalPrice: "123.000 vnd",
+    orderId: 'abcd11',
+    createDate: '2021-06-01',
+    quantity: 15
+  },
+  {
+    id: 3,
+    cusName: 'Hoang Hoa',
+    status: 1,
+    phone: "0987654321",
+    totalPrice: "123.000 vnd",
+    orderId: 'abcd11',
+    createDate: '2021-06-01',
+    quantity: 15
+  }
+];
+
+
