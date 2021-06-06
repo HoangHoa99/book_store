@@ -27,7 +27,7 @@ export default function OrderScreen({ navigation }) {
           >
             <View style={{ flex: 1.5, flexDirection: "row", marginTop: 10 }}>
               <View style={{ flex: 0.5, justifyContent: "center", alignItems: "center" }}>
-                <Text>Hoàng Hoà</Text>
+                <Text>{item.cusName}</Text>
               </View>
               <View style={{ flex: 0.5 }}></View>
               <View style={{ flex: 0.5, justifyContent: "center", alignItems: "center" }}>
@@ -60,6 +60,9 @@ export default function OrderScreen({ navigation }) {
     );
   }
 
+//   const filterList = orderList.filter(item => item.status === "1");
+  const filterList = orderList;
+
   function TitleText({title, value}){
       return (
           <>
@@ -88,19 +91,21 @@ export default function OrderScreen({ navigation }) {
           <View
             style={{ flex: 2, justifyContent: "center", alignItems: "center" }}
           >
-            <Text>Chờ xác nhận</Text>
+            {/* <Text>Chờ xác nhận</Text> */}
           </View>
         </View>
-        <View style={{ flex: 8 }}>
+        <View style={{ flex: 7.5 }}>
           <ScrollView style={{ marginTop: 5 }}>
             <FlatList
               showsHorizontalScrollIndicator={false}
               horizontal={false}
               numColumns={1}
-              data={orderList}
+              data={filterList}
               renderItem={({ item }) => <OrderItem item={item} />}
             />
           </ScrollView>
+        </View>
+        <View style={{ flex: 0.5 }}>
         </View>
       </View>
     </>

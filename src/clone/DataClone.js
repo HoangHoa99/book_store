@@ -76,7 +76,7 @@ export const orderList = [
   {
     id: 1,
     cusName: 'Hoang Hoa',
-    status: 1,
+    status: "1",
     phone: "0987654321",
     totalPrice: "123.000 vnd",
     orderId: '#abcd3',
@@ -86,7 +86,7 @@ export const orderList = [
   {
     id: 2,
     cusName: 'Hoang Hoa',
-    status: 2,
+    status: "2",
     phone: "0987654321",
     totalPrice: "123.000 vnd",
     orderId: '#abcd4',
@@ -96,7 +96,7 @@ export const orderList = [
   {
     id: 3,
     cusName: 'Hoang Hoa',
-    status: 1,
+    status: "1",
     phone: "0987654321",
     totalPrice: "123.000 vnd",
     orderId: '#abcd5',
@@ -104,9 +104,9 @@ export const orderList = [
     quantity: 15
   },
   {
-    id: 3,
+    id: 4,
     cusName: 'Hoang Hoa',
-    status: 2,
+    status: "2",
     phone: "0987654321",
     totalPrice: "123.000 vnd",
     orderId: '#abcd6',
@@ -114,9 +114,9 @@ export const orderList = [
     quantity: 15
   },
   {
-    id: 3,
+    id: 5,
     cusName: 'Hoang Hoa',
-    status: 1,
+    status: "1",
     phone: "0987654321",
     totalPrice: "123.000 vnd",
     orderId: '#abcd7',
@@ -124,9 +124,9 @@ export const orderList = [
     quantity: 15
   },
   {
-    id: 3,
+    id: 6,
     cusName: 'Hoang Hoa',
-    status: 2,
+    status: "2",
     phone: "0987654321",
     totalPrice: "123.000 vnd",
     orderId: '#abcd8',
@@ -134,9 +134,9 @@ export const orderList = [
     quantity: 15
   },
   {
-    id: 3,
+    id: 7,
     cusName: 'Hoang Hoa',
-    status: 1,
+    status: "3",
     phone: "0987654321",
     totalPrice: "123.000 vnd",
     orderId: '#abcd9',
