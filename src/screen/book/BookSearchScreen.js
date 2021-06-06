@@ -184,7 +184,7 @@ export default function BookSearchScreen({ navigation }) {
       >
         <View style={style.inputContainer}>
           <TextInput
-            style={{ flex: 1, fontSize: 18 }}
+            style={{ flex: 1, fontSize: 18, color: COLORS.black}}
             placeholder="Search for item"
           />
         </View>
@@ -217,7 +217,7 @@ const style = StyleSheet.create({
     height: 50,
     borderRadius: 10,
     flexDirection: "row",
-    backgroundColor: COLORS.textLight,
+    backgroundColor: COLORS.subTextLight,
     alignItems: "center",
     paddingHorizontal: 20,
   },

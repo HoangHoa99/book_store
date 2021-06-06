@@ -1,15 +1,17 @@
-import { Feather } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
+import {
+  Feather,
+  FontAwesome,
+  Ionicons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import React, { useContext, useState } from "react";
 import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
-import { PrimaryButton } from "../../component/Button";
 import { AppContext } from "../HomeScreen";
 
 export default function ProfileScreen({ navigation }) {
   const checkIsLogin = useContext(AppContext);
+
+  const [isEdit, setIsEdit] = useState(false);
 
   const [userInfo, setUserInfo] = useState({
     phone: "012345678",
@@ -49,7 +51,7 @@ export default function ProfileScreen({ navigation }) {
             fontSize: 25,
           }}
         >
-          {words[1]}
+          {words[words.length - 1]}
         </Text>
       </View>
     );
@@ -59,9 +61,7 @@ export default function ProfileScreen({ navigation }) {
     return (
       <View style={{ flex: 1, flexDirection: "column" }}>
         {/** SECTION - Header */}
-        <View style={{ flex: 0.3, backgroundColor: "#fff" }}>
-          
-        </View>
+        <View style={{ flex: 0.3, backgroundColor: "#fff" }}></View>
         {/** !SECTION */}
         {/** SECTION - Name */}
         <View
@@ -83,7 +83,7 @@ export default function ProfileScreen({ navigation }) {
           />
           <TitleName name={userInfo.name} />
           <TouchableOpacity
-            onPress={() => navigation.navigate("EditProfileScreen")}
+            onPress={() => setIsEdit(!isEdit)}
             style={{
               marginLeft: 45,
               marginTop: 90,
@@ -105,9 +105,7 @@ export default function ProfileScreen({ navigation }) {
             justifyContent: "center",
             alignItems: "center",
           }}
-        >
-          
-        </View>
+        ></View>
         {/** !SECTION */}
         {/** SECTION - Info */}
         <View style={{ flex: 3.2, backgroundColor: "#fff" }}>
@@ -127,7 +125,7 @@ export default function ProfileScreen({ navigation }) {
                 alignItems: "center",
                 justifyContent: "center",
                 borderRadius: 60,
-                
+
                 height: 50,
                 width: 50,
               }}
@@ -168,7 +166,7 @@ export default function ProfileScreen({ navigation }) {
                 alignItems: "center",
                 justifyContent: "center",
                 borderRadius: 60,
-                
+
                 height: 50,
                 width: 50,
               }}
@@ -209,7 +207,7 @@ export default function ProfileScreen({ navigation }) {
                 alignItems: "center",
                 justifyContent: "center",
                 borderRadius: 60,
-                
+
                 height: 50,
                 width: 50,
               }}
@@ -250,7 +248,7 @@ export default function ProfileScreen({ navigation }) {
                 alignItems: "center",
                 justifyContent: "center",
                 borderRadius: 60,
-                
+
                 height: 50,
                 width: 50,
               }}
@@ -277,7 +275,7 @@ export default function ProfileScreen({ navigation }) {
                 backgroundColor: "#f5f5f5",
                 alignItems: "center",
                 justifyContent: "center",
-                borderRadius: 12,                
+                borderRadius: 12,
                 height: 45,
                 width: 45,
                 marginRight: 8,
@@ -301,7 +299,7 @@ export default function ProfileScreen({ navigation }) {
                 backgroundColor: "#f8f8f8",
                 alignItems: "center",
                 justifyContent: "center",
-                borderRadius: 60,                
+                borderRadius: 60,
                 height: 50,
                 width: 50,
               }}
@@ -328,7 +326,7 @@ export default function ProfileScreen({ navigation }) {
                 backgroundColor: "#f5f5f5",
                 alignItems: "center",
                 justifyContent: "center",
-                borderRadius: 12,                
+                borderRadius: 12,
                 height: 45,
                 width: 45,
                 marginRight: 8,
@@ -336,30 +334,309 @@ export default function ProfileScreen({ navigation }) {
             >
               <Feather name="chevron-right" size={25} />
             </TouchableOpacity>
-
           </View>
         </View>
-        
+
         {/** !SECTION */}
         {/** SECTION - Footer */}
         <View style={{ flex: 1, backgroundColor: "#fff" }}>
-        <TouchableOpacity
-              onPress = {() => logout()}
+          <TouchableOpacity
+            onPress={() => logout()}
+            style={{
+              backgroundColor: "#f8f8f8",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 20,
+              height: 60,
+              width: 150,
+              flexDirection: "row",
+              marginTop: 30,
+              marginLeft: 33,
+            }}
+          >
+            <MaterialIcons name="logout" size={25} color="#ea1203" />
+            <Text style={{ fontSize: 20, marginLeft: 5 }}>Sign Out</Text>
+          </TouchableOpacity>
+        </View>
+        {/** !SECTION */}
+      </View>
+    );
+  }
+
+  function EditProfile() {
+    return (
+      <View style={{ flex: 1, flexDirection: "column" }}>
+        {/** SECTION - Header */}
+        <View style={{ flex: 0.3, backgroundColor: "#fff" }}></View>
+        {/** !SECTION */}
+        {/** SECTION - Name */}
+        <View
+          style={{
+            flex: 1.3,
+            flexDirection: "row",
+            backgroundColor: "#fff",
+          }}
+        >
+        </View>
+        <View
+          style={{
+            flex: 0.1,
+            backgroundColor: "#fff",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        ></View>
+        {/** !SECTION */}
+        {/** SECTION - Info */}
+        <View style={{ flex: 3.2, backgroundColor: "#fff" }}>
+          {/** Phone */}
+          <View
+            style={{
+              flex: 0.64,
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexDirection: "row",
+            }}
+          >
+            <View style={{ flex: 0.5 }}></View>
+            <View
               style={{
                 backgroundColor: "#f8f8f8",
                 alignItems: "center",
                 justifyContent: "center",
-                borderRadius: 20,
-                height: 60,
-                width: 150,
-                flexDirection: "row",
-                marginTop: 30, 
-                marginLeft: 33
+                borderRadius: 60,
+
+                height: 50,
+                width: 50,
               }}
             >
-              <MaterialIcons name="logout" size={25} color="#ea1203" />
-              <Text style={{fontSize: 20, marginLeft: 5}}>Sign Out</Text>
+              <FontAwesome name="phone" size={25} color="#0ca400" />
+            </View>
+            <View
+              style={{
+                flex: 3,
+                backgroundColor: "#fff",
+                alignItems: "flex-start",
+                marginLeft: 15,
+              }}
+            >
+              <TextInput
+                style={{ fontSize: 22, fontFamily: "AppleSDGothicNeo-Regular" }}
+              >
+                {userInfo.phone}
+              </TextInput>
+            </View>
+
+            <View style={{ flex: 0.5, backgroundColor: "#4dcaf3" }}></View>
+          </View>
+
+          {/** Email */}
+          <View
+            style={{
+              flex: 0.64,
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexDirection: "row",
+            }}
+          >
+            <View style={{ flex: 0.5 }}></View>
+            <View
+              style={{
+                backgroundColor: "#f8f8f8",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 60,
+
+                height: 50,
+                width: 50,
+              }}
+            >
+              <Feather name="mail" size={25} color="#ea1203" />
+            </View>
+            <View
+              style={{
+                flex: 3,
+                backgroundColor: "#fff",
+                alignItems: "flex-start",
+                marginLeft: 15,
+              }}
+            >
+              <Text
+                style={{ fontSize: 22, fontFamily: "AppleSDGothicNeo-Regular" }}
+              >
+                {userInfo.email}
+              </Text>
+            </View>
+
+            <View style={{ flex: 0.5, backgroundColor: "#4dcaf3" }}></View>
+          </View>
+
+          {/** Address */}
+          <View
+            style={{
+              flex: 0.64,
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexDirection: "row",
+            }}
+          >
+            <View style={{ flex: 0.5 }}></View>
+            <View
+              style={{
+                backgroundColor: "#f8f8f8",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 60,
+
+                height: 50,
+                width: 50,
+              }}
+            >
+              <Ionicons name="ios-location" size={25} color="#0999c9" />
+            </View>
+            <View
+              style={{
+                flex: 3,
+                backgroundColor: "#fff",
+                alignItems: "flex-start",
+                marginLeft: 15,
+              }}
+            >
+              <Text
+                style={{ fontSize: 22, fontFamily: "AppleSDGothicNeo-Regular" }}
+              >
+                {userInfo.address}
+              </Text>
+            </View>
+
+            <View style={{ flex: 0.5, backgroundColor: "#4dcaf3" }}></View>
+          </View>
+
+          {/** Order */}
+          <View
+            style={{
+              flex: 0.64,
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexDirection: "row",
+            }}
+          >
+            <View style={{ flex: 0.5 }}></View>
+            <View
+              style={{
+                backgroundColor: "#f8f8f8",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 60,
+
+                height: 50,
+                width: 50,
+              }}
+            >
+              <Feather name="package" size={25} color="#f4ba05" />
+            </View>
+            <View
+              style={{
+                flex: 2.8,
+                backgroundColor: "#fff",
+                alignItems: "flex-start",
+                marginLeft: 15,
+              }}
+            >
+              <Text
+                style={{ fontSize: 22, fontFamily: "AppleSDGothicNeo-Regular" }}
+              >
+                Your orders
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("OrderScreen")}
+              style={{
+                backgroundColor: "#f5f5f5",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 12,
+                height: 45,
+                width: 45,
+                marginRight: 8,
+              }}
+            >
+              <Feather name="chevron-right" size={25} />
             </TouchableOpacity>
+          </View>
+          {/** SECTION - About us */}
+          <View
+            style={{
+              flex: 0.64,
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexDirection: "row",
+            }}
+          >
+            <View style={{ flex: 0.5 }}></View>
+            <View
+              style={{
+                backgroundColor: "#f8f8f8",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 60,
+                height: 50,
+                width: 50,
+              }}
+            >
+              <FontAwesome name="info-circle" size={25} color="#0999c9" />
+            </View>
+            <View
+              style={{
+                flex: 2.8,
+                backgroundColor: "#fff",
+                alignItems: "flex-start",
+                marginLeft: 15,
+              }}
+            >
+              <Text
+                style={{ fontSize: 22, fontFamily: "AppleSDGothicNeo-Regular" }}
+              >
+                About us
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("InformationScreen")}
+              style={{
+                backgroundColor: "#f5f5f5",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 12,
+                height: 45,
+                width: 45,
+                marginRight: 8,
+              }}
+            >
+              <Feather name="chevron-right" size={25} />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/** !SECTION */}
+        {/** SECTION - Footer */}
+        <View style={{ flex: 1, backgroundColor: "#fff" }}>
+          <TouchableOpacity
+            onPress={() => logout()}
+            style={{
+              backgroundColor: "#f8f8f8",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 20,
+              height: 60,
+              width: 150,
+              flexDirection: "row",
+              marginTop: 30,
+              marginLeft: 33,
+            }}
+          >
+            <MaterialIcons name="logout" size={25} color="#ea1203" />
+            <Text style={{ fontSize: 20, marginLeft: 5 }}>Sign Out</Text>
+          </TouchableOpacity>
         </View>
         {/** !SECTION */}
       </View>
@@ -368,7 +645,15 @@ export default function ProfileScreen({ navigation }) {
   return (
     <>
       {checkIsLogin.isLogin ? (
-        <Profile />
+        isEdit ? (
+          <>
+            <Text>Hello</Text>
+          </>
+        ) : (
+          <>
+            <Profile />
+          </>
+        )
       ) : (
         <>
           <View style={styles.container}>
