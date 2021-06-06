@@ -79,17 +79,17 @@ export const orderList = [
     status: 1,
     phone: "0987654321",
     totalPrice: "123.000 vnd",
-    orderId: 'abcd11',
+    orderId: '#abcd3',
     createDate: '2021-06-01',
     quantity: 15
   },
   {
     id: 2,
     cusName: 'Hoang Hoa',
-    status: 1,
+    status: 2,
     phone: "0987654321",
     totalPrice: "123.000 vnd",
-    orderId: 'abcd11',
+    orderId: '#abcd4',
     createDate: '2021-06-01',
     quantity: 15
   },
@@ -99,7 +99,47 @@ export const orderList = [
     status: 1,
     phone: "0987654321",
     totalPrice: "123.000 vnd",
-    orderId: 'abcd11',
+    orderId: '#abcd5',
+    createDate: '2021-06-01',
+    quantity: 15
+  },
+  {
+    id: 3,
+    cusName: 'Hoang Hoa',
+    status: 2,
+    phone: "0987654321",
+    totalPrice: "123.000 vnd",
+    orderId: '#abcd6',
+    createDate: '2021-06-01',
+    quantity: 15
+  },
+  {
+    id: 3,
+    cusName: 'Hoang Hoa',
+    status: 1,
+    phone: "0987654321",
+    totalPrice: "123.000 vnd",
+    orderId: '#abcd7',
+    createDate: '2021-06-01',
+    quantity: 15
+  },
+  {
+    id: 3,
+    cusName: 'Hoang Hoa',
+    status: 2,
+    phone: "0987654321",
+    totalPrice: "123.000 vnd",
+    orderId: '#abcd8',
+    createDate: '2021-06-01',
+    quantity: 15
+  },
+  {
+    id: 3,
+    cusName: 'Hoang Hoa',
+    status: 1,
+    phone: "0987654321",
+    totalPrice: "123.000 vnd",
+    orderId: '#abcd9',
     createDate: '2021-06-01',
     quantity: 15
   }
