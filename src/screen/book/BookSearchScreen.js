@@ -26,29 +26,29 @@ export default function BookSearchScreen({ navigation }) {
 
   const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(0);
   
-  let cartContext = useContext(AppContext);
+  let appContext = useContext(AppContext);
 
   // ANCHOR - Declare refresh item
 
   const addToCart = async (item) => {
     try {
-      const res = cartContext.cartItems;
-      const itemCopy = res.find((existedItem) => existedItem.id === item.id);
+      const res = appContext.cartItems;
+      const itemCopy = res.find((existedItem) => existedItem.id === item._id);
       if (itemCopy) {
         alert("Item have been added");
       } else {
         let newItem = {
-          id: item.id,
+          id: item._id,
           title: item.title,
           qty: 1,
           checked: 1,
           price: item.price,
-          image: item.image,
+          image: item.images,
         };
         res.push(newItem);
       }
 
-      cartContext.setCartItems(res);
+      appContext.setCartItems(res);
     } catch (e) {}
   }
 
@@ -123,7 +123,7 @@ export default function BookSearchScreen({ navigation }) {
               }}
             >
               <Image
-                source={{ uri: item.image }}
+                source={{ uri: item.images }}
                 style={{ height: 200, width: 160 }}
               />
             </View>
@@ -198,7 +198,7 @@ export default function BookSearchScreen({ navigation }) {
       <FlatList
         showsVerticalScrollIndicator={false}
         numColumns={2}
-        data={bestSellers}
+        data={appContext.books}
         renderItem={({ item }) => <Card item={item} />}
       />
     </SafeAreaView>

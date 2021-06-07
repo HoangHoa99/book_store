@@ -7,8 +7,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import colors from "../../assets/color/colors";
 import { ScrollView } from "react-native-gesture-handler";
 import {AppContext} from '../HomeScreen';
@@ -22,28 +21,37 @@ export default function BookDetailScreen({ route, navigation }) {
   useEffect(() => {
     let { book } = route.params;
     setItem(book);
+
+    
+  console.log(book);
   }, [item]);
+
 
   const addToCart = async () => {
     try {
       const res = cartContext.cartItems;
-      const itemCopy = res.find((existedItem) => existedItem.id === item.id);
+      const itemCopy = res.find((existedItem) => existedItem.id === item._id);
       if (itemCopy) {
         alert("Item have been added");
       } else {
         let newItem = {
-          id: item.id,
+          id: item._id,
           title: item.title,
           qty: 1,
           checked: 1,
           price: item.price,
-          image: item.image,
+          image: item.images,
         };
         res.push(newItem);
       }
 
       cartContext.setCartItems(res);
     } catch (e) {}
+  }
+
+  function getCategoryName(value){
+    var a = {...value};
+    return a.name;
   }
 
   return (
@@ -92,18 +100,18 @@ export default function BookDetailScreen({ route, navigation }) {
             </View>
             <View style={styles.infoItemWrapper}>
               <Text style={styles.infoItemTitle}>Nhà xuất bản</Text>
-              <Text style={styles.infoItemText}>{item.publisher}</Text>
+              <Text style={styles.infoItemText}>{item.author}</Text>
             </View>
             <View style={styles.infoItemWrapper}>
               <Text style={styles.infoItemTitle}>Thể loại</Text>
               <Text style={styles.infoItemText}>
-                {item.category}
+                {getCategoryName(item.category)}
                 
               </Text>
             </View>
           </View>
           <View style={styles.imageWrapper}>
-            <Image source={{ uri: item.image }} style={styles.itemImage} />
+            <Image source={{ uri: item.images }} style={styles.itemImage} />
           </View>
         </View>
 
@@ -123,8 +131,8 @@ export default function BookDetailScreen({ route, navigation }) {
             <Text style={styles.titleOverview}>Overview</Text>
             <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
               <Feather name="star" size={16} color= {colors.primary} />
-              <Text style={{marginHorizontal: 2}}>{item.rating}</Text>
-              <Text>({item.reviews})</Text>
+              <Text style={{marginHorizontal: 2}}>4</Text>
+              <Text>(100)</Text>
             </View>
           </View>
         </View>

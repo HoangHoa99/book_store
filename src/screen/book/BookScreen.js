@@ -10,18 +10,20 @@ import {
 } from "react-native";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import BookCart from "../../component/BookCart";
-import { bestSellers } from "../../clone/DataClone";
 import {AppContext} from '../HomeScreen';
+import HotBookCart from "../../component/HotBookCard";
 
 
 
 export default function BookScreen({ navigation }) {
 
-  const checkIsLogin = useContext(AppContext);
+  const appContext = useContext(AppContext);
+
   return (
     <View
       style={{
         flex: 1,
+        backgroundColor: "#fff"
       }}
     >
       <StatusBar hidden />
@@ -138,7 +140,7 @@ export default function BookScreen({ navigation }) {
               fontWeight: "bold",
             }}
           >
-            BEST SELLER!,
+            SÁCH MỚI!,
           </Text>
           <Text
             style={{
@@ -169,7 +171,7 @@ export default function BookScreen({ navigation }) {
               showsHorizontalScrollIndicator={false}
               horizontal={true}
               numColumns={1}
-              data={bestSellers}
+              data={appContext.newBook}
               renderItem={({ item }) => (
                 <BookCart item={item} navigation={navigation} />
               )}
@@ -177,7 +179,7 @@ export default function BookScreen({ navigation }) {
             <View style={{ width: 30 }}></View>
           </View>
         </ScrollView>
-        <View style={{ marginTop: 20, paddingHorizontal: 20 }}>
+        {/* <View style={{ marginTop: 20, paddingHorizontal: 20 }}>
           <Text
             style={{
               fontSize: 16,
@@ -185,7 +187,7 @@ export default function BookScreen({ navigation }) {
               fontWeight: "bold",
             }}
           >
-            NEWEST BOOKS!,
+            SÁCH MỚI!,
           </Text>
           <Text
             style={{
@@ -450,10 +452,10 @@ export default function BookScreen({ navigation }) {
             </View>
             <View style={{ width: 30 }}></View>
           </View>
-        </ScrollView>
+        </ScrollView> */}
 
-        {checkIsLogin.isLogin ? (
-          <>
+        {/* {appContext.isLogin ? (
+          <> */}
             <View style={{ marginTop: 20, paddingHorizontal: 20 }}>
               <Text
                 style={{
@@ -462,7 +464,7 @@ export default function BookScreen({ navigation }) {
                   fontWeight: "bold",
                 }}
               >
-                YOUR FAVORITE!,
+                BÁN CHẠY!,
               </Text>
               <Text
                 style={{
@@ -493,18 +495,18 @@ export default function BookScreen({ navigation }) {
                   showsHorizontalScrollIndicator={false}
                   horizontal={true}
                   numColumns={1}
-                  data={bestSellers}
+                  data={appContext.hotBook}
                   renderItem={({ item }) => (
-                    <BookCart item={item} navigation={navigation} />
+                    <HotBookCart item={item} navigation={navigation} />
                   )}
                 />
                 <View style={{ width: 30 }}></View>
               </View>
             </ScrollView>
-          </>
+          {/* </>
         ) : (
           <></>
-        )}
+        )} */}
         <View
           style={{
             height: 30,
