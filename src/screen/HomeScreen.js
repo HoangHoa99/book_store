@@ -38,6 +38,7 @@ export default function HomeScreen() {
   const [categories, setCategory] = useState([]);
   const [user, setUser] = useState({});
   const [userProfile, setUserProfile] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getBookLists = async () => {
@@ -45,6 +46,8 @@ export default function HomeScreen() {
         setNewBook(res.newBook);
         setHotBook(res.hotBook);
         setBooks(res.books);
+
+        setLoading(!loading);
       });
     };
 
@@ -83,7 +86,9 @@ export default function HomeScreen() {
     userProfile,
     setUserProfile,
     userCart,
-    setUserCart
+    setUserCart,
+    loading,
+    setLoading
   };
 
   return (

@@ -68,15 +68,15 @@ export default function OrderScreen({ navigation }) {
             </View>
             <View
               style={{
-                flex: 0.3,
+                flex: 0.5,
                 alignItems: "center",
                 justifyContent: "flex-start",
               }}
             >
               <Text>------------------------------------------</Text>
             </View>
-            <View style={{ flex: 3.9, flexDirection: "row" }}>
-                <View style={{ flex: 2.4, flexDirection: "column", justifyContent: "space-between", marginTop: 5, marginBottom: 5, marginLeft: 15 }}>
+            <View style={{ flex: 3.7, flexDirection: "row" }}>
+                <View style={{ flex: 2.2, flexDirection: "column", justifyContent: "space-between", marginTop: 5, marginBottom: 5, marginLeft: 15 }}>
                     <TitleText title = "SDT" value = {item.user.phone} />
                     <TitleText title = "Tổng giá trị" value = {item.totalrice}/>
                     <TitleText title = "Ngày tạo" value = {getDateOrder(item.createdAt)}/>

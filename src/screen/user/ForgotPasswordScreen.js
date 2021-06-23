@@ -1,14 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet, Alert } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import {ForgotPasswordAsync} from '../../service/UserService';
+import Loading from "../Loading";
+import { AppContext } from "../HomeScreen";
 
 export default function ForgotPasswordScreen({ navigation }) {
+  const appContext = useContext(AppContext);
+
   const [email, setEmail] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
   async function sendEmail() {
+    appContext.setLoading(!appContext.loading);
     await ForgotPasswordAsync(email).then((res) => {
+      appContext.setLoading(false);
       if (res.Type === "success") {
         Alert.alert(
           "Check your email!",
@@ -27,7 +33,14 @@ export default function ForgotPasswordScreen({ navigation }) {
     });
   }
   return (
-    <View style={styles.container}>
+    <>
+    {appContext.loading ? (
+      <>
+      <Loading />
+      </>
+    ) : (
+      <>
+      <View style={styles.container}>
       <Text style={{ fontSize: 25, marginTop: 80 }}>Forgot your password?</Text>
       <Text style={{ fontSize: 16, color: "gray", marginTop: 20 }}>
         Your email 
@@ -71,11 +84,12 @@ export default function ForgotPasswordScreen({ navigation }) {
           <Text style={{ textAlign: "center", color: "#FFF", fontSize: 16 }}>
             Send
           </Text>
-        </TouchableOpacity>
-
-        
+        </TouchableOpacity>        
       </View>
     </View>
+      </>
+    )}
+    </>
   );
 }
 

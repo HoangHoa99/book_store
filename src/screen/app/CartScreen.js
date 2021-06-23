@@ -24,6 +24,7 @@ import {
   DeleteCartItem,
   OrderAdd,
 } from "../../service/CartService";
+import Loading from "../Loading";
 
 export default function CartScreen({ navigation }) {
   // ANCHOR - Declare state
@@ -101,6 +102,7 @@ export default function CartScreen({ navigation }) {
   }
 
   async function confirmOrder() {
+    
     var cartList = cartContext.userCart;
 
     var orderList = [];
@@ -115,7 +117,7 @@ export default function CartScreen({ navigation }) {
 
         orderList.push(orderItem);
       });
-      
+
       OrderAdd(
         orderList,
         address,
@@ -250,156 +252,201 @@ export default function CartScreen({ navigation }) {
     );
   };
   return (
-    <SafeAreaView style={{ backgroundColor: colors.white, flex: 1 }}>
-      <Modal
-        animationType="slide"
-        presentationStyle="pageSheet"
-        visible={modalVisible}
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: 100,
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            marginTop: 10,
-            marginRight: 10,
-          }}
-        >
-          <Feather
-            name="x-circle"
-            size={35}
-            color={colors.red}
-            onPress={() => setModalVisible(!modalVisible)}
-          />
-        </View>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "#FFF",
-            padding: 20,
-          }}
-        >
-          <Text style={{ fontSize: 25, marginTop: 20 }}>
-            Thông tin khách hàng
-          </Text>
-
-          <FontAwesome name="phone" size="28" color={colors.black} style={{marginTop: 25}} />
-          <TextInput
-            style={{
-              marginTop: 15,
-              borderBottomColor: "#ddd",
-              borderBottomWidth: 1,
-              paddingBottom: 20,
-            }}
-            placeholder={phone}
-            onChangeText={(text) => setPhone(text)}
-          />
-
-          <FontAwesome name="user" size="28" color={colors.black} style={{marginTop: 25}} />
-          <TextInput
-            style={{
-              marginTop: 15,
-              borderBottomColor: "#ddd",
-              borderBottomWidth: 1,
-              paddingBottom: 20,
-            }}
-            placeholder={name}
-            onChangeText={(text) => setName(text)}
-          />
-
-<Entypo name="address" size="28" color={colors.black} style={{marginTop: 25}} />
-          <TextInput
-            style={{
-              marginTop: 15,
-              borderBottomColor: "#ddd",
-              borderBottomWidth: 1,
-              paddingBottom: 20,
-            }}
-            placeholder={address}
-            onChangeText={(text) => setAddress(text)}
-          />
-
-<FontAwesome name="sticky-note" size="28" color={colors.black} style={{marginTop: 25}} />
-          <TextInput
-            style={{
-              marginTop: 15,
-              borderBottomColor: "#ddd",
-              borderBottomWidth: 1,
-              paddingBottom: 20,
-            }}
-            placeholder="Ghi chú"
-            onChangeText={(text) => setNote(text)}
-          />
-
-<View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              marginTop: 40,
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => clearCart()}
+    <>
+      {cartContext.loading ? (
+        <>
+          <Loading />
+        </>
+      ) : (
+        <>
+          <SafeAreaView style={{ backgroundColor: colors.white, flex: 1 }}>
+            <Modal
+              animationType="slide"
+              presentationStyle="pageSheet"
+              visible={modalVisible}
               style={{
-                width: 200,
-                backgroundColor: "#0d47a1",
-                padding: 10,
-                alignItems: "center",
+                flex: 1,
                 justifyContent: "center",
-                borderRadius: 40,
-                marginTop: 30,
+                alignItems: "center",
+                marginTop: 100,
               }}
             >
-              <Text
-                style={{ textAlign: "center", color: "#FFF", fontSize: 16 }}
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "flex-end",
+                  marginTop: 10,
+                  marginRight: 10,
+                }}
               >
-                Confirm
-              </Text>
-            </TouchableOpacity>
-          </View>
+                <Feather
+                  name="x-circle"
+                  size={35}
+                  color={colors.red}
+                  onPress={() => setModalVisible(!modalVisible)}
+                />
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: "#FFF",
+                  padding: 20,
+                }}
+              >
+                <Text style={{ fontSize: 25, marginTop: 20 }}>
+                  Thông tin khách hàng
+                </Text>
 
-          
-        </View>
-      </Modal>
+                <FontAwesome
+                  name="phone"
+                  size="28"
+                  color={colors.black}
+                  style={{ marginTop: 25 }}
+                />
+                <TextInput
+                  style={{
+                    marginTop: 15,
+                    borderBottomColor: "#ddd",
+                    borderBottomWidth: 1,
+                    paddingBottom: 20,
+                  }}
+                  placeholder={phone}
+                  onChangeText={(text) => setPhone(text)}
+                />
 
-      <View style={style.header}>
-        <Icon name="arrow-back-ios" size={28} onPress={navigation.goBack} />
-        <Text style={{ fontSize: 20, fontWeight: "bold" }}>Cart</Text>
-      </View>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 80 }}
-        data={
-          cartContext.isLogin ? cartContext.userCart : cartContext.cartItems
-        }
-        renderItem={({ item }) => <CartCard item={item} />}
-        ListFooterComponentStyle={{ paddingHorizontal: 20, marginTop: 20 }}
-      />
-      <View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginVertical: 15,
-          }}
-        >
-          <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 45 }}>
-            Total Price
-          </Text>
-          <Text style={{ fontSize: 18, fontWeight: "bold", marginRight: 45 }}>
-            ${totalPrice()}
-          </Text>
-        </View>
-        <View style={{ marginHorizontal: 30 }}>
-          <PrimaryButton title="CHECKOUT" onPress={() => checkoutBtn()} />
-        </View>
-      </View>
-    </SafeAreaView>
+                <FontAwesome
+                  name="user"
+                  size="28"
+                  color={colors.black}
+                  style={{ marginTop: 25 }}
+                />
+                <TextInput
+                  style={{
+                    marginTop: 15,
+                    borderBottomColor: "#ddd",
+                    borderBottomWidth: 1,
+                    paddingBottom: 20,
+                  }}
+                  placeholder={name}
+                  onChangeText={(text) => setName(text)}
+                />
+
+                <Entypo
+                  name="address"
+                  size="28"
+                  color={colors.black}
+                  style={{ marginTop: 25 }}
+                />
+                <TextInput
+                  style={{
+                    marginTop: 15,
+                    borderBottomColor: "#ddd",
+                    borderBottomWidth: 1,
+                    paddingBottom: 20,
+                  }}
+                  placeholder={address}
+                  onChangeText={(text) => setAddress(text)}
+                />
+
+                <FontAwesome
+                  name="sticky-note"
+                  size="28"
+                  color={colors.black}
+                  style={{ marginTop: 25 }}
+                />
+                <TextInput
+                  style={{
+                    marginTop: 15,
+                    borderBottomColor: "#ddd",
+                    borderBottomWidth: 1,
+                    paddingBottom: 20,
+                  }}
+                  placeholder="Ghi chú"
+                  onChangeText={(text) => setNote(text)}
+                />
+
+                <View
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginTop: 40,
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => clearCart()}
+                    style={{
+                      width: 200,
+                      backgroundColor: "#0d47a1",
+                      padding: 10,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: 40,
+                      marginTop: 30,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        color: "#FFF",
+                        fontSize: 16,
+                      }}
+                    >
+                      Confirm
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+
+            <View style={style.header}>
+              <Icon
+                name="arrow-back-ios"
+                size={28}
+                onPress={navigation.goBack}
+              />
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>Cart</Text>
+            </View>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ paddingBottom: 80 }}
+              data={
+                cartContext.isLogin
+                  ? cartContext.userCart
+                  : cartContext.cartItems
+              }
+              renderItem={({ item }) => <CartCard item={item} />}
+              ListFooterComponentStyle={{
+                paddingHorizontal: 20,
+                marginTop: 20,
+              }}
+            />
+            <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginVertical: 15,
+                }}
+              >
+                <Text
+                  style={{ fontSize: 18, fontWeight: "bold", marginLeft: 45 }}
+                >
+                  Total Price
+                </Text>
+                <Text
+                  style={{ fontSize: 18, fontWeight: "bold", marginRight: 45 }}
+                >
+                  ${totalPrice()}
+                </Text>
+              </View>
+              <View style={{ marginHorizontal: 30 }}>
+                <PrimaryButton title="CHECKOUT" onPress={() => checkoutBtn()} />
+              </View>
+            </View>
+          </SafeAreaView>
+        </>
+      )}
+    </>
   );
 }
 const style = StyleSheet.create({

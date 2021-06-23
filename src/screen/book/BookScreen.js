@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import {
   Text,
   View,
@@ -8,511 +8,230 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import BookCart from "../../component/BookCart";
-import {AppContext} from '../HomeScreen';
+import { AppContext } from "../HomeScreen";
 import HotBookCart from "../../component/HotBookCard";
-
-
+import Loading from "../Loading";
 
 export default function BookScreen({ navigation }) {
-
   const appContext = useContext(AppContext);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "#fff"
-      }}
-    >
-      <StatusBar hidden />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View
-          style={{
-            overflow: "hidden",
-            borderBottomRightRadius: 50,
-          }}
-        >
-          <ImageBackground
+    <>
+      {appContext.loading ? (
+        <>
+          <Loading />
+        </>
+      ) : (
+        <>
+          <View
             style={{
-              width: "100%",
-              height: 250,
-            }}
-            source={{
-              uri:
-                "https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80",
+              flex: 1,
+              backgroundColor: "#fff",
             }}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingHorizontal: 20,
-                marginTop: 20,
-              }}
-            >
-              <View>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("InformationScreen")}
-                >
-                  <MaterialCommunityIcons name="text" size={25} color="white" />
-                </TouchableOpacity>
-              </View>
+            <StatusBar hidden />
+            <ScrollView showsVerticalScrollIndicator={false}>
               <View
                 style={{
-                  flexDirection: "row",
+                  overflow: "hidden",
+                  borderBottomRightRadius: 50,
                 }}
               >
-                {/* <View
+                <ImageBackground
                   style={{
-                    marginRight: 10,
+                    width: "100%",
+                    height: 250,
+                  }}
+                  source={{
+                    uri: "https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80",
                   }}
                 >
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("CartScreen")}
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      paddingHorizontal: 20,
+                      marginTop: 20,
+                    }}
                   >
-                    <MaterialCommunityIcons name="shopping" size={25} color="white" />
-                  </TouchableOpacity>
-                </View> */}
+                    <View>
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate("InformationScreen")}
+                      >
+                        <MaterialCommunityIcons
+                          name="text"
+                          size={25}
+                          color="white"
+                        />
+                      </TouchableOpacity>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                      }}
+                    ></View>
+                  </View>
+                  <View
+                    style={{
+                      paddingHorizontal: 20,
+                      flex: 1,
+                      marginTop: -15,
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        color: "white",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Hello{" "}
+                      {appContext.isLogin ? appContext.user.username : "Sir"},
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        color: "white",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Hope you have a great day!
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                      }}
+                    >
+                      <View
+                        style={{
+                          paddingHorizontal: 10,
+                          paddingVertical: 5,
+                          borderRadius: 10,
+                          marginTop: 5,
+                          backgroundColor: "grey",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 10,
+                            color: "white",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          CASUAL MEMBER
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </ImageBackground>
               </View>
-            </View>
-            <View
-              style={{
-                paddingHorizontal: 20,
-                flex: 1,
-                marginTop: -15,
-                justifyContent: "center",
-              }}
-            >
-              <Text
+              <View style={{ marginTop: 20, paddingHorizontal: 20 }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: "black",
+                    fontWeight: "bold",
+                  }}
+                >
+                  SÁCH MỚI!,
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: "grey",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod
+                </Text>
+              </View>
+              <ScrollView
+                horizontal={true}
                 style={{
-                  fontSize: 18,
-                  color: "white",
-                  fontWeight: "bold",
+                  paddingLeft: 20,
+                  paddingRight: 10,
+                  marginTop: 10,
                 }}
-              >
-                Hello {appContext.isLogin ? appContext.user.username : "Sir"},
-              </Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: "white",
-                  fontWeight: "bold",
-                }}
-              >
-                Hope you have a great day!
-              </Text>
-              <View
-                style={{
-                  flexDirection: "row",
-                }}
+                showsHorizontalScrollIndicator={false}
               >
                 <View
                   style={{
-                    paddingHorizontal: 10,
-                    paddingVertical: 5,
-                    borderRadius: 10,
-                    marginTop: 5,
-                    backgroundColor: "grey",
+                    flexDirection: "row",
                   }}
                 >
-                  <Text
-                    style={{
-                      fontSize: 10,
-                      color: "white",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    CASUAL MEMBER
-                  </Text>
+                  <FlatList
+                    showsHorizontalScrollIndicator={false}
+                    horizontal={true}
+                    numColumns={1}
+                    data={appContext.newBook}
+                    renderItem={({ item }) => (
+                      <BookCart item={item} navigation={navigation} />
+                    )}
+                  />
+                  <View style={{ width: 30 }}></View>
                 </View>
+              </ScrollView>
+              <View style={{ marginTop: 20, paddingHorizontal: 20 }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: "black",
+                    fontWeight: "bold",
+                  }}
+                >
+                  BÁN CHẠY!,
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: "grey",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod
+                </Text>
               </View>
-            </View>
-          </ImageBackground>
-        </View>
-        <View style={{ marginTop: 20, paddingHorizontal: 20 }}>
-          <Text
-            style={{
-              fontSize: 16,
-              color: "black",
-              fontWeight: "bold",
-            }}
-          >
-            SÁCH MỚI!,
-          </Text>
-          <Text
-            style={{
-              fontSize: 12,
-              color: "grey",
-              fontWeight: "bold",
-            }}
-          >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod
-          </Text>
-        </View>
-        <ScrollView
-          horizontal={true}
-          style={{
-            paddingLeft: 20,
-            paddingRight: 10,
-            marginTop: 10,
-          }}
-          showsHorizontalScrollIndicator={false}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-            }}
-          >
-            <FlatList
-              showsHorizontalScrollIndicator={false}
-              horizontal={true}
-              numColumns={1}
-              data={appContext.newBook}
-              renderItem={({ item }) => (
-                <BookCart item={item} navigation={navigation} />
-              )}
-            />
-            <View style={{ width: 30 }}></View>
-          </View>
-        </ScrollView>
-        {/* <View style={{ marginTop: 20, paddingHorizontal: 20 }}>
-          <Text
-            style={{
-              fontSize: 16,
-              color: "black",
-              fontWeight: "bold",
-            }}
-          >
-            SÁCH MỚI!,
-          </Text>
-          <Text
-            style={{
-              fontSize: 12,
-              color: "grey",
-              fontWeight: "bold",
-            }}
-          >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod
-          </Text>
-        </View>
-        <ScrollView
-          horizontal={true}
-          style={{
-            paddingLeft: 20,
-            paddingRight: 10,
-            marginTop: 10,
-          }}
-          showsHorizontalScrollIndicator={false}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-            }}
-          >
-            <View
-              style={{
-                overflow: "hidden",
-                borderRadius: 10,
-                marginRight: 10,
-                maxWidth: 250,
-              }}
-            >
-              <ImageBackground
+              <ScrollView
+                horizontal={true}
                 style={{
-                  width: 250,
-                  height: 150,
+                  paddingLeft: 20,
+                  paddingRight: 10,
+                  marginTop: 10,
                 }}
-                source={{
-                  uri:
-                    "https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-                }}
+                showsHorizontalScrollIndicator={false}
               >
-                <View style={{ position: "absolute", bottom: 20, left: 20 }}>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: "white",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Lorem Ipsum
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: "white",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    <Feather name="star" size={18} color="white" /> 5
-                  </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                  }}
+                >
+                  <FlatList
+                    showsHorizontalScrollIndicator={false}
+                    horizontal={true}
+                    numColumns={1}
+                    data={appContext.hotBook}
+                    renderItem={({ item }) => (
+                      <HotBookCart item={item} navigation={navigation} />
+                    )}
+                  />
+                  <View style={{ width: 30 }}></View>
                 </View>
-              </ImageBackground>
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: "black",
-                  fontWeight: "bold",
-                }}
-              >
-                Lorem Ipsum
-              </Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: "grey",
-                  fontWeight: "bold",
-                }}
-              >
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor..
-              </Text>
-            </View>
-            <View
-              style={{
-                overflow: "hidden",
-                borderRadius: 10,
-                marginRight: 10,
-                maxWidth: 250,
-              }}
-            >
-              <ImageBackground
-                style={{
-                  width: 250,
-                  height: 150,
-                }}
-                source={{
-                  uri:
-                    "https://images.unsplash.com/photo-1506354666786-959d6d497f1a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-                }}
-              >
-                <View style={{ position: "absolute", bottom: 20, left: 20 }}>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: "white",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Lorem Ipsum
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: "white",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    <Feather name="star" size={18} color="white" /> 5
-                  </Text>
-                </View>
-              </ImageBackground>
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: "black",
-                  fontWeight: "bold",
-                }}
-              >
-                Lorem Ipsum
-              </Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: "grey",
-                  fontWeight: "bold",
-                }}
-              >
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor..
-              </Text>
-            </View>
-            <View
-              style={{
-                overflow: "hidden",
-                borderRadius: 10,
-                marginRight: 10,
-                maxWidth: 250,
-              }}
-            >
-              <ImageBackground
-                style={{
-                  width: 250,
-                  height: 150,
-                }}
-                source={{
-                  uri:
-                    "https://images.unsplash.com/photo-1493770348161-369560ae357d?ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80",
-                }}
-              >
-                <View style={{ position: "absolute", bottom: 20, left: 20 }}>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: "white",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Lorem Ipsum
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: "white",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    <Feather name="star" size={18} color="white" /> 5
-                  </Text>
-                </View>
-              </ImageBackground>
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: "black",
-                  fontWeight: "bold",
-                }}
-              >
-                Lorem Ipsum
-              </Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: "grey",
-                  fontWeight: "bold",
-                }}
-              >
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor..
-              </Text>
-            </View>
-            <View
-              style={{
-                overflow: "hidden",
-                borderRadius: 10,
-                marginRight: 10,
-                maxWidth: 250,
-              }}
-            >
-              <ImageBackground
-                style={{
-                  width: 250,
-                  height: 150,
-                }}
-                source={{
-                  uri:
-                    "https://images.unsplash.com/photo-1499028344343-cd173ffc68a9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-                }}
-              >
-                <View style={{ position: "absolute", bottom: 20, left: 20 }}>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: "white",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Lorem Ipsum
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: "white",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    <Feather name="star" size={18} color="white" /> 5
-                  </Text>
-                </View>
-              </ImageBackground>
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: "black",
-                  fontWeight: "bold",
-                }}
-              >
-                Lorem Ipsum
-              </Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: "grey",
-                  fontWeight: "bold",
-                }}
-              >
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor..
-              </Text>
-            </View>
-            <View style={{ width: 30 }}></View>
-          </View>
-        </ScrollView> */}
-
-        {/* {appContext.isLogin ? (
-          <> */}
-            <View style={{ marginTop: 20, paddingHorizontal: 20 }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: "black",
-                  fontWeight: "bold",
-                }}
-              >
-                BÁN CHẠY!,
-              </Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: "grey",
-                  fontWeight: "bold",
-                }}
-              >
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod
-              </Text>
-            </View>
-            <ScrollView
-              horizontal={true}
-              style={{
-                paddingLeft: 20,
-                paddingRight: 10,
-                marginTop: 10,
-              }}
-              showsHorizontalScrollIndicator={false}
-            >
+              </ScrollView>
               <View
                 style={{
-                  flexDirection: "row",
+                  height: 30,
                 }}
-              >
-                <FlatList
-                  showsHorizontalScrollIndicator={false}
-                  horizontal={true}
-                  numColumns={1}
-                  data={appContext.hotBook}
-                  renderItem={({ item }) => (
-                    <HotBookCart item={item} navigation={navigation} />
-                  )}
-                />
-                <View style={{ width: 30 }}></View>
-              </View>
+              ></View>
             </ScrollView>
-          {/* </>
-        ) : (
-          <></>
-        )} */}
-        <View
-          style={{
-            height: 30,
-          }}
-        ></View>
-      </ScrollView>
-    </View>
+          </View>
+        </>
+      )}
+    </>
   );
 }
