@@ -15,8 +15,6 @@ import {
 } from "react-native-gesture-handler";
 import { Feather } from "@expo/vector-icons";
 import COLORS from "../../assets/color/colors";
-import categories from "../../clone/Categories";
-import { bestSellers } from "../../clone/DataClone";
 import {AppContext} from '../HomeScreen';
 
 const { width } = Dimensions.get("screen");
@@ -32,23 +30,28 @@ export default function BookSearchScreen({ navigation }) {
 
   const addToCart = async (item) => {
     try {
-      const res = appContext.cartItems;
-      const itemCopy = res.find((existedItem) => existedItem.id === item._id);
+      const res = appContext.isLogin
+      ? appContext.userCart
+      : appContext.cartItems;
+      const itemCopy = res.find((existedItem) => existedItem._id === item._id);
       if (itemCopy) {
         alert("Item have been added");
       } else {
         let newItem = {
-          id: item._id,
-          title: item.title,
-          qty: 1,
-          checked: 1,
-          price: item.price,
-          image: item.images,
+          _id: item._id,
+          book: {            
+            title: item.title,
+            price: item.price,
+            images: item.images,
+          },
+          amount: 1,
         };
         res.push(newItem);
       }
-
-      appContext.setCartItems(res);
+      
+      appContext.isLogin
+            ? appContext.setUserCart(res)
+            : appContext.setCartItems(res);
     } catch (e) {}
   }
 
@@ -59,7 +62,7 @@ export default function BookSearchScreen({ navigation }) {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={style.categoriesListContainer}
       >
-        {categories.map((category, index) => (
+        {appContext.categories.map((category, index) => (
           <TouchableOpacity
             key={index}
             activeOpacity={0.8}
@@ -101,8 +104,8 @@ export default function BookSearchScreen({ navigation }) {
     function formatTitle(title) {
       var returnTitle = title;
       var dotdotdot = "...";
-      if (title.length > 15) {
-        returnTitle = title.substring(0, 16) + dotdotdot;
+      if (title.length > 12) {
+        returnTitle = title.substring(0, 13) + dotdotdot;
       }
 
       return returnTitle;
@@ -236,8 +239,8 @@ const style = StyleSheet.create({
     paddingHorizontal: 20,
   },
   categoryBtn: {
-    height: 45,
-    width: 120,
+    height: 50,
+    width: 170,
     marginRight: 7,
     borderRadius: 30,
     alignItems: "center",

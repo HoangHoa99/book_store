@@ -18,7 +18,7 @@ import ForgotPasswordScreen from "./user/ForgotPasswordScreen";
 import OrderScreen from "./app/OrderScreen";
 import EditProfileScreen from "./user/EditProfileScreen";
 
-import { GetBookAsync } from "../service/BookService";
+import { GetBookAsync, GetCategories } from "../service/BookService";
 
 // ANCHOR - Declare const
 const Tab = createBottomTabNavigator();
@@ -31,9 +31,13 @@ export default function HomeScreen() {
   // app const
   const [isLogin, setIsLogin] = useState(false);
   const [cartItems, setCartItems] = useState([]);
+  const [userCart, setUserCart] = useState([]);
   const [newBook, setNewBook] = useState([]);
   const [hotBook, setHotBook] = useState([]);
   const [books, setBooks] = useState([]);
+  const [categories, setCategory] = useState([]);
+  const [user, setUser] = useState({});
+  const [userProfile, setUserProfile] = useState({});
 
   useEffect(() => {
     const getBookLists = async () => {
@@ -44,7 +48,24 @@ export default function HomeScreen() {
       });
     };
 
+    const getCategoryList = async () => {
+      GetCategories().then((cate) => {
+        var cateList = [];
+        for(var i = 0; i< cate.length; i++){
+          var cateItem = {
+            index: i,
+            name: cate[i].name,
+            _id: cate[i]._id
+          }
+
+          cateList.push(cateItem);
+        }
+        setCategory(cateList);
+      });
+    };
+
     getBookLists();
+    getCategoryList();
   }, []);
 
   // app context setting
@@ -55,7 +76,14 @@ export default function HomeScreen() {
     setCartItems,
     newBook,
     hotBook,
-    books
+    books,
+    categories,
+    user,
+    setUser,
+    userProfile,
+    setUserProfile,
+    userCart,
+    setUserCart
   };
 
   return (

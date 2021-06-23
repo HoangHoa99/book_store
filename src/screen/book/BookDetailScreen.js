@@ -21,37 +21,46 @@ export default function BookDetailScreen({ route, navigation }) {
   useEffect(() => {
     let { book } = route.params;
     setItem(book);
-
-    
-  console.log(book);
   }, [item]);
 
 
   const addToCart = async () => {
     try {
-      const res = cartContext.cartItems;
-      const itemCopy = res.find((existedItem) => existedItem.id === item._id);
+      const res = cartContext.isLogin
+      ? cartContext.userCart
+      : cartContext.cartItems;
+      const itemCopy = res.find((existedItem) => existedItem._id === item._id);
       if (itemCopy) {
         alert("Item have been added");
       } else {
         let newItem = {
-          id: item._id,
-          title: item.title,
-          qty: 1,
-          checked: 1,
-          price: item.price,
-          image: item.images,
+          _id: item._id,
+          book: {            
+            title: item.title,
+            price: item.price,
+            images: item.images,
+          },
+          amount: 1,
         };
         res.push(newItem);
       }
-
-      cartContext.setCartItems(res);
+      
+      cartContext.isLogin
+            ? cartContext.setUserCart(res)
+            : cartContext.setCartItems(res);
     } catch (e) {}
   }
 
   function getCategoryName(value){
+    var category = cartContext.categories.find((cate) => cate._id === value);
+    if(category){
+      return category.name;
+    }
+
     var a = {...value};
-    return a.name;
+    if(a instanceof Object){
+      return a.name;
+    }
   }
 
   return (
@@ -147,6 +156,7 @@ export default function BookDetailScreen({ route, navigation }) {
 const styles = new StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff"
   },
   headerWrapper: {
     flexDirection: "row",
@@ -192,9 +202,11 @@ const styles = new StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    flex: 1
   },
   infoLeftWrapper: {
     paddingLeft: 20,
+    flex: 3
   },
   infoItemWrapper: {
     marginBottom: 30,
@@ -213,6 +225,7 @@ const styles = new StyleSheet.create({
   imageWrapper: {
     width: 280,
     height: 320,
+    flex: 5
   },
   itemImage: {
     resizeMode: "contain",

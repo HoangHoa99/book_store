@@ -1,8 +1,6 @@
 import React from "react";
 import { Text, View, ImageBackground, TouchableOpacity } from "react-native";
 
-import { Feather } from "@expo/vector-icons";
-
 export default function HotBookCart({ item, navigation }) {
     let hotItem = item.books_Product[0];
   return (
@@ -39,7 +37,6 @@ export default function HotBookCart({ item, navigation }) {
                   fontWeight: "bold",
                 }}
               >
-                {/* {hotItem.title} */}
               </Text>
               <Text
                 style={{

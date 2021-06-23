@@ -1,4 +1,4 @@
-import { Feather } from "@expo/vector-icons";
+import { Feather, Entypo, FontAwesome } from "@expo/vector-icons";
 import React, { useContext, useEffect, useState } from "react";
 import {
   SafeAreaView,
@@ -13,11 +13,17 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
+  ScrollView,
 } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import colors from "../../assets/color/colors";
 import { PrimaryButton } from "../../component/Button";
 import { AppContext } from "../HomeScreen";
+import {
+  AddToCartFromLg,
+  DeleteCartItem,
+  OrderAdd,
+} from "../../service/CartService";
 
 export default function CartScreen({ navigation }) {
   // ANCHOR - Declare state
@@ -28,9 +34,13 @@ export default function CartScreen({ navigation }) {
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
+  const [note, setNote] = useState("");
 
   function loadCartData() {
     setKey((preKey) => preKey + 1);
+    setPhone(cartContext.userProfile.phone);
+    setName(cartContext.userProfile.username);
+    setAddress(cartContext.userProfile.address);
   }
 
   // reload data
@@ -54,8 +64,9 @@ export default function CartScreen({ navigation }) {
         {
           text: "Submit",
           onPress: () => {
+            confirmOrder();
             setModalVisible(false);
-            cartContext.setCartItems([]);
+            cartContext.setUserCart([]);
           },
         },
       ],
@@ -63,12 +74,55 @@ export default function CartScreen({ navigation }) {
     );
   }
 
-  function checkoutBtn(){
-    if(cartContext.cartItems.length === 0){
-      Alert.alert("Giỏ hàng trống", "Thêm ít nhất một sản phẩm")
+  async function checkoutBtn() {
+    if (
+      (cartContext.isLogin ? cartContext.userCart : cartContext.cartItems)
+        .length === 0
+    ) {
+      Alert.alert("Giỏ hàng trống", "Thêm ít nhất một sản phẩm");
+    } else {
+      if (cartContext.isLogin) {
+        var cartAdd = [];
+
+        cartContext.userCart.forEach((item) => {
+          var addItem = {
+            book: item._id,
+            amount: item.amount,
+          };
+
+          cartAdd.push(addItem);
+        });
+
+        cartContext.setCartItems([]);
+        await AddToCartFromLg(cartAdd, cartContext.user.accessToken);
+      }
+      setModalVisible(!modalVisible);
     }
-    else{
-      setModalVisible(!modalVisible)
+  }
+
+  async function confirmOrder() {
+    var cartList = cartContext.userCart;
+
+    var orderList = [];
+
+    if (cartList.length > 0) {
+      cartList.forEach((cart) => {
+        var orderItem = {
+          book: cart._id,
+          quantity: cart.amount,
+          totalPrice: cart.amount * cart.book.price,
+        };
+
+        orderList.push(orderItem);
+      });
+      
+      OrderAdd(
+        orderList,
+        address,
+        note,
+        totalPrice(),
+        cartContext.user.accessToken
+      );
     }
   }
 
@@ -76,29 +130,35 @@ export default function CartScreen({ navigation }) {
 
   /** tinh total bill */
   function totalPrice() {
-    return cartContext.cartItems.reduce(
-      (sum, calcItem) =>
-        sum + (calcItem.checked == 1 ? calcItem.price * calcItem.qty : 0),
+    var cart = cartContext.isLogin
+      ? cartContext.userCart
+      : cartContext.cartItems;
+    return cart.reduce(
+      (sum, calcItem) => sum + calcItem.book.price * calcItem.amount,
       0
     );
   }
 
   /**tang giam so luong item */
   function quantityHandler(action, index) {
-    let newCartItems = cartContext.cartItems;
+    let newCartItems = cartContext.isLogin
+      ? cartContext.userCart
+      : cartContext.cartItems;
 
-    const currentItem = newCartItems.find((element) => element.id === index);
+    const currentItem = newCartItems.find((element) => element._id === index);
     let indexOfCurItem = newCartItems.indexOf(currentItem);
-    let currentQty = currentItem.qty;
+    let currentQty = currentItem.amount;
 
     if (action == "more") {
-      currentItem.qty = currentQty + 1;
+      currentItem.amount = currentQty + 1;
     } else if (action == "less") {
-      currentItem.qty = currentQty > 1 ? currentQty - 1 : 1;
+      currentItem.amount = currentQty > 1 ? currentQty - 1 : 1;
     }
     newCartItems[indexOfCurItem] = currentItem;
 
-    cartContext.setCartItems(newCartItems);
+    cartContext.isLogin
+      ? cartContext.setUserCart(newCartItems)
+      : cartContext.setCartItems(newCartItems);
 
     loadCartData();
   }
@@ -116,12 +176,19 @@ export default function CartScreen({ navigation }) {
         {
           text: "Delete",
           onPress: () => {
-            let updatedCart = cartContext.cartItems; /* Clone it first */
+            let updatedCart = cartContext.isLogin
+              ? cartContext.userCart
+              : cartContext.cartItems; /* Clone it first */
 
-            const delItem = updatedCart.find((element) => element.id === index);
+            const delItem = updatedCart.find(
+              (element) => element._id === index
+            );
             let indexOfDelItem = updatedCart.indexOf(delItem);
             updatedCart.splice(indexOfDelItem, 1);
-            cartContext.setCartItems(updatedCart);
+            cartContext.isLogin
+              ? cartContext.setUserCart(updatedCart)
+              : cartContext.setCartItems(updatedCart);
+            DeleteCartItem(delItem._id, cartContext.user.accessToken);
             loadCartData();
           },
         },
@@ -135,7 +202,10 @@ export default function CartScreen({ navigation }) {
   const CartCard = ({ item }) => {
     return (
       <View style={style.cartCard}>
-        <Image source={{ uri: item.image }} style={{ height: 80, width: 60 }} />
+        <Image
+          source={{ uri: item.book.images }}
+          style={{ height: 80, width: 60 }}
+        />
         <View
           style={{
             height: 100,
@@ -145,9 +215,11 @@ export default function CartScreen({ navigation }) {
             justifyContent: "space-between",
           }}
         >
-          <Text style={{ fontWeight: "bold", fontSize: 16 }}>{item.title}</Text>
+          <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+            {item.book.title}
+          </Text>
           <Text style={{ fontSize: 17, fontWeight: "bold" }}>
-            ${item.price}
+            ${item.book.price}
           </Text>
         </View>
         <View style={{ marginRight: 30, alignItems: "center" }}>
@@ -159,19 +231,19 @@ export default function CartScreen({ navigation }) {
               marginBottom: 5,
             }}
           >
-            {item.qty}
+            {item.amount}
           </Text>
           <View style={style.actionBtn}>
-            <TouchableOpacity onPress={() => quantityHandler("less", item.id)}>
+            <TouchableOpacity onPress={() => quantityHandler("less", item._id)}>
               <Icon name="remove" size={25} color={colors.white} />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => quantityHandler("more", item.id)}>
+            <TouchableOpacity onPress={() => quantityHandler("more", item._id)}>
               <Icon name="add" size={25} color={colors.white} />
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity onPress={() => deleteHandler(item.id)}>
+        <TouchableOpacity onPress={() => deleteHandler(item._id)}>
           <Feather name="trash" size="28" color={colors.red} />
         </TouchableOpacity>
       </View>
@@ -216,40 +288,55 @@ export default function CartScreen({ navigation }) {
             Thông tin khách hàng
           </Text>
 
+          <FontAwesome name="phone" size="28" color={colors.black} style={{marginTop: 25}} />
           <TextInput
             style={{
-              marginTop: 40,
+              marginTop: 15,
               borderBottomColor: "#ddd",
               borderBottomWidth: 1,
               paddingBottom: 20,
             }}
-            placeholder="Số điện thoại"
+            placeholder={phone}
             onChangeText={(text) => setPhone(text)}
           />
 
+          <FontAwesome name="user" size="28" color={colors.black} style={{marginTop: 25}} />
           <TextInput
             style={{
-              marginTop: 40,
+              marginTop: 15,
               borderBottomColor: "#ddd",
               borderBottomWidth: 1,
               paddingBottom: 20,
             }}
-            placeholder="Họ & Tên"
+            placeholder={name}
             onChangeText={(text) => setName(text)}
           />
 
+<Entypo name="address" size="28" color={colors.black} style={{marginTop: 25}} />
           <TextInput
             style={{
-              marginTop: 40,
+              marginTop: 15,
               borderBottomColor: "#ddd",
               borderBottomWidth: 1,
               paddingBottom: 20,
             }}
-            placeholder="Địa chỉ"
+            placeholder={address}
             onChangeText={(text) => setAddress(text)}
           />
 
-          <View
+<FontAwesome name="sticky-note" size="28" color={colors.black} style={{marginTop: 25}} />
+          <TextInput
+            style={{
+              marginTop: 15,
+              borderBottomColor: "#ddd",
+              borderBottomWidth: 1,
+              paddingBottom: 20,
+            }}
+            placeholder="Ghi chú"
+            onChangeText={(text) => setNote(text)}
+          />
+
+<View
             style={{
               alignItems: "center",
               justifyContent: "center",
@@ -275,6 +362,8 @@ export default function CartScreen({ navigation }) {
               </Text>
             </TouchableOpacity>
           </View>
+
+          
         </View>
       </Modal>
 
@@ -285,7 +374,9 @@ export default function CartScreen({ navigation }) {
       <FlatList
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 80 }}
-        data={cartContext.cartItems}
+        data={
+          cartContext.isLogin ? cartContext.userCart : cartContext.cartItems
+        }
         renderItem={({ item }) => <CartCard item={item} />}
         ListFooterComponentStyle={{ paddingHorizontal: 20, marginTop: 20 }}
       />
@@ -305,10 +396,7 @@ export default function CartScreen({ navigation }) {
           </Text>
         </View>
         <View style={{ marginHorizontal: 30 }}>
-          <PrimaryButton
-            title="CHECKOUT"
-            onPress={() => checkoutBtn()}
-          />
+          <PrimaryButton title="CHECKOUT" onPress={() => checkoutBtn()} />
         </View>
       </View>
     </SafeAreaView>

@@ -1,148 +1,204 @@
 export const bestSellers = [
   {
     id: 1,
-    title: 'Toi thay hoa vang tren co xanh',
+    title: "Toi thay hoa vang tren co xanh",
     price: 123,
     author: "jk rowling",
     publisher: "abc",
     image:
-      'https://images.unsplash.com/photo-1478145046317-39f10e56b5e9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80',
+      "https://images.unsplash.com/photo-1478145046317-39f10e56b5e9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
     rating: 5,
     quantity: 15,
     category: "xxxx",
     description: "Lorem ipsum abcdef",
-    reviews: 123
+    reviews: 123,
   },
   {
     id: 2,
-    title: 'Harry Potter',
+    title: "Harry Potter",
     price: 345,
     author: "jk rowling",
     publisher: "abc",
     image:
-      'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80',
+      "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
     rating: 4.5,
     quantity: 15,
     category: "xxxx",
     description: "Lorem ipsum abcdef",
-    reviews: 123
+    reviews: 123,
   },
   {
     id: 3,
-    title: 'Lorem Ipsum',
+    title: "Lorem Ipsum",
     price: 456,
     author: "jk rowling",
     publisher: "abc",
     image:
-      'https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=387&q=80',
+      "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=387&q=80",
     rating: 4,
     quantity: 15,
     category: "xxxx",
     description: "Lorem ipsum abcdef",
-    reviews: 123
+    reviews: 123,
   },
   {
     id: 4,
-    title: 'Lorem Ipsum',
+    title: "Lorem Ipsum",
     price: 789,
     author: "jk rowling",
     publisher: "abc",
     image:
-      'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80',
+      "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
     rating: 5,
     quantity: 15,
     category: "xxxx",
     description: "Lorem ipsum abcdef",
-    reviews: 123
+    reviews: 123,
   },
   {
     id: 5,
-    title: 'Lorem Ipsum',
+    title: "Lorem Ipsum",
     price: 1234,
     author: "jk rowling",
     publisher: "abc",
     image:
-      'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=353&q=80',
+      "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=353&q=80",
     rating: 4.5,
     quantity: 15,
     category: "xxxx",
     description: "Lorem ipsum abcdef",
-    reviews: 123
+    reviews: 123,
   },
 ];
-
 
 export const orderList = [
   {
     id: 1,
-    cusName: 'Hoang Hoa',
+    cusName: "Hoang Hoa",
     status: "1",
     phone: "0987654321",
     totalPrice: "123.000 vnd",
-    orderId: '#abcd3',
-    createDate: '2021-06-01',
-    quantity: 15
+    orderId: "#abcd3",
+    createDate: "2021-06-01",
+    quantity: 15,
   },
   {
     id: 2,
-    cusName: 'Hoang Hoa',
+    cusName: "Hoang Hoa",
     status: "2",
     phone: "0987654321",
     totalPrice: "123.000 vnd",
-    orderId: '#abcd4',
-    createDate: '2021-06-01',
-    quantity: 15
+    orderId: "#abcd4",
+    createDate: "2021-06-01",
+    quantity: 15,
   },
   {
     id: 3,
-    cusName: 'Hoang Hoa',
+    cusName: "Hoang Hoa",
     status: "1",
     phone: "0987654321",
     totalPrice: "123.000 vnd",
-    orderId: '#abcd5',
-    createDate: '2021-06-01',
-    quantity: 15
+    orderId: "#abcd5",
+    createDate: "2021-06-01",
+    quantity: 15,
   },
   {
     id: 4,
-    cusName: 'Hoang Hoa',
+    cusName: "Hoang Hoa",
     status: "2",
     phone: "0987654321",
     totalPrice: "123.000 vnd",
-    orderId: '#abcd6',
-    createDate: '2021-06-01',
-    quantity: 15
+    orderId: "#abcd6",
+    createDate: "2021-06-01",
+    quantity: 15,
   },
   {
     id: 5,
-    cusName: 'Hoang Hoa',
+    cusName: "Hoang Hoa",
     status: "1",
     phone: "0987654321",
     totalPrice: "123.000 vnd",
-    orderId: '#abcd7',
-    createDate: '2021-06-01',
-    quantity: 15
+    orderId: "#abcd7",
+    createDate: "2021-06-01",
+    quantity: 15,
   },
   {
     id: 6,
-    cusName: 'Hoang Hoa',
+    cusName: "Hoang Hoa",
     status: "2",
     phone: "0987654321",
     totalPrice: "123.000 vnd",
-    orderId: '#abcd8',
-    createDate: '2021-06-01',
-    quantity: 15
+    orderId: "#abcd8",
+    createDate: "2021-06-01",
+    quantity: 15,
   },
   {
     id: 7,
-    cusName: 'Hoang Hoa',
+    cusName: "Hoang Hoa",
     status: "3",
     phone: "0987654321",
     totalPrice: "123.000 vnd",
-    orderId: '#abcd9',
-    createDate: '2021-06-01',
-    quantity: 15
-  }
+    orderId: "#abcd9",
+    createDate: "2021-06-01",
+    quantity: 15,
+  },
 ];
 
+export const testOrder = [
+  {
+    status: 0,
+    _id: "60d0c3f83b1b65001575e972",
+    products: [
+      {
+        _id: "60d0c3f83b1b65001575e973",
+        book: {
+          isDeleted: false,
+          _id: "5f78a1157c17be338c676f02",
+          title: "Xin Bạn Hãy Ôm Lấy Trái Tim",
+          author: "Dae Hyun Yoon",
+          price: 72,
+          __v: 0,
+          category: "5f789d047c17be338c676ef5",
+          images:
+            "http://res.cloudinary.com/dncg2zipn/image/upload/v1611023344/kzmimjdh9vdrcaujhebb.jpg",
+          status: null,
+          updatedAt: "2021-01-19T04:19:11.386Z",
+        },
+        quantity: 2,
+        totalPrice: 144,
+      },
+    ],
+    address: "Chợ bà chiểu",
+    note: "He he",
+    totalrice: 53,
+    user: {
+      _id: "60d0c2893b1b65001575e96f",
+      username: "Hoa21",
+      email: "hoapro@gmail.com",
+      phone: "0987123456",
+      __v: 0,
+    },
+    createdAt: "2021-06-21T16:53:12.308Z",
+    updatedAt: "2021-06-21T16:53:12.308Z",
+    __v: 0,
+  },
+];
 
+export const orderStatus = [
+  {
+    status: 0,
+    content: "Chờ xác nhận",
+  },
+  {
+    status: 1,
+    content: "Đang giao hàng",
+  },
+  {
+    status: 2,
+    content: "Hoàn thành",
+  },
+  {
+    status: 3,
+    content: "Huỷ",
+  },
+];

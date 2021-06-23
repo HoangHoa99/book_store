@@ -93,7 +93,7 @@ export default function BookScreen({ navigation }) {
                   fontWeight: "bold",
                 }}
               >
-                Hello Haksa,
+                Hello {appContext.isLogin ? appContext.user.username : "Sir"},
               </Text>
               <Text
                 style={{
