@@ -1,13 +1,30 @@
-import React, { useContext, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import { AppContext } from "../HomeScreen";
+import {ForgotPasswordAsync} from '../../service/UserService';
 
 export default function ForgotPasswordScreen({ navigation }) {
   const [email, setEmail] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
-  function sendEmail() {
-    alert("hahaha" + email);
+  async function sendEmail() {
+    await ForgotPasswordAsync(email).then((res) => {
+      if (res.Type === "success") {
+        Alert.alert(
+          "Check your email!",
+          res.msd,
+          [
+            {
+              text: "OK",
+              onPress: () => navigation.navigate("MainScreen"),
+            },
+          ],
+          { cancelable: false }
+        );
+      } else {
+        setErrorMsg(res.msd);
+      }
+    });
   }
   return (
     <View style={styles.container}>
@@ -27,6 +44,9 @@ export default function ForgotPasswordScreen({ navigation }) {
           onChangeText={(text) => setEmail(text)}
         />
 
+        <Text style={{ color: "red", textAlign: "center", marginTop: 10 }}>
+          {errorMsg}
+        </Text>
         
 
       <View

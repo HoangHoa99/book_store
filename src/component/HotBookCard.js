@@ -1,13 +1,14 @@
 import React from "react";
 import { Text, View, ImageBackground, TouchableOpacity } from "react-native";
 
-export default function BookCart({ item, navigation }) {
+export default function HotBookCart({ item, navigation }) {
+    let hotItem = item.books_Product[0];
   return (
     <>
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("BookDetailScreen", {
-            book: item,
+            book: hotItem,
           })
         }
       >
@@ -25,7 +26,7 @@ export default function BookCart({ item, navigation }) {
               height: 200,
             }}
             source={{
-              uri: item.images,
+              uri: hotItem.images,
             }}
           >
             <View style={{ position: "absolute", bottom: 20, left: 20 }}>

@@ -7,8 +7,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import colors from "../../assets/color/colors";
 import { ScrollView } from "react-native-gesture-handler";
 import {AppContext} from '../HomeScreen';
@@ -24,26 +23,44 @@ export default function BookDetailScreen({ route, navigation }) {
     setItem(book);
   }, [item]);
 
+
   const addToCart = async () => {
     try {
-      const res = cartContext.cartItems;
-      const itemCopy = res.find((existedItem) => existedItem.id === item.id);
+      const res = cartContext.isLogin
+      ? cartContext.userCart
+      : cartContext.cartItems;
+      const itemCopy = res.find((existedItem) => existedItem._id === item._id);
       if (itemCopy) {
         alert("Item have been added");
       } else {
         let newItem = {
-          id: item.id,
-          title: item.title,
-          qty: 1,
-          checked: 1,
-          price: item.price,
-          image: item.image,
+          _id: item._id,
+          book: {            
+            title: item.title,
+            price: item.price,
+            images: item.images,
+          },
+          amount: 1,
         };
         res.push(newItem);
       }
-
-      cartContext.setCartItems(res);
+      
+      cartContext.isLogin
+            ? cartContext.setUserCart(res)
+            : cartContext.setCartItems(res);
     } catch (e) {}
+  }
+
+  function getCategoryName(value){
+    var category = cartContext.categories.find((cate) => cate._id === value);
+    if(category){
+      return category.name;
+    }
+
+    var a = {...value};
+    if(a instanceof Object){
+      return a.name;
+    }
   }
 
   return (
@@ -92,18 +109,18 @@ export default function BookDetailScreen({ route, navigation }) {
             </View>
             <View style={styles.infoItemWrapper}>
               <Text style={styles.infoItemTitle}>Nhà xuất bản</Text>
-              <Text style={styles.infoItemText}>{item.publisher}</Text>
+              <Text style={styles.infoItemText}>{item.author}</Text>
             </View>
             <View style={styles.infoItemWrapper}>
               <Text style={styles.infoItemTitle}>Thể loại</Text>
               <Text style={styles.infoItemText}>
-                {item.category}
+                {getCategoryName(item.category)}
                 
               </Text>
             </View>
           </View>
           <View style={styles.imageWrapper}>
-            <Image source={{ uri: item.image }} style={styles.itemImage} />
+            <Image source={{ uri: item.images }} style={styles.itemImage} />
           </View>
         </View>
 
@@ -123,8 +140,8 @@ export default function BookDetailScreen({ route, navigation }) {
             <Text style={styles.titleOverview}>Overview</Text>
             <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
               <Feather name="star" size={16} color= {colors.primary} />
-              <Text style={{marginHorizontal: 2}}>{item.rating}</Text>
-              <Text>({item.reviews})</Text>
+              <Text style={{marginHorizontal: 2}}>4</Text>
+              <Text>(100)</Text>
             </View>
           </View>
         </View>
@@ -139,6 +156,7 @@ export default function BookDetailScreen({ route, navigation }) {
 const styles = new StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff"
   },
   headerWrapper: {
     flexDirection: "row",
@@ -184,9 +202,11 @@ const styles = new StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    flex: 1
   },
   infoLeftWrapper: {
     paddingLeft: 20,
+    flex: 3
   },
   infoItemWrapper: {
     marginBottom: 30,
@@ -205,6 +225,7 @@ const styles = new StyleSheet.create({
   imageWrapper: {
     width: 280,
     height: 320,
+    flex: 5
   },
   itemImage: {
     resizeMode: "contain",

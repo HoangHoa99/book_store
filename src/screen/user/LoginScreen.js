@@ -3,6 +3,9 @@ import { View, Text, StyleSheet } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import * as Animatable from "react-native-animatable";
 import { AppContext } from "../HomeScreen";
+import jwt_decode from 'jwt-decode';
+import { UserInfoAsync } from '../../service/UserService';
+import { AddToCartFromLg } from "../../service/CartService";
 
 export default function LoginScreen({ navigation }) {
   const [errorMsg, setErrorMsg] = useState("");
@@ -13,14 +16,62 @@ export default function LoginScreen({ navigation }) {
 
   const checkIsLogin = useContext(AppContext);
 
-  function onLogin() {
-    if (username === "Hoa" && password === "123") {
-      checkIsLogin.setIsLogin(true);
-      navigation.navigate("MainScreen");
-    } else {
-      validateInput.current.shake(500);
-      setErrorMsg("Invalid login account. Try again!");
+  async function addToCartFromLg(accessToken){
+    
+    var cartItem = checkIsLogin.cartItems;
+
+    var cartAdd = [];
+
+    if(cartItem.length != 0){
+      cartItem.forEach(item => {
+        var addItem = {
+          book: item._id,
+          amount: item.amount
+        }
+
+        cartAdd.push(addItem);
+      });
+
+      await AddToCartFromLg(cartAdd, accessToken);
+      checkIsLogin.setCartItems([]);
     }
+  }
+
+  async function onLogin() {
+
+    fetch("https://utebookstore.herokuapp.com/user/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.msg != null) {
+          validateInput.current.shake(500);
+          setErrorMsg(json.msg);
+        } else {
+          checkIsLogin.setIsLogin(true);
+          checkIsLogin.setUser(json);
+          addToCartFromLg(json.accessToken);
+          var tokendecode = jwt_decode(json.accessToken);
+          var userDecode = tokendecode.user;
+          if(userDecode.id != null){
+            UserInfoAsync(userDecode.id).then((res) => {
+              checkIsLogin.setUserProfile(res);
+              checkIsLogin.setUserCart(res.cart);
+            });
+          }
+          navigation.navigate("MainScreen");
+        }
+
+        return json;
+      });
   }
   return (
     <View style={styles.container}>

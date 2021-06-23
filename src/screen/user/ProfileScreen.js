@@ -11,14 +11,7 @@ import { AppContext } from "../HomeScreen";
 export default function ProfileScreen({ navigation }) {
   const checkIsLogin = useContext(AppContext);
 
-  const [isEdit, setIsEdit] = useState(false);
-
-  const [userInfo, setUserInfo] = useState({
-    phone: "012345678",
-    email: "ute@gmail.com",
-    address: "Thu Duc city",
-    name: "benedict cumberbatch",
-  });
+  const userInfo = checkIsLogin.userProfile;
 
   function logout() {
     checkIsLogin.setIsLogin(false);
@@ -26,35 +19,57 @@ export default function ProfileScreen({ navigation }) {
   }
 
   function TitleName({ name }) {
-    const words = name.split(" ");
+    var whiteSpace = new RegExp("s+");
+    if (whiteSpace.test(name)) {
+      const words = name.split(" ");
 
-    return (
-      <View
-        style={{
-          marginLeft: 15,
-          marginTop: 80,
-          flexDirection: "column",
-        }}
-      >
-        <Text
+      return (
+        <View
           style={{
-            fontFamily: "AppleSDGothicNeo-Medium",
-            fontSize: 30,
+            marginLeft: 15,
+            marginTop: 80,
+            flexDirection: "column",
           }}
         >
-          {words[0]}
-        </Text>
-        <Text
+          <Text
+            style={{
+              fontFamily: "AppleSDGothicNeo-Medium",
+              fontSize: 30,
+            }}
+          >
+            {words[0]}
+          </Text>
+          <Text
+            style={{
+              marginTop: -5,
+              fontFamily: "AppleSDGothicNeo-Thin",
+              fontSize: 25,
+            }}
+          >
+            {words[words.length - 1]}
+          </Text>
+        </View>
+      );
+    } else {
+      return (
+        <View
           style={{
-            marginTop: -5,
-            fontFamily: "AppleSDGothicNeo-Thin",
-            fontSize: 25,
+            marginLeft: 15,
+            marginTop: 100,
+            flexDirection: "column",
           }}
         >
-          {words[words.length - 1]}
-        </Text>
-      </View>
-    );
+          <Text
+            style={{
+              fontFamily: "AppleSDGothicNeo-Medium",
+              fontSize: 30,
+            }}
+          >
+            {name}
+          </Text>
+        </View>
+      );
+    }
   }
 
   function Profile() {
@@ -80,10 +95,11 @@ export default function ProfileScreen({ navigation }) {
               marginTop: 50,
             }}
             source={require("../../assets/image/default_avt.png")}
+            // (userInfo.avatar != "") ? {uri: userInfo.avatar} : 
           />
-          <TitleName name={userInfo.name} />
+          <TitleName name={userInfo.username} />
           <TouchableOpacity
-            onPress={() => setIsEdit(!isEdit)}
+            onPress={() => navigation.navigate("EditProfileScreen", {data : userInfo})}
             style={{
               marginLeft: 45,
               marginTop: 90,
@@ -376,8 +392,7 @@ export default function ProfileScreen({ navigation }) {
             flexDirection: "row",
             backgroundColor: "#fff",
           }}
-        >
-        </View>
+        ></View>
         <View
           style={{
             flex: 0.1,
@@ -645,15 +660,9 @@ export default function ProfileScreen({ navigation }) {
   return (
     <>
       {checkIsLogin.isLogin ? (
-        isEdit ? (
-          <>
-            <Text>Hello</Text>
-          </>
-        ) : (
-          <>
-            <Profile />
-          </>
-        )
+        <>
+          <Profile />
+        </>
       ) : (
         <>
           <View style={styles.container}>
