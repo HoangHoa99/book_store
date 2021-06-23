@@ -46,7 +46,7 @@ export default function InformationScreen({ navigation }) {
             }}
             onPress={() =>
               Linking.openURL(
-                "mailto:support@utestore.com?subject=[SERVICE] Thư phản hồi"
+                "mailto:support@utestore.com?subject=[SERVICE] ĐÁNH GIÁ/PHẢN HỒI"
               )
             }
           >
@@ -133,7 +133,7 @@ export default function InformationScreen({ navigation }) {
           }}
         >
           <Text>UTE Bookstore</Text>
-          <Text>Copyright &copy; 2021. All right reserved</Text>
+          <Text>Copyright &copy; 2021. All rights reserved</Text>
         </View>
       </View>
     </>
