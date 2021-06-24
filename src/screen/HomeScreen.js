@@ -18,7 +18,7 @@ import ForgotPasswordScreen from "./user/ForgotPasswordScreen";
 import OrderScreen from "./app/OrderScreen";
 import EditProfileScreen from "./user/EditProfileScreen";
 
-import { GetBookAsync, GetCategories } from "../service/BookService";
+import { GetBookAsync, GetCategories, GetBookCategory } from "../service/BookService";
 
 // ANCHOR - Declare const
 const Tab = createBottomTabNavigator();
@@ -35,6 +35,12 @@ export default function HomeScreen() {
   const [newBook, setNewBook] = useState([]);
   const [hotBook, setHotBook] = useState([]);
   const [books, setBooks] = useState([]);
+  const [kinhte, setKinhte] = useState([]);
+  const [sachthieunhi, setSachthieunhi] = useState([]);
+  const [tieusuhoiky, setTieusuhoiky] = useState([]);
+  const [tamly, setTamly] = useState([]);
+  const [ngoaingu, setNgoaingu] = useState([]);
+  const [vanhoc, setVanhoc] = useState([]);
   const [categories, setCategory] = useState([]);
   const [user, setUser] = useState({});
   const [userProfile, setUserProfile] = useState({});
@@ -67,8 +73,21 @@ export default function HomeScreen() {
       });
     };
 
+    const getBookByCate = async () => {
+      GetBookCategory().then((res) => {
+        var listBookByCate = res.data;
+        setKinhte(listBookByCate.kinhte);
+        setSachthieunhi(listBookByCate.sachthieunhi);
+        setTieusuhoiky(listBookByCate.tieusuhoiky);
+        setTamly(listBookByCate.tamly);
+        setNgoaingu(listBookByCate.ngoaingu);
+        setVanhoc(listBookByCate.vanhoc);
+      });
+    };
+
     getBookLists();
     getCategoryList();
+    getBookByCate();
   }, []);
 
   // app context setting
@@ -88,7 +107,13 @@ export default function HomeScreen() {
     userCart,
     setUserCart,
     loading,
-    setLoading
+    setLoading,
+    kinhte,
+    sachthieunhi,
+    tieusuhoiky,
+    tamly,
+    ngoaingu,
+    vanhoc
   };
 
   return (
