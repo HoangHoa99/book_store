@@ -26,9 +26,27 @@ export default function BookSearchScreen({ navigation }) {
   
   let appContext = useContext(AppContext);
 
+  function getBookByCate(){
+    switch(selectedCategoryIndex){
+      case 0:
+        return appContext.vanhoc;
+      case 1:
+        return appContext.sachthieunhi;
+      case 2:
+        return appContext.kinhte;
+      case 3:
+        return appContext.tieusuhoiky;
+      case 4:
+        return appContext.tamly;
+      case 5:
+        return appContext.ngoaingu;
+    }
+  }
+
   // ANCHOR - Declare refresh item
 
   const addToCart = async (item) => {
+    
     try {
       const res = appContext.isLogin
       ? appContext.userCart
@@ -201,7 +219,7 @@ export default function BookSearchScreen({ navigation }) {
       <FlatList
         showsVerticalScrollIndicator={false}
         numColumns={2}
-        data={appContext.books}
+        data={getBookByCate()}
         renderItem={({ item }) => <Card item={item} />}
       />
     </SafeAreaView>
