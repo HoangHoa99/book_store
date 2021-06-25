@@ -41,6 +41,7 @@ export default function HomeScreen() {
   const [tamly, setTamly] = useState([]);
   const [ngoaingu, setNgoaingu] = useState([]);
   const [vanhoc, setVanhoc] = useState([]);
+  const [searchResult, setSearchResult] = useState([]);
   const [categories, setCategory] = useState([]);
   const [user, setUser] = useState({});
   const [userProfile, setUserProfile] = useState({});
@@ -113,7 +114,9 @@ export default function HomeScreen() {
     tieusuhoiky,
     tamly,
     ngoaingu,
-    vanhoc
+    vanhoc,
+    searchResult,
+    setSearchResult
   };
 
   return (
