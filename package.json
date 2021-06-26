@@ -32,7 +32,8 @@
     "react-native-screens": "~2.15.2",
     "react-native-unimodules": "^0.13.2",
     "react-native-web": "^0.15.6",
-    "react-navigation": "^4.4.4"
+    "react-navigation": "^4.4.4",
+    "expo-facebook": "~9.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

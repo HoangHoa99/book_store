@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import * as Animatable from "react-native-animatable";
 import { AppContext } from "../HomeScreen";
@@ -8,6 +8,7 @@ import { UserInfoAsync } from "../../service/UserService";
 import { AddToCartFromLg } from "../../service/CartService";
 import Loading from "../Loading";
 import * as Google from "expo-google-app-auth";
+import * as Facebook from "expo-facebook";
 export const isAndroid = () => Platform.OS === "android";
 
 export default function LoginScreen({ navigation }) {
@@ -36,6 +37,37 @@ export default function LoginScreen({ navigation }) {
 
       await AddToCartFromLg(cartAdd, accessToken);
       checkIsLogin.setCartItems([]);
+    }
+  }
+
+  //facebook
+  async function FBlogIn() {
+    try {
+      await Facebook.initializeAsync({
+        appId: '813439129284540',
+      });
+      const {
+        type,
+        token,
+        expirationDate,
+        permissions,
+        declinedPermissions,
+      } = await Facebook.logInWithReadPermissionsAsync({
+        permissions: ['public_profile', 'email'],
+      });
+
+      if (type === "success") {
+        // Get the user's name using Facebook's Graph API
+        const response = await fetch(
+          `https://graph.facebook.com/me?access_token=${token}`
+        );
+        console.log(JSON.stringify((await response.json())));
+        console.log(token);
+      } else {
+        console.log(`Facebook Login Error: Cancelled`);
+      }
+    } catch ({ message }) {
+      console.log(`Facebook Login Error: ${message}`);
     }
   }
 
@@ -70,26 +102,26 @@ export default function LoginScreen({ navigation }) {
         token: res.idToken,
       }),
     })
-    .then((response) => response.json())
-    .then((json) => {
-      if (json.msg != null) {
-        validateInput.current.shake(500);
-        setErrorMsg(json.msg);
-      } else {
-        checkIsLogin.setIsLogin(true);
-        checkIsLogin.setUser(json);
-        addToCartFromLg(json.accessToken);
-        var tokendecode = jwt_decode(json.accessToken);
-        var userDecode = tokendecode.user;
-        if (userDecode.id != null) {
-          UserInfoAsync(userDecode.id).then((res) => {
-            checkIsLogin.setUserProfile(res);
-            checkIsLogin.setUserCart(res.cart);
-          });
-        }
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.msg != null) {
+          validateInput.current.shake(500);
+          setErrorMsg(json.msg);
+        } else {
+          checkIsLogin.setIsLogin(true);
+          checkIsLogin.setUser(json);
+          addToCartFromLg(json.accessToken);
+          var tokendecode = jwt_decode(json.accessToken);
+          var userDecode = tokendecode.user;
+          if (userDecode.id != null) {
+            UserInfoAsync(userDecode.id).then((res) => {
+              checkIsLogin.setUserProfile(res);
+              checkIsLogin.setUserCart(res.cart);
+            });
+          }
 
-        checkIsLogin.setLoading(false);
-        navigation.navigate("MainScreen");
+          checkIsLogin.setLoading(false);
+          navigation.navigate("MainScreen");
         }
 
         return json;
@@ -97,7 +129,7 @@ export default function LoginScreen({ navigation }) {
   }
 
   async function onLogin() {
-    checkIsLogin.setLoading(!checkIsLogin.loading);
+    checkIsLogin.setLoading(true);
 
     fetch("https://utebookstore.herokuapp.com/user/login", {
       method: "POST",
@@ -221,13 +253,12 @@ export default function LoginScreen({ navigation }) {
                 </TouchableOpacity>
               </View>
               <View
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                marginTop: 40,
-              }}
-            >
-              </View>
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginTop: 40,
+                }}
+              ></View>
               <Text style={{ fontSize: 16, marginTop: 10 }}>
                 Or via social media
               </Text>
@@ -241,7 +272,7 @@ export default function LoginScreen({ navigation }) {
                     alignItems: "center",
                     justifyContent: "center",
                   }}
-                  onPress={() => alert("hehehe")}
+                  onPress={() => FBlogIn()}
                 >
                   <Text
                     style={{ fontSize: 25, fontWeight: "bold", color: "#FFF" }}
