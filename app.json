@@ -8,5 +8,21 @@
     "assetBundlePatterns": [
       "**/*"
     ]
+  },
+  "ios": {
+    "supportsTablet": true,
+    "bundleIdentifier": "org.name.demo",
+    "config":{
+      "googleSignIn":{
+        "reservedClientId": "com.googleusercontent.apps.46698234435-touiselncq02ceen7cpngahojgoefsff"
+      }
+    }
+  },
+  "android": {
+    "adaptiveIcon": {
+      "foregroundImage": "./assets/adaptive-icon.png",
+      "backgroundColor": "#FFFFFF"
+    },
+    "package": "com.demo"
   }
 }
