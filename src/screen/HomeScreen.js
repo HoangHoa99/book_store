@@ -107,7 +107,7 @@ export default function HomeScreen() {
     setUserProfile,
     userCart,
     setUserCart,
-    loading,
+    loading: false,
     setLoading,
     kinhte,
     sachthieunhi,

@@ -7,6 +7,8 @@ import jwt_decode from "jwt-decode";
 import { UserInfoAsync } from "../../service/UserService";
 import { AddToCartFromLg } from "../../service/CartService";
 import Loading from "../Loading";
+import * as Google from "expo-google-app-auth";
+export const isAndroid = () => Platform.OS === "android";
 
 export default function LoginScreen({ navigation }) {
   const [errorMsg, setErrorMsg] = useState("");
@@ -35,6 +37,63 @@ export default function LoginScreen({ navigation }) {
       await AddToCartFromLg(cartAdd, accessToken);
       checkIsLogin.setCartItems([]);
     }
+  }
+
+  //google
+  async function signInWithGoogleAsync() {
+    try {
+      const result = await Google.logInAsync({
+        clientId: isAndroid()
+          ? "46698234435-2cjnkk9oqnvslr8dshm71jcvahlogqia.apps.googleusercontent.com"
+          : "46698234435-touiselncq02ceen7cpngahojgoefsff.apps.googleusercontent.com",
+        scopes: ["profile", "email"],
+      });
+
+      if (result.type === "success") {
+        return result;
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      return { error: true };
+    }
+  }
+
+  async function signInWithGoogle() {
+    let res = await signInWithGoogleAsync();
+    fetch("https://utebookstore.herokuapp.com/user/signingg", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        token: res.idToken,
+      }),
+    })
+    .then((response) => response.json())
+    .then((json) => {
+      if (json.msg != null) {
+        validateInput.current.shake(500);
+        setErrorMsg(json.msg);
+      } else {
+        checkIsLogin.setIsLogin(true);
+        checkIsLogin.setUser(json);
+        addToCartFromLg(json.accessToken);
+        var tokendecode = jwt_decode(json.accessToken);
+        var userDecode = tokendecode.user;
+        if (userDecode.id != null) {
+          UserInfoAsync(userDecode.id).then((res) => {
+            checkIsLogin.setUserProfile(res);
+            checkIsLogin.setUserCart(res.cart);
+          });
+        }
+
+        checkIsLogin.setLoading(false);
+        navigation.navigate("MainScreen");
+        }
+
+        return json;
+      });
   }
 
   async function onLogin() {
@@ -76,6 +135,7 @@ export default function LoginScreen({ navigation }) {
         return json;
       });
   }
+
   return (
     <>
       {checkIsLogin.loading ? (
@@ -158,6 +218,54 @@ export default function LoginScreen({ navigation }) {
                   onPress={() => navigation.navigate("RegisterScreen")}
                 >
                   <Text style={{ fontWeight: "bold" }}> Sign Up</Text>
+                </TouchableOpacity>
+              </View>
+              <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 40,
+              }}
+            >
+              </View>
+              <Text style={{ fontSize: 16, marginTop: 10 }}>
+                Or via social media
+              </Text>
+              <View style={{ flexDirection: "row", marginTop: 20 }}>
+                <TouchableOpacity
+                  style={{
+                    height: 40,
+                    width: 40,
+                    borderRadius: 40 / 2,
+                    backgroundColor: "#3f51b5",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  onPress={() => alert("hehehe")}
+                >
+                  <Text
+                    style={{ fontSize: 25, fontWeight: "bold", color: "#FFF" }}
+                  >
+                    f
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    height: 40,
+                    width: 40,
+                    borderRadius: 40 / 2,
+                    backgroundColor: "#f44336",
+                    marginHorizontal: 10,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  onPress={() => signInWithGoogle()}
+                >
+                  <Text
+                    style={{ fontSize: 25, fontWeight: "bold", color: "#FFF" }}
+                  >
+                    G
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
