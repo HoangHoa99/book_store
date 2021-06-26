@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import {
   Dimensions,
   Image,
@@ -16,11 +16,14 @@ import {
 import { Feather } from "@expo/vector-icons";
 import COLORS from "../../assets/color/colors";
 import {AppContext} from '../HomeScreen';
+import { SearchBooksAsync } from '../../service/BookService';
 
 const { width } = Dimensions.get("screen");
 const cardWidth = width / 2 - 20;
 
 export default function BookSearchScreen({ navigation }) {
+
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(0);
   
@@ -40,7 +43,17 @@ export default function BookSearchScreen({ navigation }) {
         return appContext.tamly;
       case 5:
         return appContext.ngoaingu;
+      case -1:
+        return appContext.searchResult;
     }
+  }
+
+  function searchBookByKeyword(text){
+    setSearchQuery(text);
+    SearchBooksAsync(searchQuery).then((res) => {
+      appContext.setSearchResult(res);
+    });
+    setSelectedCategoryIndex(-1);
   }
 
   // ANCHOR - Declare refresh item
@@ -207,11 +220,15 @@ export default function BookSearchScreen({ navigation }) {
           <TextInput
             style={{ flex: 1, fontSize: 18, color: COLORS.black}}
             placeholder="Search for item"
-          />
+            onChangeText = {(text) => searchBookByKeyword(text)}
+          />          
         </View>
-        <View style={style.sortBtn}>
+        <TouchableOpacity 
+          style={style.sortBtn}
+          onPress={() => searchBookByKeyword(searchQuery)}
+        >
           <Feather name="search" size={28} color={COLORS.white} />
-        </View>
+        </TouchableOpacity>
       </View>
       <View>
         <ListCategories />
