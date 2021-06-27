@@ -70,7 +70,7 @@ export default function RegisterScreen({ navigation }) {
   }
 
   function onSignup() {
-    appContext.setLoading(!appContext.loading);
+    appContext.setLoading(true);
 
     var isValid = validatePassword() && validateInputValue();
     if (isValid) {

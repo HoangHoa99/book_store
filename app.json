@@ -24,5 +24,6 @@
       "backgroundColor": "#FFFFFF"
     },
     "package": "com.demo"
-  }
+  },
+  "facebookAutoInitEnabled": true
 }

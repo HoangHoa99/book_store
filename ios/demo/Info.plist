@@ -64,5 +64,21 @@
 				</array>
 			</dict>
 		</array>
+		
+<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+  <key>CFBundleURLSchemes</key>
+  <array>
+    <string>813439129284540</string>
+  </array>
+  </dict>
+</array>
+<key>FacebookAppID</key>
+<string>813439129284540</string>
+<key>FacebookClientToken</key>
+<string>UTE Bookstore 2.0</string>
+<key>FacebookDisplayName</key>
+<string>UTE Bookstore 2.0</string>
 	</dict>
 </plist>

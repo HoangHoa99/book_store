@@ -12,7 +12,7 @@ export default function ForgotPasswordScreen({ navigation }) {
   const [errorMsg, setErrorMsg] = useState("");
 
   async function sendEmail() {
-    appContext.setLoading(!appContext.loading);
+    appContext.setLoading(true);
     await ForgotPasswordAsync(email).then((res) => {
       appContext.setLoading(false);
       if (res.Type === "success") {
