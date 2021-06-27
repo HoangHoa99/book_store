@@ -61,14 +61,53 @@ export default function LoginScreen({ navigation }) {
         const response = await fetch(
           `https://graph.facebook.com/me?access_token=${token}`
         );
-        console.log(JSON.stringify((await response.json())));
-        console.log(token);
+        const userId = (await response.json()).id;
+        signInWithFacebook(userId, token);
       } else {
         console.log(`Facebook Login Error: Cancelled`);
       }
     } catch ({ message }) {
       console.log(`Facebook Login Error: ${message}`);
     }
+  }
+
+  async function signInWithFacebook(id, token) {
+    fetch("https://utebookstore.herokuapp.com/user/signinfb2", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        userID: id,
+        token: token
+      }),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.msg != null) {
+          
+          checkIsLogin.setLoading(false);
+          validateInput.current.shake(500);
+          setErrorMsg(json.msg);
+        } else {
+          checkIsLogin.setIsLogin(true);
+          checkIsLogin.setUser(json);
+          addToCartFromLg(json.accessToken);
+          var tokendecode = jwt_decode(json.accessToken);
+          var userDecode = tokendecode.user;
+          if (userDecode.id != null) {
+            UserInfoAsync(userDecode.id).then((res) => {
+              checkIsLogin.setUserProfile(res);
+              checkIsLogin.setUserCart(res.cart);
+            });
+          }
+
+          checkIsLogin.setLoading(false);
+          navigation.navigate("MainScreen");
+        }
+
+        return json;
+      });
   }
 
   //google
@@ -93,6 +132,7 @@ export default function LoginScreen({ navigation }) {
 
   async function signInWithGoogle() {
     let res = await signInWithGoogleAsync();
+    checkIsLogin.setLoading(true);
     fetch("https://utebookstore.herokuapp.com/user/signingg", {
       method: "POST",
       headers: {
@@ -105,6 +145,8 @@ export default function LoginScreen({ navigation }) {
       .then((response) => response.json())
       .then((json) => {
         if (json.msg != null) {
+          
+          checkIsLogin.setLoading(false);
           validateInput.current.shake(500);
           setErrorMsg(json.msg);
         } else {
