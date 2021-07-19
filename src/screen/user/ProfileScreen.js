@@ -98,7 +98,7 @@ export default function ProfileScreen({ navigation }) {
             // (userInfo.avatar != "") ? {uri: userInfo.avatar} :
           />
           <TitleName name={userInfo.username} />
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() =>
               navigation.navigate("EditProfileScreen", { data: userInfo })
             }
@@ -114,7 +114,7 @@ export default function ProfileScreen({ navigation }) {
             }}
           >
             <MaterialIcons name="create" size={25} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <View
           style={{

@@ -55,15 +55,15 @@ export default function CartScreen({ navigation }) {
 
   function clearCart() {
     Alert.alert(
-      "Submit your order?",
+      "Xác nhận đặt hàng?",
       "",
       [
         {
-          text: "Cancel",
+          text: "Huỷ",
           style: "cancel",
         },
         {
-          text: "Submit",
+          text: "Xác nhận",
           onPress: () => {
             confirmOrder();
             setModalVisible(false);
@@ -76,13 +76,18 @@ export default function CartScreen({ navigation }) {
   }
 
   async function checkoutBtn() {
+
+    var userLogin = cartContext.isLogin;
+    var userCart = cartContext.cartItems;
+    if(userLogin){
+      userCart = cartContext.userCart;
+    }
     if (
-      (cartContext.isLogin ? cartContext.userCart : cartContext.cartItems)
-        .length === 0
+      userCart.length === 0
     ) {
       Alert.alert("Giỏ hàng trống", "Thêm ít nhất một sản phẩm");
     } else {
-      if (cartContext.isLogin) {
+      if (userLogin) {
         var cartAdd = [];
 
         cartContext.userCart.forEach((item) => {
@@ -96,8 +101,27 @@ export default function CartScreen({ navigation }) {
 
         cartContext.setCartItems([]);
         await AddToCartFromLg(cartAdd, cartContext.user.accessToken);
+        setModalVisible(!modalVisible);
       }
-      setModalVisible(!modalVisible);
+      else{
+        Alert.alert(
+          "Đăng nhập để tiếp tục",
+          "",
+          [
+            {
+              text: "Cancel",
+              style: "cancel",
+            },
+            {
+              text: "Ok",
+              onPress: () => {
+                navigation.navigate("ProfileScreen");
+              },
+            },
+          ],
+          { cancelable: false }
+        );
+      }
     }
   }
 
@@ -168,15 +192,15 @@ export default function CartScreen({ navigation }) {
   /** xoa item trong cart */
   function deleteHandler(index) {
     Alert.alert(
-      "Are you sure to delete this item from your cart?",
+      "Bạn không mua cuốn sách này nữa?",
       "",
       [
         {
-          text: "Cancel",
+          text: "Không",
           style: "cancel",
         },
         {
-          text: "Delete",
+          text: "Chuẩn",
           onPress: () => {
             let updatedCart = cartContext.isLogin
               ? cartContext.userCart

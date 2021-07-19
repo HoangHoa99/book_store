@@ -65,13 +65,16 @@ export default function LoginScreen({ navigation }) {
         signInWithFacebook(userId, token);
       } else {
         console.log(`Facebook Login Error: Cancelled`);
+        checkIsLogin.setLoading(false);
       }
     } catch ({ message }) {
       console.log(`Facebook Login Error: ${message}`);
+      checkIsLogin.setLoading(false);
     }
   }
 
   async function signInWithFacebook(id, token) {
+    checkIsLogin.setLoading(true);
     fetch("https://utebookstore.herokuapp.com/user/signinfb2", {
       method: "POST",
       headers: {
@@ -123,16 +126,20 @@ export default function LoginScreen({ navigation }) {
       if (result.type === "success") {
         return result;
       } else {
+
+        checkIsLogin.setLoading(false);
         return { cancelled: true };
       }
     } catch (e) {
+      
+      checkIsLogin.setLoading(false);
       return { error: true };
     }
   }
 
   async function signInWithGoogle() {
-    let res = await signInWithGoogleAsync();
     checkIsLogin.setLoading(true);
+    let res = await signInWithGoogleAsync();
     fetch("https://utebookstore.herokuapp.com/user/signingg", {
       method: "POST",
       headers: {
@@ -187,8 +194,9 @@ export default function LoginScreen({ navigation }) {
       .then((response) => response.json())
       .then((json) => {
         if (json.msg != null) {
-          validateInput.current.shake(500);
           setErrorMsg(json.msg);
+          checkIsLogin.setLoading(false);
+          validateInput.current.shake(500);
         } else {
           checkIsLogin.setIsLogin(true);
           checkIsLogin.setUser(json);
@@ -212,7 +220,7 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <>
-      {checkIsLogin.loading ? (
+      {true === checkIsLogin.loading ? (
         <>
           <Loading />
         </>

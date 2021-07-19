@@ -108,8 +108,8 @@ export default function BookDetailScreen({ route, navigation }) {
               <Text style={styles.infoItemText}>{item.author}</Text>
             </View>
             <View style={styles.infoItemWrapper}>
-              <Text style={styles.infoItemTitle}>Nhà xuất bản</Text>
-              <Text style={styles.infoItemText}>{item.author}</Text>
+              <Text style={styles.infoItemTitle}>In stock</Text>
+              <Text style={styles.infoItemText}>{item.quantity}</Text>
             </View>
             <View style={styles.infoItemWrapper}>
               <Text style={styles.infoItemTitle}>Thể loại</Text>
