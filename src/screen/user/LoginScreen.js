@@ -1,5 +1,11 @@
 import React, { useContext, useState } from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import * as Animatable from "react-native-animatable";
 import { AppContext } from "../HomeScreen";
@@ -15,6 +21,7 @@ export default function LoginScreen({ navigation }) {
   const [errorMsg, setErrorMsg] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const validateInput = React.createRef();
 
@@ -44,17 +51,12 @@ export default function LoginScreen({ navigation }) {
   async function FBlogIn() {
     try {
       await Facebook.initializeAsync({
-        appId: '813439129284540',
+        appId: "813439129284540",
       });
-      const {
-        type,
-        token,
-        expirationDate,
-        permissions,
-        declinedPermissions,
-      } = await Facebook.logInWithReadPermissionsAsync({
-        permissions: ['public_profile', 'email'],
-      });
+      const { type, token, expirationDate, permissions, declinedPermissions } =
+        await Facebook.logInWithReadPermissionsAsync({
+          permissions: ["public_profile", "email"],
+        });
 
       if (type === "success") {
         // Get the user's name using Facebook's Graph API
@@ -65,16 +67,16 @@ export default function LoginScreen({ navigation }) {
         signInWithFacebook(userId, token);
       } else {
         console.log(`Facebook Login Error: Cancelled`);
-        checkIsLogin.setLoading(false);
+        setLoading(false);
       }
     } catch ({ message }) {
       console.log(`Facebook Login Error: ${message}`);
-      checkIsLogin.setLoading(false);
+      setLoading(false);
     }
   }
 
   async function signInWithFacebook(id, token) {
-    checkIsLogin.setLoading(true);
+    setLoading(true);
     fetch("https://utebookstore.herokuapp.com/user/signinfb2", {
       method: "POST",
       headers: {
@@ -82,14 +84,13 @@ export default function LoginScreen({ navigation }) {
       },
       body: JSON.stringify({
         userID: id,
-        token: token
+        token: token,
       }),
     })
       .then((response) => response.json())
       .then((json) => {
         if (json.msg != null) {
-          
-          checkIsLogin.setLoading(false);
+          setLoading(false);
           validateInput.current.shake(500);
           setErrorMsg(json.msg);
         } else {
@@ -105,7 +106,7 @@ export default function LoginScreen({ navigation }) {
             });
           }
 
-          checkIsLogin.setLoading(false);
+          setLoading(false);
           navigation.navigate("MainScreen");
         }
 
@@ -126,19 +127,17 @@ export default function LoginScreen({ navigation }) {
       if (result.type === "success") {
         return result;
       } else {
-
-        checkIsLogin.setLoading(false);
+        setLoading(false);
         return { cancelled: true };
       }
     } catch (e) {
-      
-      checkIsLogin.setLoading(false);
+      setLoading(false);
       return { error: true };
     }
   }
 
   async function signInWithGoogle() {
-    checkIsLogin.setLoading(true);
+    setLoading(true);
     let res = await signInWithGoogleAsync();
     fetch("https://utebookstore.herokuapp.com/user/signingg", {
       method: "POST",
@@ -152,8 +151,7 @@ export default function LoginScreen({ navigation }) {
       .then((response) => response.json())
       .then((json) => {
         if (json.msg != null) {
-          
-          checkIsLogin.setLoading(false);
+          setLoading(false);
           validateInput.current.shake(500);
           setErrorMsg(json.msg);
         } else {
@@ -169,7 +167,7 @@ export default function LoginScreen({ navigation }) {
             });
           }
 
-          checkIsLogin.setLoading(false);
+          setLoading(false);
           navigation.navigate("MainScreen");
         }
 
@@ -178,7 +176,7 @@ export default function LoginScreen({ navigation }) {
   }
 
   async function onLogin() {
-    checkIsLogin.setLoading(true);
+    setLoading(true);
 
     fetch("https://utebookstore.herokuapp.com/user/login", {
       method: "POST",
@@ -195,7 +193,7 @@ export default function LoginScreen({ navigation }) {
       .then((json) => {
         if (json.msg != null) {
           setErrorMsg(json.msg);
-          checkIsLogin.setLoading(false);
+          setLoading(false);
           validateInput.current.shake(500);
         } else {
           checkIsLogin.setIsLogin(true);
@@ -210,7 +208,7 @@ export default function LoginScreen({ navigation }) {
             });
           }
 
-          checkIsLogin.setLoading(false);
+          setLoading(false);
           navigation.navigate("MainScreen");
         }
 
@@ -220,137 +218,149 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <>
-      {true === checkIsLogin.loading ? (
+      {loading ? (
         <>
           <Loading />
         </>
       ) : (
         <>
-          <View style={styles.container}>
-            <Text style={{ fontSize: 25, marginTop: 20 }}>Welcome Back! </Text>
-            <Text style={{ fontSize: 16, color: "gray", marginTop: 20 }}>
-              Sign in to continue
-            </Text>
-
-            <Animatable.View ref={validateInput}>
-              <TextInput
-                style={{
-                  marginTop: 40,
-                  borderBottomColor: "#ddd",
-                  borderBottomWidth: 1,
-                  paddingBottom: 20,
-                }}
-                placeholder="Username"
-                onChangeText={(text) => setUsername(text)}
-              />
-
-              <TextInput
-                style={{
-                  marginTop: 40,
-                  borderBottomColor: "#ddd",
-                  borderBottomWidth: 1,
-                  paddingBottom: 20,
-                }}
-                placeholder="Password"
-                secureTextEntry={true}
-                onChangeText={(text) => setPassword(text)}
-              />
-              <Text
-                style={{ color: "red", textAlign: "center", marginTop: 10 }}
-              >
-                {errorMsg}
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.container}>
+              <Text style={{ fontSize: 25, marginTop: 20 }}>
+                Welcome Back!{" "}
               </Text>
-            </Animatable.View>
+              <Text style={{ fontSize: 16, color: "gray", marginTop: 20 }}>
+                Sign in to continue
+              </Text>
 
-            <View
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                marginTop: 40,
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => onLogin()}
-                style={{
-                  width: 200,
-                  backgroundColor: "#0d47a1",
-                  padding: 10,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 40,
-                  marginTop: 30,
-                }}
-              >
+              <Animatable.View ref={validateInput}>
+                <TextInput
+                  style={{
+                    marginTop: 40,
+                    borderBottomColor: "#ddd",
+                    borderBottomWidth: 1,
+                    paddingBottom: 20,
+                  }}
+                  placeholder="Username"
+                  onChangeText={(text) => setUsername(text)}
+                />
+
+                <TextInput
+                  style={{
+                    marginTop: 40,
+                    borderBottomColor: "#ddd",
+                    borderBottomWidth: 1,
+                    paddingBottom: 20,
+                  }}
+                  placeholder="Password"
+                  secureTextEntry={true}
+                  onChangeText={(text) => setPassword(text)}
+                />
                 <Text
-                  style={{ textAlign: "center", color: "#FFF", fontSize: 16 }}
+                  style={{ color: "red", textAlign: "center", marginTop: 10 }}
                 >
-                  Login
+                  {errorMsg}
                 </Text>
-              </TouchableOpacity>
+              </Animatable.View>
 
-              <TouchableOpacity
-                onPress={() => navigation.navigate("ForgotPasswordScreen")}
-              >
-                <Text style={{ marginTop: 20 }}>Forgot Password ?</Text>
-              </TouchableOpacity>
-
-              <View style={{ flexDirection: "row", marginTop: 40 }}>
-                <Text style={{ color: "gray" }}>Don't have an account?</Text>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("RegisterScreen")}
-                >
-                  <Text style={{ fontWeight: "bold" }}> Sign Up</Text>
-                </TouchableOpacity>
-              </View>
               <View
                 style={{
                   alignItems: "center",
                   justifyContent: "center",
                   marginTop: 40,
                 }}
-              ></View>
-              <Text style={{ fontSize: 16, marginTop: 10 }}>
-                Or via social media
-              </Text>
-              <View style={{ flexDirection: "row", marginTop: 20 }}>
+              >
                 <TouchableOpacity
+                  onPress={() => onLogin()}
                   style={{
-                    height: 40,
-                    width: 40,
-                    borderRadius: 40 / 2,
-                    backgroundColor: "#3f51b5",
+                    width: 200,
+                    backgroundColor: "#0d47a1",
+                    padding: 10,
                     alignItems: "center",
                     justifyContent: "center",
+                    borderRadius: 40,
+                    marginTop: 30,
                   }}
-                  onPress={() => FBlogIn()}
                 >
                   <Text
-                    style={{ fontSize: 25, fontWeight: "bold", color: "#FFF" }}
+                    style={{ textAlign: "center", color: "#FFF", fontSize: 16 }}
                   >
-                    f
+                    Login
                   </Text>
                 </TouchableOpacity>
+
                 <TouchableOpacity
+                  onPress={() => navigation.navigate("ForgotPasswordScreen")}
+                >
+                  <Text style={{ marginTop: 20 }}>Forgot Password ?</Text>
+                </TouchableOpacity>
+
+                <View style={{ flexDirection: "row", marginTop: 40 }}>
+                  <Text style={{ color: "gray" }}>Don't have an account?</Text>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("RegisterScreen")}
+                  >
+                    <Text style={{ fontWeight: "bold" }}> Sign Up</Text>
+                  </TouchableOpacity>
+                </View>
+                <View
                   style={{
-                    height: 40,
-                    width: 40,
-                    borderRadius: 40 / 2,
-                    backgroundColor: "#f44336",
-                    marginHorizontal: 10,
                     alignItems: "center",
                     justifyContent: "center",
+                    marginTop: 40,
                   }}
-                  onPress={() => signInWithGoogle()}
-                >
-                  <Text
-                    style={{ fontSize: 25, fontWeight: "bold", color: "#FFF" }}
+                ></View>
+                <Text style={{ fontSize: 16, marginTop: 10 }}>
+                  Or via social media
+                </Text>
+                <View style={{ flexDirection: "row", marginTop: 20 }}>
+                  <TouchableOpacity
+                    style={{
+                      height: 40,
+                      width: 40,
+                      borderRadius: 40 / 2,
+                      backgroundColor: "#3f51b5",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                    onPress={() => FBlogIn()}
                   >
-                    G
-                  </Text>
-                </TouchableOpacity>
+                    <Text
+                      style={{
+                        fontSize: 25,
+                        fontWeight: "bold",
+                        color: "#FFF",
+                      }}
+                    >
+                      f
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      height: 40,
+                      width: 40,
+                      borderRadius: 40 / 2,
+                      backgroundColor: "#f44336",
+                      marginHorizontal: 10,
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                    onPress={() => signInWithGoogle()}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 25,
+                        fontWeight: "bold",
+                        color: "#FFF",
+                      }}
+                    >
+                      G
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-          </View>
+          </TouchableWithoutFeedback>
         </>
       )}
     </>
