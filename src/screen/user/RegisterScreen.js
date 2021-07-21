@@ -1,56 +1,54 @@
-import React, { useState, useContext } from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
-import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import * as Animatable from "react-native-animatable";
+import React, { useState } from "react";
+import {
+  View,
+  KeyboardAvoidingView,
+  TextInput,
+  StyleSheet,
+  Text,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import Loading from "../Loading";
-import { AppContext } from "../HomeScreen";
 
 export default function RegisterScreen({ navigation }) {
-  const appContext = useContext(AppContext);
 
   const [errorMsg, setErrorMsg] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-
-  const validateInput = React.createRef();
+  const [loading, setLoading] = useState(false);
+  const behavior = Platform.OS === "ios" ? "padding" : "height";
 
   function validateInputValue() {
     const emailRe = /^[^\s@]+@[^\s@]+$/;
-    const phoneRe = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g;
 
     // confirm
     if (confirmPassword === "") {
-      validateInput.current.shake(200);
       setErrorMsg("Confirm your password");
     }
 
     // password
     if (password === "") {
-      validateInput.current.shake(200);
       setErrorMsg("Password must be not blank");
     }
     // username
     if (username === "") {
-      validateInput.current.shake(200);
       setErrorMsg("Username must be not blank");
     }
 
     // phone or email
-    if (email === "" || phone === "") {
-      validateInput.current.shake(200);
-      setErrorMsg("Email or phone is required");
-    } else if (!emailRe.test(email) && !phoneRe.test(phone)) {
-      validateInput.current.shake(200);
-      setErrorMsg("Invalid mail or phone");
+    if (email === "") {
+      setErrorMsg("Email is required");
+    } else if (!emailRe.test(email)) {
+      setErrorMsg("Invalid mail");
     }
 
     return (
       email !== "" &&
-      phone !== "" &&
       username !== "" &&
       password !== "" &&
       confirmPassword !== ""
@@ -59,10 +57,8 @@ export default function RegisterScreen({ navigation }) {
   // validate password
   function validatePassword() {
     if (password.length < 8) {
-      validateInput.current.shake(200);
       setErrorMsg("Password must be greater than 8 character");
     } else if (password !== confirmPassword) {
-      validateInput.current.shake(200);
       setErrorMsg("Confirm password is not similar to password");
     }
 
@@ -70,10 +66,9 @@ export default function RegisterScreen({ navigation }) {
   }
 
   function onSignup() {
-    appContext.setLoading(true);
-
-    var isValid = validatePassword() && validateInputValue();
+    var isValid = validateInputValue() && validatePassword();
     if (isValid) {
+      setLoading(true);
       fetch("https://utebookstore.herokuapp.com/user/create", {
         method: "POST",
         headers: {
@@ -87,15 +82,13 @@ export default function RegisterScreen({ navigation }) {
           username: username,
           password: password,
           email: email,
-          phone: phone,
-          address: address,
           __v: 0,
         }),
       })
         .then((response) => response.json())
         .then((json) => {
-          appContext.setLoading(false);
-          if (json != "create success") {
+          setLoading(false);
+          if (json != "create user success!") {
             setErrorMsg(json);
           } else {
             Alert.alert(
@@ -120,126 +113,77 @@ export default function RegisterScreen({ navigation }) {
         });
     }
   }
+
   return (
     <>
-      {appContext.loading ? (
+      {loading ? (
         <>
           <Loading />
         </>
       ) : (
-        <>
-          <View style={styles.container}>
-            <Text style={{ fontSize: 25, marginTop: 20 }}>
-              Become our customer!{" "}
-            </Text>
-            <Text style={{ fontSize: 16, color: "gray", marginTop: 20 }}>
-              Sign up to continue
-            </Text>
-
-            <Animatable.View ref={validateInput}>
+        <KeyboardAvoidingView
+          behavior={behavior}
+          style={styles.container}
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.inner}>
+              <Text style={styles.header}>Become our customer!</Text>
               <TextInput
-                style={{
-                  marginTop: 40,
-                  borderBottomColor: "#ddd",
-                  borderBottomWidth: 1,
-                  paddingBottom: 20,
-                }}
+                style={styles.textInput}
                 placeholder="Email"
                 onChangeText={(text) => setEmail(text)}
               />
 
               <TextInput
-                style={{
-                  marginTop: 40,
-                  borderBottomColor: "#ddd",
-                  borderBottomWidth: 1,
-                  paddingBottom: 20,
-                }}
-                placeholder="Phone"
-                onChangeText={(text) => setPhone(text)}
-              />
-
-              <TextInput
-                style={{
-                  marginTop: 40,
-                  borderBottomColor: "#ddd",
-                  borderBottomWidth: 1,
-                  paddingBottom: 20,
-                }}
+                style={styles.textInput}
                 placeholder="Username"
                 onChangeText={(text) => setUsername(text)}
               />
 
               <TextInput
-                style={{
-                  marginTop: 40,
-                  borderBottomColor: "#ddd",
-                  borderBottomWidth: 1,
-                  paddingBottom: 20,
-                }}
+                style={styles.textInput}
                 placeholder="Password"
                 secureTextEntry={true}
                 onChangeText={(text) => setPassword(text)}
               />
 
               <TextInput
-                style={{
-                  marginTop: 40,
-                  borderBottomColor: "#ddd",
-                  borderBottomWidth: 1,
-                  paddingBottom: 20,
-                }}
+                style={styles.textInput}
                 placeholder="Confirm password"
                 secureTextEntry={true}
                 onChangeText={(text) => setConfirmPassword(text)}
               />
-
-              <TextInput
-                style={{
-                  marginTop: 40,
-                  borderBottomColor: "#ddd",
-                  borderBottomWidth: 1,
-                  paddingBottom: 20,
-                }}
-                placeholder="Address"
-                onChangeText={(text) => setAddress(text)}
-              />
-
               <Text
-                style={{ color: "red", textAlign: "center", marginTop: 10 }}
-              >
-                {errorMsg}
-              </Text>
-            </Animatable.View>
-
-            <View
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                marginTop: 40,
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => onSignup()}
-                style={{
-                  width: 200,
-                  backgroundColor: "#0d47a1",
-                  padding: 10,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 40,
-                  marginTop: 30,
-                }}
-              >
-                <Text
-                  style={{ textAlign: "center", color: "#FFF", fontSize: 16 }}
+                    style={{ color: "red", textAlign: "center", marginTop: 10 }}
+                  >
+                    {errorMsg}
+                  </Text>
+              <View style={styles.btnContainer}>
+                <TouchableOpacity
+                  onPress={() => onSignup()}
+                  style={{
+                    width: 200,
+                    backgroundColor: "#0d47a1",
+                    padding: 10,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: 40
+                  }}
                 >
-                  Sign up
-                </Text>
-              </TouchableOpacity>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: "#FFF",
+                      fontSize: 16,
+                    }}
+                  >
+                    Sign up
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        </>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
       )}
     </>
   );
@@ -248,7 +192,23 @@ export default function RegisterScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF",
-    padding: 20,
+    backgroundColor: "#fff"
+  },
+  inner: {
+    padding: 24,
+    flex: 1,
+    justifyContent: "space-around",
+  },
+  header: {
+    fontSize: 30,
+  },
+  textInput: {
+    borderBottomColor: "#ddd",
+    borderBottomWidth: 1,
+    paddingBottom: 10,
+  },
+  btnContainer: {
+    alignItems: "center",
+    justifyContent: "center"
   },
 });
