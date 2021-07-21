@@ -8,12 +8,13 @@ import {
   Image,
   Alert,
   Modal,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import {
   FlatList,
   TouchableOpacity,
   TextInput,
-  ScrollView,
 } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import colors from "../../assets/color/colors";
@@ -24,7 +25,6 @@ import {
   DeleteCartItem,
   OrderAdd,
 } from "../../service/CartService";
-import Loading from "../Loading";
 
 export default function CartScreen({ navigation }) {
   // ANCHOR - Declare state
@@ -166,7 +166,7 @@ export default function CartScreen({ navigation }) {
   }
 
   /**tang giam so luong item */
-  function quantityHandler(action, index) {
+  function quantityHandler(action, index, instock) {
     let newCartItems = cartContext.isLogin
       ? cartContext.userCart
       : cartContext.cartItems;
@@ -176,7 +176,12 @@ export default function CartScreen({ navigation }) {
     let currentQty = currentItem.amount;
 
     if (action == "more") {
-      currentItem.amount = currentQty + 1;
+      if(currentQty + 1 > instock){
+        Alert.alert("Vượt quá số lượng còn lại");
+      }
+      else{
+        currentItem.amount = currentQty + 1;   
+      }   
     } else if (action == "less") {
       currentItem.amount = currentQty > 1 ? currentQty - 1 : 1;
     }
@@ -260,11 +265,11 @@ export default function CartScreen({ navigation }) {
             {item.amount}
           </Text>
           <View style={style.actionBtn}>
-            <TouchableOpacity onPress={() => quantityHandler("less", item._id)}>
+            <TouchableOpacity onPress={() => quantityHandler("less", item._id, item.book.quantity)}>
               <Icon name="remove" size={25} color={colors.white} />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => quantityHandler("more", item._id)}>
+            <TouchableOpacity onPress={() => quantityHandler("more", item._id, item.book.quantity)}>
               <Icon name="add" size={25} color={colors.white} />
             </TouchableOpacity>
           </View>
@@ -277,13 +282,9 @@ export default function CartScreen({ navigation }) {
   };
   return (
     <>
-      {cartContext.loading ? (
-        <>
-          <Loading />
-        </>
-      ) : (
         <>
           <SafeAreaView style={{ backgroundColor: colors.white, flex: 1 }}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <Modal
               animationType="slide"
               presentationStyle="pageSheet"
@@ -317,70 +318,48 @@ export default function CartScreen({ navigation }) {
                   padding: 20,
                 }}
               >
-                <Text style={{ fontSize: 25, marginTop: 20 }}>
+                
+                <Text style={{ fontSize: 25, marginTop: 10, marginBottom: 20 }}>
                   Thông tin khách hàng
                 </Text>
-
-                <FontAwesome
-                  name="phone"
-                  size="28"
-                  color={colors.black}
-                  style={{ marginTop: 25 }}
-                />
+                
                 <TextInput
                   style={{
                     marginTop: 15,
+                    marginBottom: 10,
                     borderBottomColor: "#ddd",
                     borderBottomWidth: 1,
                     paddingBottom: 20,
                   }}
-                  placeholder={phone}
+                  placeholder="Số điện thoại"
                   onChangeText={(text) => setPhone(text)}
                 />
-
-                <FontAwesome
-                  name="user"
-                  size="28"
-                  color={colors.black}
-                  style={{ marginTop: 25 }}
-                />
                 <TextInput
                   style={{
                     marginTop: 15,
+                    marginBottom: 10,
                     borderBottomColor: "#ddd",
                     borderBottomWidth: 1,
                     paddingBottom: 20,
                   }}
-                  placeholder={name}
+                  placeholder="Tên người nhận"
                   onChangeText={(text) => setName(text)}
                 />
-
-                <Entypo
-                  name="address"
-                  size="28"
-                  color={colors.black}
-                  style={{ marginTop: 25 }}
-                />
                 <TextInput
                   style={{
                     marginTop: 15,
+                    marginBottom: 10,
                     borderBottomColor: "#ddd",
                     borderBottomWidth: 1,
                     paddingBottom: 20,
                   }}
-                  placeholder={address}
+                  placeholder="Địa chỉ"
                   onChangeText={(text) => setAddress(text)}
-                />
-
-                <FontAwesome
-                  name="sticky-note"
-                  size="28"
-                  color={colors.black}
-                  style={{ marginTop: 25 }}
                 />
                 <TextInput
                   style={{
                     marginTop: 15,
+                    marginBottom: 10,
                     borderBottomColor: "#ddd",
                     borderBottomWidth: 1,
                     paddingBottom: 20,
@@ -405,7 +384,7 @@ export default function CartScreen({ navigation }) {
                       alignItems: "center",
                       justifyContent: "center",
                       borderRadius: 40,
-                      marginTop: 30,
+                      marginTop: 10,
                     }}
                   >
                     <Text
@@ -421,6 +400,7 @@ export default function CartScreen({ navigation }) {
                 </View>
               </View>
             </Modal>
+          </TouchableWithoutFeedback>
 
             <View style={style.header}>
               <Icon
@@ -469,7 +449,6 @@ export default function CartScreen({ navigation }) {
             </View>
           </SafeAreaView>
         </>
-      )}
     </>
   );
 }
