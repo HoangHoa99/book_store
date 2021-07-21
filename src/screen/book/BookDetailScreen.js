@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
+  Alert,
 } from "react-native";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import colors from "../../assets/color/colors";
@@ -17,6 +18,7 @@ export default function BookDetailScreen({ route, navigation }) {
   let cartContext = useContext(AppContext);
 
   const [item, setItem] = useState({});
+  let instock = true;
 
   useEffect(() => {
     let { book } = route.params;
@@ -25,30 +27,39 @@ export default function BookDetailScreen({ route, navigation }) {
 
 
   const addToCart = async () => {
-    try {
-      const res = cartContext.isLogin
-      ? cartContext.userCart
-      : cartContext.cartItems;
-      const itemCopy = res.find((existedItem) => existedItem._id === item._id);
-      if (itemCopy) {
-        alert("Item have been added");
-      } else {
-        let newItem = {
-          _id: item._id,
-          book: {            
-            title: item.title,
-            price: item.price,
-            images: item.images,
-          },
-          amount: 1,
-        };
-        res.push(newItem);
+    if(instock){
+      try {
+        const res = cartContext.isLogin
+        ? cartContext.userCart
+        : cartContext.cartItems;
+        const itemCopy = res.find((existedItem) => existedItem._id === item._id);
+        if (itemCopy) {
+          alert("Item have been added");
+        } else {
+          let newItem = {
+            _id: item._id,
+            book: {            
+              title: item.title,
+              price: item.price,
+              images: item.images,
+              quantity: item.quantity,
+            },
+            amount: 1,
+          };
+          res.push(newItem);
+        }
+        
+        cartContext.isLogin
+              ? cartContext.setUserCart(res)
+              : cartContext.setCartItems(res);
+      } catch (e) {
+        console.error(e);
       }
-      
-      cartContext.isLogin
-            ? cartContext.setUserCart(res)
-            : cartContext.setCartItems(res);
-    } catch (e) {}
+    }
+    else{
+      Alert.alert("Tạm hết hàng!", "Liên hệ để nhận thông tin");
+    }
+    
   }
 
   function getCategoryName(value){
@@ -61,6 +72,14 @@ export default function BookDetailScreen({ route, navigation }) {
     if(a instanceof Object){
       return a.name;
     }
+  }
+
+  function productStatus(itemQuantity){
+    if(itemQuantity > 0){
+      return "Còn hàng";
+    }
+    instock = false;
+    return "Liên hệ";
   }
 
   return (
@@ -108,8 +127,8 @@ export default function BookDetailScreen({ route, navigation }) {
               <Text style={styles.infoItemText}>{item.author}</Text>
             </View>
             <View style={styles.infoItemWrapper}>
-              <Text style={styles.infoItemTitle}>In stock</Text>
-              <Text style={styles.infoItemText}>{item.quantity}</Text>
+              <Text style={styles.infoItemTitle}>Tình trạng</Text>
+              <Text style={styles.infoItemText}>{productStatus(item.quantity)}</Text>
             </View>
             <View style={styles.infoItemWrapper}>
               <Text style={styles.infoItemTitle}>Thể loại</Text>
@@ -145,7 +164,7 @@ export default function BookDetailScreen({ route, navigation }) {
             </View>
           </View>
         </View>
-        <View style={[styles.section, styles.sectionLarge]}>
+        <View style={styles.sectionLarge}>
           <Text style={styles.sectionContent}>{item.description}</Text>
         </View>
       </View>
@@ -259,11 +278,12 @@ const styles = new StyleSheet.create({
     fontWeight: 'bold',
   },
   sectionContent: {
-    fontSize: 16,
-    textAlign: 'justify',
+    fontSize: 20,
+    textAlign: 'auto',
   },
   sectionLarge: {
-    minHeight: 300,
+    padding: 30, 
+    margin: 5
   },
   titleOverview: {
     fontSize: 28,
