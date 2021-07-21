@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   Text,
   View,
@@ -146,8 +146,7 @@ export default function BookScreen({ navigation }) {
                     fontWeight: "bold",
                   }}
                 >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod
+                  Những đầu sánh nóng hổi vừa cập bến cửa hàng,
                 </Text>
               </View>
               <ScrollView
@@ -193,8 +192,7 @@ export default function BookScreen({ navigation }) {
                     fontWeight: "bold",
                   }}
                 >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod
+                  Tham khảo những tác phẩm được mua nhiều nhất
                 </Text>
               </View>
               <ScrollView
