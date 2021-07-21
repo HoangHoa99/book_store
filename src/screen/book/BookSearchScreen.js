@@ -60,6 +60,7 @@ export default function BookSearchScreen({ navigation }) {
 
   const addToCart = async (item) => {
     
+    if(item.quantity > 0){
     try {
       const res = appContext.isLogin
       ? appContext.userCart
@@ -74,6 +75,7 @@ export default function BookSearchScreen({ navigation }) {
             title: item.title,
             price: item.price,
             images: item.images,
+            quantity: item.quantity,
           },
           amount: 1,
         };
@@ -83,7 +85,13 @@ export default function BookSearchScreen({ navigation }) {
       appContext.isLogin
             ? appContext.setUserCart(res)
             : appContext.setCartItems(res);
-    } catch (e) {}
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  else{
+    Alert.alert("Tạm hết hàng!", "Liên hệ để nhận thông tin");
+  }
   }
 
   function ListCategories() {
