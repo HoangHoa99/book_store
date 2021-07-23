@@ -46,12 +46,13 @@ export default function HomeScreen() {
   const [user, setUser] = useState({});
   const [userProfile, setUserProfile] = useState({});
   const [loading, setLoading] = useState(true);
+  const [language, setLanguage] = useState("vi-VN");
 
   useEffect(() => {
     const getBookLists = async () => {
       GetBookAsync().then((res) => {
-        setNewBook(res.newBook);
         setHotBook(res.hotBook);
+        setNewBook(res.newBook);
         setBooks(res.books);
 
         setLoading(!loading);
@@ -116,7 +117,9 @@ export default function HomeScreen() {
     ngoaingu,
     vanhoc,
     searchResult,
-    setSearchResult
+    setSearchResult,
+    language: language,
+    setLanguage
   };
 
   return (

@@ -12,6 +12,7 @@ import {
   Alert,
 } from "react-native";
 import Loading from "../Loading";
+import i18n from 'i18n-js';
 
 export default function RegisterScreen({ navigation }) {
 
@@ -28,23 +29,23 @@ export default function RegisterScreen({ navigation }) {
 
     // confirm
     if (confirmPassword === "") {
-      setErrorMsg("Confirm your password");
+      setErrorMsg(i18n.t('confirm_password_is_require'));
     }
 
     // password
     if (password === "") {
-      setErrorMsg("Password must be not blank");
+      setErrorMsg(i18n.t('password_is_require'));
     }
     // username
     if (username === "") {
-      setErrorMsg("Username must be not blank");
+      setErrorMsg(i18n.t('username_is_require'));
     }
 
     // phone or email
     if (email === "") {
-      setErrorMsg("Email is required");
+      setErrorMsg(i18n.t('email_is_require'));
     } else if (!emailRe.test(email)) {
-      setErrorMsg("Invalid mail");
+      setErrorMsg(i18n.t('invalid_email'));
     }
 
     return (
@@ -57,9 +58,9 @@ export default function RegisterScreen({ navigation }) {
   // validate password
   function validatePassword() {
     if (password.length < 8) {
-      setErrorMsg("Password must be greater than 8 character");
+      setErrorMsg(i18n.t('password_length_warning'));
     } else if (password !== confirmPassword) {
-      setErrorMsg("Confirm password is not similar to password");
+      setErrorMsg(i18n.t('confirm_password_length_warning'));
     }
 
     return password.length >= 8 && password === confirmPassword;
@@ -92,15 +93,15 @@ export default function RegisterScreen({ navigation }) {
             setErrorMsg(json);
           } else {
             Alert.alert(
-              "Success!",
-              "Login now",
+              i18n.t('success') + '!',
+              i18n.t('login_now'),
               [
                 {
                   text: "OK",
                   onPress: () => navigation.navigate("LoginScreen"),
                 },
                 {
-                  text: "Cancel",
+                  text: i18n.t('cancel'),
                   onPress: () => navigation.navigate("MainScreen"),
                 },
               ],
@@ -127,7 +128,7 @@ export default function RegisterScreen({ navigation }) {
         >
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.inner}>
-              <Text style={styles.header}>Become our customer!</Text>
+              <Text style={styles.header}>{i18n.t('become_us')}!</Text>
               <TextInput
                 style={styles.textInput}
                 placeholder="Email"
@@ -136,20 +137,20 @@ export default function RegisterScreen({ navigation }) {
 
               <TextInput
                 style={styles.textInput}
-                placeholder="Username"
+                placeholder={i18n.t('username')}
                 onChangeText={(text) => setUsername(text)}
               />
 
               <TextInput
                 style={styles.textInput}
-                placeholder="Password"
+                placeholder={i18n.t('password')}
                 secureTextEntry={true}
                 onChangeText={(text) => setPassword(text)}
               />
 
               <TextInput
                 style={styles.textInput}
-                placeholder="Confirm password"
+                placeholder={i18n.t('confirm_password')}
                 secureTextEntry={true}
                 onChangeText={(text) => setConfirmPassword(text)}
               />
@@ -177,7 +178,7 @@ export default function RegisterScreen({ navigation }) {
                       fontSize: 16,
                     }}
                   >
-                    Sign up
+                    {i18n.t('sign_up')}
                   </Text>
                 </TouchableOpacity>
               </View>

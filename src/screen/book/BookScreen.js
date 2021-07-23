@@ -13,6 +13,7 @@ import BookCart from "../../component/BookCart";
 import { AppContext } from "../HomeScreen";
 import HotBookCart from "../../component/HotBookCard";
 import Loading from "../Loading";
+import i18n from 'i18n-js';
 
 export default function BookScreen({ navigation }) {
   const appContext = useContext(AppContext);
@@ -89,8 +90,8 @@ export default function BookScreen({ navigation }) {
                         fontWeight: "bold",
                       }}
                     >
-                      Hello{" "}
-                      {appContext.isLogin ? appContext.user.username : "Sir"},
+                      {i18n.t('hello')}{" "}
+                      {appContext.isLogin ? appContext.user.username : i18n.t('sir')},
                     </Text>
                     <Text
                       style={{
@@ -99,7 +100,7 @@ export default function BookScreen({ navigation }) {
                         fontWeight: "bold",
                       }}
                     >
-                      Hope you have a great day!
+                      {i18n.t('greeting_statement')}!
                     </Text>
                     <View
                       style={{
@@ -137,7 +138,7 @@ export default function BookScreen({ navigation }) {
                     fontWeight: "bold",
                   }}
                 >
-                  SÁCH MỚI!,
+                  {i18n.t('new_book')}!,
                 </Text>
                 <Text
                   style={{
@@ -146,7 +147,7 @@ export default function BookScreen({ navigation }) {
                     fontWeight: "bold",
                   }}
                 >
-                  Những đầu sánh nóng hổi vừa cập bến cửa hàng,
+                  {i18n.t('new_book_desciption')}
                 </Text>
               </View>
               <ScrollView
@@ -183,7 +184,7 @@ export default function BookScreen({ navigation }) {
                     fontWeight: "bold",
                   }}
                 >
-                  BÁN CHẠY!,
+                  {i18n.t('hot_book')}!,
                 </Text>
                 <Text
                   style={{
@@ -192,7 +193,7 @@ export default function BookScreen({ navigation }) {
                     fontWeight: "bold",
                   }}
                 >
-                  Tham khảo những tác phẩm được mua nhiều nhất
+                  {i18n.t('hot_book_description')}
                 </Text>
               </View>
               <ScrollView

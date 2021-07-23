@@ -16,6 +16,7 @@ import Loading from "../Loading";
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 export const isAndroid = () => Platform.OS === "android";
+import i18n from 'i18n-js';
 
 export default function LoginScreen({ navigation }) {
   const [errorMsg, setErrorMsg] = useState("");
@@ -227,10 +228,10 @@ export default function LoginScreen({ navigation }) {
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.container}>
               <Text style={{ fontSize: 25, marginTop: 20 }}>
-                Welcome Back!{" "}
+                {i18n.t('welcome_back')}!
               </Text>
               <Text style={{ fontSize: 16, color: "gray", marginTop: 20 }}>
-                Sign in to continue
+                {i18n.t('sign_in_to_continue')}
               </Text>
 
               <Animatable.View ref={validateInput}>
@@ -241,7 +242,7 @@ export default function LoginScreen({ navigation }) {
                     borderBottomWidth: 1,
                     paddingBottom: 20,
                   }}
-                  placeholder="Username"
+                  placeholder={i18n.t('username')}
                   onChangeText={(text) => setUsername(text)}
                 />
 
@@ -252,7 +253,7 @@ export default function LoginScreen({ navigation }) {
                     borderBottomWidth: 1,
                     paddingBottom: 20,
                   }}
-                  placeholder="Password"
+                  placeholder={i18n.t('password')}
                   secureTextEntry={true}
                   onChangeText={(text) => setPassword(text)}
                 />
@@ -285,22 +286,22 @@ export default function LoginScreen({ navigation }) {
                   <Text
                     style={{ textAlign: "center", color: "#FFF", fontSize: 16 }}
                   >
-                    Login
+                    {i18n.t('sign_in')}
                   </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                   onPress={() => navigation.navigate("ForgotPasswordScreen")}
                 >
-                  <Text style={{ marginTop: 20 }}>Forgot Password ?</Text>
+                  <Text style={{ marginTop: 20 }}>{i18n.t('forgot_password')} ?</Text>
                 </TouchableOpacity>
 
                 <View style={{ flexDirection: "row", marginTop: 40 }}>
-                  <Text style={{ color: "gray" }}>Don't have an account?</Text>
+                  <Text style={{ color: "gray" }}>{i18n.t('create_account')}?</Text>
                   <TouchableOpacity
                     onPress={() => navigation.navigate("RegisterScreen")}
                   >
-                    <Text style={{ fontWeight: "bold" }}> Sign Up</Text>
+                    <Text style={{ fontWeight: "bold" }}>{i18n.t('sign_up')}</Text>
                   </TouchableOpacity>
                 </View>
                 <View
@@ -311,7 +312,7 @@ export default function LoginScreen({ navigation }) {
                   }}
                 ></View>
                 <Text style={{ fontSize: 16, marginTop: 10 }}>
-                  Or via social media
+                  {i18n.t('via_social')}
                 </Text>
                 <View style={{ flexDirection: "row", marginTop: 20 }}>
                   <TouchableOpacity
