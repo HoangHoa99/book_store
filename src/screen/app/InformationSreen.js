@@ -6,6 +6,7 @@ import color from "../../assets/color/colors";
 import RNPickerSelect from 'react-native-picker-select';
 import i18n from 'i18n-js';
 import { AppContext } from '../HomeScreen';
+import { SimpleLineIcons } from "@expo/vector-icons";
 
 i18n.translations = {
   en: { 
@@ -37,12 +38,35 @@ i18n.translations = {
     login_now: 'Login now',
     cancel: 'Cancel',
     become_us: 'Become to our customer',
+    confirm_password: 'Confirm password',
     sir: 'Sir',
     greeting_statement: 'Hope you have a greate day',
     new_book: 'NEW BOOK',
     new_book_desciption: 'Newest book at my store',
     hot_book: 'BEST SELLER',
     hot_book_description: 'Best seller of my store',
+    check_out: 'Checkout',
+    total_price: 'Total price',
+    confirm: 'Confirm',
+    user_info: 'User information',
+    remove_from_cart: 'Remove this book from your cart',
+    over_instock_quantity: 'Exceeding the remaining amount',
+    empty_cart: 'Empty cart',
+    at_least_one_item: 'Select at least one item',
+    confirm_order: 'Confirm your order',
+    order_id: 'Order ID',
+    note: 'Note',
+    date_create: 'Created at',
+    phone: 'Phone',
+    item_has_been_added: 'Item has been added',
+    out_of_stock: 'Out of stock',
+    in_stock: 'In stock',
+    author: 'Author',
+    state: 'Status',
+    category: 'Category',
+    add_to_cart: 'Add to cart',
+    overview: 'Overview',
+    search_item: 'Search book',
   },
   vi: { 
     contact_us: 'Liên hệ với chúng tôi',
@@ -80,6 +104,28 @@ i18n.translations = {
     new_book_desciption: 'Những đầu sách vừa mới cập bến',
     hot_book: 'BÁN CHẠY NHẤT',
     hot_book_description: 'Những đầu sách hot nhất của cửa hàng',
+    check_out: 'Thanh toán',
+    total_price: 'Thành tiền',
+    confirm: 'Xác nhận',
+    user_info: 'Thông tin khách hàng',
+    remove_from_cart: 'Bỏ cuốn sách này khỏi giỏ hàng',
+    over_instock_quantity: 'Vượt quá số lượng còn lại',
+    empty_cart: 'Giỏ hàng trống',
+    at_least_one_item: 'Chọn ít nhất một sản phẩm',
+    confirm_order: 'Xác nhận đặt hàng',
+    order_id: 'Mã đơn hàng',
+    note: 'Ghi chú',
+    date_create: 'Tạo ngày',
+    phone: 'SĐT',
+    item_has_been_added: 'Sản phẩm đã có trong giỏ hàng',
+    out_of_stock: 'Tạm hết hàng',
+    in_stock: 'Còn hàng',
+    author: 'Tác giả',
+    state: 'Tình trạng',
+    category: 'Thể loại',
+    add_to_cart: 'Thêm vào giỏ hàng',
+    overview: 'Tóm tắt nội dung',
+    search_item: 'Tìm kiếm sách',
   },
 };
 i18n.fallbacks = true;
@@ -89,6 +135,8 @@ export default function InformationScreen({ navigation }) {
   const appContext = useContext(AppContext);
   
   i18n.locale = appContext.language;
+
+  var year = new Date().getFullYear();
 
   return (
     <>
@@ -207,8 +255,27 @@ export default function InformationScreen({ navigation }) {
                         { label: 'English', value: 'en-US' }
                     ]}
                     style={{
-                      flex: 5
+                      inputIOS: {
+                        fontSize: 18,
+                        paddingVertical: 10,
+                        color: '#bcbcbc',
+                        textAlign:'right'
+                      },
+                      inputAndroid: {
+                        fontSize: 18,
+                        paddingVertical: 10,
+                        color: '#bcbcbc',
+                        textAlign:'right'
+                      },
+                      viewContainer: {
+                        marginRight: 20
+                      },
+                      // iconContainer: {
+                      //   top: 12,
+                      // },
                     }}
+                    value={appContext.language}
+                    // Icon={() =>{return <SimpleLineIcons name="arrow-down" size={18} color="black" />}}
                 />
               </View>
             </View>
@@ -233,7 +300,7 @@ export default function InformationScreen({ navigation }) {
           }}
         >
           <Text>UTE Bookstore</Text>
-          <Text>Copyright &copy; 2021. All rights reserved</Text>
+          <Text>Copyright &copy; {year}. All rights reserved</Text>
         </View>
       </View>
     </>
@@ -243,7 +310,7 @@ export default function InformationScreen({ navigation }) {
 const styles = StyleSheet.create({
   scroller: {
     flex: 1,
-  }
+  },
 });
 
 // //     <>

@@ -4,13 +4,21 @@ import {
   Ionicons,
   MaterialIcons,
 } from "@expo/vector-icons";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
 import { AppContext } from "../HomeScreen";
 import i18n from 'i18n-js';
 
 export default function ProfileScreen({ navigation }) {
   const checkIsLogin = useContext(AppContext);
+  const [key, setKey] = useState(0);
+
+  // reload data
+  useEffect(() => {
+    return navigation.addListener("focus", () => {
+      setKey((preKey) => preKey + 1);
+    });
+  }, [navigation, key]);
 
   const userInfo = checkIsLogin.userProfile;
 

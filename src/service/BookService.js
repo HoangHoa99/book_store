@@ -1,6 +1,8 @@
 
 
 export const GetBookAsync = async () => {
+  
+  console.log("getting book...");
     const response = await fetch("https://utebookstore.herokuapp.com/books", {
       method: "GET",
       headers: {
@@ -12,6 +14,7 @@ export const GetBookAsync = async () => {
         console.log(error);
       });
   
+      console.log("get book ok");
     return response;
   };
 

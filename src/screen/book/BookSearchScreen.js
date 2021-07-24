@@ -1,5 +1,6 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import {
+  Alert,
   Dimensions,
   Image,
   SafeAreaView,
@@ -17,6 +18,7 @@ import { Feather } from "@expo/vector-icons";
 import COLORS from "../../assets/color/colors";
 import {AppContext} from '../HomeScreen';
 import { SearchBooksAsync } from '../../service/BookService';
+import i18n from 'i18n-js';
 
 const { width } = Dimensions.get("screen");
 const cardWidth = width / 2 - 20;
@@ -24,10 +26,18 @@ const cardWidth = width / 2 - 20;
 export default function BookSearchScreen({ navigation }) {
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [key, setKey] = useState(0);
 
   const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(0);
   
   let appContext = useContext(AppContext);
+
+  // reload data
+  useEffect(() => {
+    return navigation.addListener("focus", () => {
+      setKey((preKey) => preKey + 1);
+    });
+  }, [navigation, key]);
 
   function getBookByCate(){
     switch(selectedCategoryIndex){
@@ -67,7 +77,7 @@ export default function BookSearchScreen({ navigation }) {
       : appContext.cartItems;
       const itemCopy = res.find((existedItem) => existedItem._id === item._id);
       if (itemCopy) {
-        alert("Item have been added");
+        Alert.alert(i18n.t('item_has_been_added'));
       } else {
         let newItem = {
           _id: item._id,
@@ -90,7 +100,7 @@ export default function BookSearchScreen({ navigation }) {
     }
   }
   else{
-    Alert.alert("Tạm hết hàng!", "Liên hệ để nhận thông tin");
+    Alert.alert(i18n.t('out_of_stock') + "!", i18n.t('contact_us'));
   }
   }
 
@@ -227,7 +237,7 @@ export default function BookSearchScreen({ navigation }) {
         <View style={style.inputContainer}>
           <TextInput
             style={{ flex: 1, fontSize: 18, color: COLORS.black}}
-            placeholder="Search for item"
+            placeholder={i18n.t('search_item')}
             onChangeText = {(text) => searchBookByKeyword(text)}
           />          
         </View>

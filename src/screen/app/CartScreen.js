@@ -1,4 +1,4 @@
-import { Feather, Entypo, FontAwesome } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import React, { useContext, useEffect, useState } from "react";
 import {
   SafeAreaView,
@@ -25,6 +25,7 @@ import {
   DeleteCartItem,
   OrderAdd,
 } from "../../service/CartService";
+import i18n from 'i18n-js';
 
 export default function CartScreen({ navigation }) {
   // ANCHOR - Declare state
@@ -46,24 +47,22 @@ export default function CartScreen({ navigation }) {
 
   // reload data
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
+    return navigation.addListener("focus", () => {
       loadCartData();
     });
-
-    return unsubscribe;
   }, [navigation, key]);
 
   function clearCart() {
     Alert.alert(
-      "Xác nhận đặt hàng?",
+      i18n.t('confirm_order') + "?",
       "",
       [
         {
-          text: "Huỷ",
+          text: i18n.t('cancel'),
           style: "cancel",
         },
         {
-          text: "Xác nhận",
+          text: i18n.t('confirm'),
           onPress: () => {
             confirmOrder();
             setModalVisible(false);
@@ -85,7 +84,7 @@ export default function CartScreen({ navigation }) {
     if (
       userCart.length === 0
     ) {
-      Alert.alert("Giỏ hàng trống", "Thêm ít nhất một sản phẩm");
+      Alert.alert(i18n.t('empty_cart'), i18n.t('at_least_one_item'));
     } else {
       if (userLogin) {
         var cartAdd = [];
@@ -105,15 +104,15 @@ export default function CartScreen({ navigation }) {
       }
       else{
         Alert.alert(
-          "Đăng nhập để tiếp tục",
+          i18n.t('sign_in_to_continue'),
           "",
           [
             {
-              text: "Cancel",
+              text: i18n.t('cancel'),
               style: "cancel",
             },
             {
-              text: "Ok",
+              text: "OK",
               onPress: () => {
                 navigation.navigate("ProfileScreen");
               },
@@ -177,7 +176,7 @@ export default function CartScreen({ navigation }) {
 
     if (action == "more") {
       if(currentQty + 1 > instock){
-        Alert.alert("Vượt quá số lượng còn lại");
+        Alert.alert(i18n.t('over_instock_quantity'));
       }
       else{
         currentItem.amount = currentQty + 1;   
@@ -197,15 +196,15 @@ export default function CartScreen({ navigation }) {
   /** xoa item trong cart */
   function deleteHandler(index) {
     Alert.alert(
-      "Bạn không mua cuốn sách này nữa?",
+      i18n.t('remove_from_cart') + "?",
       "",
       [
         {
-          text: "Không",
+          text: i18n.t('cancel'),
           style: "cancel",
         },
         {
-          text: "Chuẩn",
+          text: "OK",
           onPress: () => {
             let updatedCart = cartContext.isLogin
               ? cartContext.userCart
@@ -320,7 +319,7 @@ export default function CartScreen({ navigation }) {
               >
                 
                 <Text style={{ fontSize: 25, marginTop: 10, marginBottom: 20 }}>
-                  Thông tin khách hàng
+                  {i18n.t('user_info')}
                 </Text>
                 
                 <TextInput
@@ -394,7 +393,7 @@ export default function CartScreen({ navigation }) {
                         fontSize: 16,
                       }}
                     >
-                      Confirm
+                      {i18n.t('confirm')}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -435,7 +434,7 @@ export default function CartScreen({ navigation }) {
                 <Text
                   style={{ fontSize: 18, fontWeight: "bold", marginLeft: 45 }}
                 >
-                  Total Price
+                  {i18n.t('total_price')}
                 </Text>
                 <Text
                   style={{ fontSize: 18, fontWeight: "bold", marginRight: 45 }}
@@ -444,7 +443,7 @@ export default function CartScreen({ navigation }) {
                 </Text>
               </View>
               <View style={{ marginHorizontal: 30 }}>
-                <PrimaryButton title="CHECKOUT" onPress={() => checkoutBtn()} />
+                <PrimaryButton title={i18n.t('check_out')} onPress={() => checkoutBtn()} />
               </View>
             </View>
           </SafeAreaView>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -17,6 +17,14 @@ import i18n from 'i18n-js';
 
 export default function BookScreen({ navigation }) {
   const appContext = useContext(AppContext);
+  const [key, setKey] = useState(0);
+
+  // reload data
+  useEffect(() => {
+    return navigation.addListener("focus", () => {
+      setKey((preKey) => preKey + 1);
+    });
+  }, [navigation, key]);
 
   return (
     <>

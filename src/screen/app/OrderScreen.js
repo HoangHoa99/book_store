@@ -4,6 +4,7 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { orderStatus } from "../../clone/DataClone";
 import { GetMyOrder } from "../../service/CartService";
 import { AppContext } from "../HomeScreen";
+import i18n from 'i18n-js';
 
 export default function OrderScreen({ navigation }) {
   const orderContext = useContext(AppContext);
@@ -97,13 +98,13 @@ export default function OrderScreen({ navigation }) {
                   marginLeft: 15,
                 }}
               >
-                <TitleText title="SDT" value={item.user.phone} />
-                <TitleText title="Tổng giá trị" value={item.totalrice} />
+                <TitleText title={i18n.t('phone')} value={item.user.phone} />
+                <TitleText title={i18n.t('total_price')} value={item.totalrice} />
                 <TitleText
-                  title="Ngày tạo"
+                  title={i18n.t('date_create')}
                   value={getDateOrder(item.createdAt)}
                 />
-                <TitleText title="Ghi chú" value={item.note} />
+                <TitleText title={i18n.t('note')} value={item.note} />
               </View>
 
               <View
@@ -114,7 +115,7 @@ export default function OrderScreen({ navigation }) {
                   marginTop: 5,
                 }}
               >
-                <TitleText title={"OrderId"} value={getOrderId(item._id)} />
+                <TitleText title={i18n.t('order_id')} value={getOrderId(item._id)} />
               </View>
             </View>
           </View>
@@ -152,7 +153,7 @@ export default function OrderScreen({ navigation }) {
                 fontFamily: "Arial-BoldMT",
               }}
             >
-              ĐƠN HÀNG
+              {i18n.t('your_orders')}
             </Text>
           </View>
           <View style={{ flex: 1 }}></View>
