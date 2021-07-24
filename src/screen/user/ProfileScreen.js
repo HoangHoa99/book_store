@@ -4,12 +4,21 @@ import {
   Ionicons,
   MaterialIcons,
 } from "@expo/vector-icons";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
 import { AppContext } from "../HomeScreen";
+import i18n from 'i18n-js';
 
 export default function ProfileScreen({ navigation }) {
   const checkIsLogin = useContext(AppContext);
+  const [key, setKey] = useState(0);
+
+  // reload data
+  useEffect(() => {
+    return navigation.addListener("focus", () => {
+      setKey((preKey) => preKey + 1);
+    });
+  }, [navigation, key]);
 
   const userInfo = checkIsLogin.userProfile;
 
@@ -159,7 +168,7 @@ export default function ProfileScreen({ navigation }) {
               }}
             >
               <Text
-                style={{ fontSize: 22, fontFamily: "AppleSDGothicNeo-Regular" }}
+                style={{ fontSize: 22 }}
               >
                 {userInfo.phone}
               </Text>
@@ -200,7 +209,7 @@ export default function ProfileScreen({ navigation }) {
               }}
             >
               <Text
-                style={{ fontSize: 22, fontFamily: "AppleSDGothicNeo-Regular" }}
+                style={{ fontSize: 22 }}
               >
                 {userInfo.email}
               </Text>
@@ -241,7 +250,7 @@ export default function ProfileScreen({ navigation }) {
               }}
             >
               <Text
-                style={{ fontSize: 22, fontFamily: "AppleSDGothicNeo-Regular" }}
+                style={{ fontSize: 22 }}
               >
                 {userInfo.address}
               </Text>
@@ -282,9 +291,9 @@ export default function ProfileScreen({ navigation }) {
               }}
             >
               <Text
-                style={{ fontSize: 22, fontFamily: "AppleSDGothicNeo-Regular" }}
+                style={{ fontSize: 22 }}
               >
-                Your orders
+                {i18n.t('your_orders')}
               </Text>
             </View>
             <TouchableOpacity
@@ -333,9 +342,9 @@ export default function ProfileScreen({ navigation }) {
               }}
             >
               <Text
-                style={{ fontSize: 22, fontFamily: "AppleSDGothicNeo-Regular" }}
+                style={{ fontSize: 22 }}
               >
-                About us
+                {i18n.t('about_us')}
               </Text>
             </View>
             <TouchableOpacity
@@ -373,7 +382,7 @@ export default function ProfileScreen({ navigation }) {
             }}
           >
             <MaterialIcons name="logout" size={25} color="#ea1203" />
-            <Text style={{ fontSize: 20, marginLeft: 5 }}>Sign Out</Text>
+            <Text style={{ fontSize: 20, marginLeft: 5 }}>{i18n.t('sign_out')}</Text>
           </TouchableOpacity>
         </View>
         {/** !SECTION */}
@@ -396,7 +405,7 @@ export default function ProfileScreen({ navigation }) {
               resizeMode="contain"
             />
 
-            <Text style={{ fontSize: 40, fontWeight: "bold" }}>Hello!</Text>
+            <Text style={{ fontSize: 40, fontWeight: "bold" }}>{i18n.t('hello')}!</Text>
             <Text
               style={{
                 fontSize: 16,
@@ -405,7 +414,7 @@ export default function ProfileScreen({ navigation }) {
                 marginHorizontal: 20,
               }}
             >
-              Welcome to UTE Store!
+              {i18n.t('welcome_to_out_store')}!
             </Text>
 
             <View
@@ -424,7 +433,7 @@ export default function ProfileScreen({ navigation }) {
                 <Text
                   style={{ textAlign: "center", color: "#FFF", fontSize: 18 }}
                 >
-                  Login
+                  {i18n.t('sign_in')}
                 </Text>
               </TouchableOpacity>
 
@@ -447,7 +456,7 @@ export default function ProfileScreen({ navigation }) {
                     fontSize: 18,
                   }}
                 >
-                  Sign Up
+                  {i18n.t('sign_up')}
                 </Text>
               </TouchableOpacity>
             </View>

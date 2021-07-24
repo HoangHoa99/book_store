@@ -12,6 +12,7 @@ import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import colors from "../../assets/color/colors";
 import { ScrollView } from "react-native-gesture-handler";
 import {AppContext} from '../HomeScreen';
+import i18n from 'i18n-js';
 
 export default function BookDetailScreen({ route, navigation }) {
 
@@ -34,7 +35,7 @@ export default function BookDetailScreen({ route, navigation }) {
         : cartContext.cartItems;
         const itemCopy = res.find((existedItem) => existedItem._id === item._id);
         if (itemCopy) {
-          alert("Item have been added");
+          Alert.alert(i18n.t('item_has_been_added'));
         } else {
           let newItem = {
             _id: item._id,
@@ -57,7 +58,7 @@ export default function BookDetailScreen({ route, navigation }) {
       }
     }
     else{
-      Alert.alert("Tạm hết hàng!", "Liên hệ để nhận thông tin");
+      Alert.alert(i18n.t('out_of_stock') + "!", i18n.t('contact_us'));
     }
     
   }
@@ -76,10 +77,10 @@ export default function BookDetailScreen({ route, navigation }) {
 
   function productStatus(itemQuantity){
     if(itemQuantity > 0){
-      return "Còn hàng";
+      return i18n.t('in_stock');
     }
     instock = false;
-    return "Liên hệ";
+    return i18n.t('out_of_stock');
   }
 
   return (
@@ -123,15 +124,15 @@ export default function BookDetailScreen({ route, navigation }) {
         <View style={styles.infoWrapper}>
           <View style={styles.infoLeftWrapper}>
             <View style={styles.infoItemWrapper}>
-              <Text style={styles.infoItemTitle}>Tác giả</Text>
+              <Text style={styles.infoItemTitle}>{i18n.t('author')}</Text>
               <Text style={styles.infoItemText}>{item.author}</Text>
             </View>
             <View style={styles.infoItemWrapper}>
-              <Text style={styles.infoItemTitle}>Tình trạng</Text>
+              <Text style={styles.infoItemTitle}>{i18n.t('state')}</Text>
               <Text style={styles.infoItemText}>{productStatus(item.quantity)}</Text>
             </View>
             <View style={styles.infoItemWrapper}>
-              <Text style={styles.infoItemTitle}>Thể loại</Text>
+              <Text style={styles.infoItemTitle}>{i18n.t('category')}</Text>
               <Text style={styles.infoItemText}>
                 {getCategoryName(item.category)}
                 
@@ -146,7 +147,7 @@ export default function BookDetailScreen({ route, navigation }) {
         {/* Place an order */}
         <TouchableOpacity onPress={() => addToCart()}>
           <View style={styles.orderWrapper}>
-            <Text style={styles.orderText}>Add to cart</Text>
+            <Text style={styles.orderText}>{i18n.t('add_to_cart')}</Text>
             <Feather name="chevron-right" size={18} color={colors.black} />
           </View>
         </TouchableOpacity>
@@ -156,7 +157,7 @@ export default function BookDetailScreen({ route, navigation }) {
           onHide={() => navTitleView.current.fadeInUp(200)}
           onDisplay={() => navTitleView.current.fadeOut(100)}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={styles.titleOverview}>Overview</Text>
+            <Text style={styles.titleOverview}>{i18n.t('overview')}</Text>
             <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
               <Feather name="star" size={16} color= {colors.primary} />
               <Text style={{marginHorizontal: 2}}>4</Text>

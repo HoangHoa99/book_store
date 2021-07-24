@@ -87,6 +87,8 @@ export const AddToCartFromLg = async (cartAdd, token) => {
   };
 
   export const GetMyOrder = async (token) => {
+    console.log("getting order...");
+    console.log(token);
     const response = await fetch(
       "https://utebookstore.herokuapp.com/order/myorder",
       {
@@ -101,6 +103,7 @@ export const AddToCartFromLg = async (cartAdd, token) => {
       .catch((error) => {
         console.log(error);
       });
+      console.log("get order ok");
     return response;
   };
 

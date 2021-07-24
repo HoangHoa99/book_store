@@ -2,7 +2,9 @@ import React from "react";
 import { Text, View, ImageBackground, TouchableOpacity } from "react-native";
 
 export default function HotBookCart({ item, navigation }) {
-    let hotItem = item.books_Product[0];
+  const hotItem = item.books_Product[0];
+  
+  let imageUri = hotItem ? hotItem.images : '';
   return (
     <>
       <TouchableOpacity
@@ -26,7 +28,7 @@ export default function HotBookCart({ item, navigation }) {
               height: 200,
             }}
             source={{
-              uri: hotItem.images,
+              uri: imageUri
             }}
           >
             <View style={{ position: "absolute", bottom: 20, left: 20 }}>
