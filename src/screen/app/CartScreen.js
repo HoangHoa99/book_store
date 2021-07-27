@@ -25,7 +25,8 @@ import {
   DeleteCartItem,
   OrderAdd,
 } from "../../service/CartService";
-import i18n from 'i18n-js';
+import i18n from "i18n-js";
+import EmptyCart from "../../component/EmptyCart";
 
 export default function CartScreen({ navigation }) {
   // ANCHOR - Declare state
@@ -54,15 +55,15 @@ export default function CartScreen({ navigation }) {
 
   function clearCart() {
     Alert.alert(
-      i18n.t('confirm_order') + "?",
+      i18n.t("confirm_order") + "?",
       "",
       [
         {
-          text: i18n.t('cancel'),
+          text: i18n.t("cancel"),
           style: "cancel",
         },
         {
-          text: i18n.t('confirm'),
+          text: i18n.t("confirm"),
           onPress: () => {
             confirmOrder();
             setModalVisible(false);
@@ -75,16 +76,13 @@ export default function CartScreen({ navigation }) {
   }
 
   async function checkoutBtn() {
-
     var userLogin = cartContext.isLogin;
     var userCart = cartContext.cartItems;
-    if(userLogin){
+    if (userLogin) {
       userCart = cartContext.userCart;
     }
-    if (
-      userCart.length === 0
-    ) {
-      Alert.alert(i18n.t('empty_cart'), i18n.t('at_least_one_item'));
+    if (userCart.length === 0) {
+      Alert.alert(i18n.t("empty_cart"), i18n.t("at_least_one_item"));
     } else {
       if (userLogin) {
         var cartAdd = [];
@@ -101,14 +99,13 @@ export default function CartScreen({ navigation }) {
         cartContext.setCartItems([]);
         await AddToCartFromLg(cartAdd, cartContext.user.accessToken);
         setModalVisible(!modalVisible);
-      }
-      else{
+      } else {
         Alert.alert(
-          i18n.t('sign_in_to_continue'),
+          i18n.t("sign_in_to_continue"),
           "",
           [
             {
-              text: i18n.t('cancel'),
+              text: i18n.t("cancel"),
               style: "cancel",
             },
             {
@@ -125,7 +122,6 @@ export default function CartScreen({ navigation }) {
   }
 
   async function confirmOrder() {
-    
     var cartList = cartContext.userCart;
 
     var orderList = [];
@@ -175,12 +171,11 @@ export default function CartScreen({ navigation }) {
     let currentQty = currentItem.amount;
 
     if (action == "more") {
-      if(currentQty + 1 > instock){
-        Alert.alert(i18n.t('over_instock_quantity'));
+      if (currentQty + 1 > instock) {
+        Alert.alert(i18n.t("over_instock_quantity"));
+      } else {
+        currentItem.amount = currentQty + 1;
       }
-      else{
-        currentItem.amount = currentQty + 1;   
-      }   
     } else if (action == "less") {
       currentItem.amount = currentQty > 1 ? currentQty - 1 : 1;
     }
@@ -196,11 +191,11 @@ export default function CartScreen({ navigation }) {
   /** xoa item trong cart */
   function deleteHandler(index) {
     Alert.alert(
-      i18n.t('remove_from_cart') + "?",
+      i18n.t("remove_from_cart") + "?",
       "",
       [
         {
-          text: i18n.t('cancel'),
+          text: i18n.t("cancel"),
           style: "cancel",
         },
         {
@@ -264,11 +259,19 @@ export default function CartScreen({ navigation }) {
             {item.amount}
           </Text>
           <View style={style.actionBtn}>
-            <TouchableOpacity onPress={() => quantityHandler("less", item._id, item.book.quantity)}>
+            <TouchableOpacity
+              onPress={() =>
+                quantityHandler("less", item._id, item.book.quantity)
+              }
+            >
               <Icon name="remove" size={25} color={colors.white} />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => quantityHandler("more", item._id, item.book.quantity)}>
+            <TouchableOpacity
+              onPress={() =>
+                quantityHandler("more", item._id, item.book.quantity)
+              }
+            >
               <Icon name="add" size={25} color={colors.white} />
             </TouchableOpacity>
           </View>
@@ -279,11 +282,16 @@ export default function CartScreen({ navigation }) {
       </View>
     );
   };
+
+  var cart = cartContext.isLogin ? cartContext.userCart : cartContext.cartItems;
+
   return (
     <>
-        <>
-          <SafeAreaView style={{ backgroundColor: colors.white, flex: 1 }}>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      {cart.length === 0 ? (
+        <EmptyCart />
+      ) : (
+        <SafeAreaView style={{ backgroundColor: colors.white, flex: 1 }}>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <Modal
               animationType="slide"
               presentationStyle="pageSheet"
@@ -317,11 +325,10 @@ export default function CartScreen({ navigation }) {
                   padding: 20,
                 }}
               >
-                
                 <Text style={{ fontSize: 25, marginTop: 10, marginBottom: 20 }}>
-                  {i18n.t('user_info')}
+                  {i18n.t("user_info")}
                 </Text>
-                
+
                 <TextInput
                   style={{
                     marginTop: 15,
@@ -393,7 +400,7 @@ export default function CartScreen({ navigation }) {
                         fontSize: 16,
                       }}
                     >
-                      {i18n.t('confirm')}
+                      {i18n.t("confirm")}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -401,53 +408,48 @@ export default function CartScreen({ navigation }) {
             </Modal>
           </TouchableWithoutFeedback>
 
-            <View style={style.header}>
-              <Icon
-                name="arrow-back-ios"
-                size={28}
-                onPress={navigation.goBack}
-              />
-              <Text style={{ fontSize: 20, fontWeight: "bold" }}>Cart</Text>
-            </View>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{ paddingBottom: 80 }}
-              data={
-                cartContext.isLogin
-                  ? cartContext.userCart
-                  : cartContext.cartItems
-              }
-              renderItem={({ item }) => <CartCard item={item} />}
-              ListFooterComponentStyle={{
-                paddingHorizontal: 20,
-                marginTop: 20,
+          <View style={style.header}>
+            <Icon name="arrow-back-ios" size={28} onPress={navigation.goBack} />
+            <Text style={{ fontSize: 20, fontWeight: "bold" }}>Cart</Text>
+          </View>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 80 }}
+            data={cart}
+            renderItem={({ item }) => <CartCard item={item} />}
+            ListFooterComponentStyle={{
+              paddingHorizontal: 20,
+              marginTop: 20,
+            }}
+          />
+          <View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginVertical: 15,
               }}
-            />
-            <View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  marginVertical: 15,
-                }}
+            >
+              <Text
+                style={{ fontSize: 18, fontWeight: "bold", marginLeft: 45 }}
               >
-                <Text
-                  style={{ fontSize: 18, fontWeight: "bold", marginLeft: 45 }}
-                >
-                  {i18n.t('total_price')}
-                </Text>
-                <Text
-                  style={{ fontSize: 18, fontWeight: "bold", marginRight: 45 }}
-                >
-                  ${totalPrice()}
-                </Text>
-              </View>
-              <View style={{ marginHorizontal: 30 }}>
-                <PrimaryButton title={i18n.t('check_out')} onPress={() => checkoutBtn()} />
-              </View>
+                {i18n.t("total_price")}
+              </Text>
+              <Text
+                style={{ fontSize: 18, fontWeight: "bold", marginRight: 45 }}
+              >
+                ${totalPrice()}
+              </Text>
             </View>
-          </SafeAreaView>
-        </>
+            <View style={{ marginHorizontal: 30 }}>
+              <PrimaryButton
+                title={i18n.t("check_out")}
+                onPress={() => checkoutBtn()}
+              />
+            </View>
+          </View>
+        </SafeAreaView>
+      )}
     </>
   );
 }
